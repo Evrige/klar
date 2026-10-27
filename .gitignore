@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.npm-cache/
+preview*.png
+*.tar
+*.tar.gz

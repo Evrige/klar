@@ -1,0 +1,10 @@
+import { useState } from 'react';
+import { ArrowRight, CheckCircle2, RotateCcw } from 'lucide-react';
+import { pronouns, type Verb } from '../data/verbs';
+export default function Practice({verb,onCorrect}:{verb:Verb;onCorrect:(key:string)=>void}){
+ const [index,setIndex]=useState(0),[answer,setAnswer]=useState(''),[checked,setChecked]=useState(false),[score,setScore]=useState(0);
+ const correct=answer.trim().toLocaleLowerCase('de')===verb.forms[index]?.toLocaleLowerCase('de');
+ function check(e:React.FormEvent){e.preventDefault();if(!answer.trim()||checked)return;setChecked(true);if(correct){setScore(s=>s+1);onCorrect(`${verb.id}:${index}`);}}
+ if(index===6)return <div className="practice result"><CheckCircle2 size={40}/><h3>Тренировка завершена!</h3><p>Правильно: {score} из 6. Все верные формы сохранены в прогрессе.</p><button className="primary" onClick={()=>{setIndex(0);setScore(0);setChecked(false);setAnswer('');}}><RotateCcw size={17}/> Повторить</button></div>;
+ return <section className="practice"><div className="section-heading"><div><span className="eyebrow">ПРОВЕРЬТЕ СЕБЯ</span><h3>Немного практики</h3></div><span className="muted">{index+1} / 6</span></div><p>Впишите форму <strong>{verb.id}</strong> для указанного местоимения.</p><form onSubmit={check}><div className="answer-row"><span className="question-pronoun">{pronouns[index]}</span><input aria-label="Форма глагола" autoComplete="off" value={answer} disabled={checked} onChange={e=>setAnswer(e.target.value)} placeholder="Ваша форма…"/><button className="primary" disabled={!answer.trim()||checked}>Проверить</button></div><div aria-live="polite">{checked&&<div className={`feedback ${correct?'success':'error'}`}>{correct?'Верно! Отличная работа.':`Правильная форма: ${verb.forms[index]}. ${verb.rule}`}</div>}</div></form>{checked&&<button className="text-button next" onClick={()=>{setIndex(i=>i+1);setAnswer('');setChecked(false);}}>{index===5?'Посмотреть результат':'Следующий вопрос'}<ArrowRight size={16}/></button>}</section>;
+}
