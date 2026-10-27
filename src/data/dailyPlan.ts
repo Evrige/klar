@@ -11,7 +11,7 @@ function randomFor(seed:string){let value=2166136261;for(const c of seed)value=M
 export function makeDailyPlan(date:string){
  const random=randomFor(date);
  const topic=ruleTopics[Math.floor(random()*ruleTopics.length)];
- const sentenceByTopic:Record<string,string>={verbs:'learn',cases:'dative',pronouns:'accusative',sentences:'inversion',prepositions:'location',adjectives:'not',past:'perfect'};
+ const sentenceByTopic:Record<string,string>={questions:'question',negation:'negation',verbs:'learn',cases:'dative',pronouns:'accusative',sentences:'inversion',prepositions:'location',adjectives:'not',past:'perfect'};
  return {topic,words:shuffle(vocabulary,random).slice(0,5),nouns:shuffle(nouns,random).slice(0,2),sentence:sentences.find(s=>s.id===sentenceByTopic[topic.id])!};
 }
 const wordIds=new Set(vocabulary.map(w=>w.id));

@@ -1,3 +1,4 @@
+import {extraVocabulary} from './extraVocabulary.ts';
 export type Word = { id: string; word: string; translation: string; reading: string; category: string };
 // An editorial starter vocabulary, not a frequency ranking or an official CEFR list.
 // Cyrillic readings are learning aids, not a substitute for German phonetics or audio.
@@ -46,13 +47,14 @@ ich|я|ихь; du|ты|ду; er|он|эр; sie|она, они|зи; es|оно|э
 heute|сегодня|хойтэ; gestern|вчера|гэстэрн; morgen|завтра|моргэн; jetzt|сейчас|ецт; später|позже|шпэтэр; früher|раньше|фрюэр; bald|скоро|бальт; sofort|немедленно|зофорт; immer|всегда|имэр; oft|часто|офт; manchmal|иногда|манхьмаль; selten|редко|зэльтэн; nie|никогда|ни; schon|уже|шон; noch|ещё|нох; erst|лишь, только (о времени)|эрст; wieder|снова|видэр; hier|здесь|хир; dort|там|дорт; da|там, тут|да; links|слева|линкс; rechts|справа|рэхтс; geradeaus|прямо|гэрадэаус; oben|наверху|обэн; unten|внизу|унтэн; drinnen|внутри|дринэн; draußen|снаружи|драусэн; überall|повсюду|юбэраль; nirgends|нигде|ниргэнц; wo|где|во; wohin|куда|вохин; woher|откуда|вохэр; wann|когда|ван; warum|почему|варум; wie|как|ви; was|что|вас; wer|кто|вэр; wie viel|сколько|ви филь; sehr|очень|зэр; viel|много|филь; wenig|мало|вэнихь; mehr|больше|мэр; weniger|меньше|вэнигэр; genug|достаточно|гэнук; nur|только|нур; auch|тоже|аух; nicht|не|нихьт; kein|никакой, не (при существительном)|кайн; fast|почти|фаст; ungefähr|приблизительно|унгэфэр;
 `;
 let category = '';
-export const vocabulary: Word[] = source.trim().split('\n').flatMap(line => {
+export const baseVocabulary: Word[] = source.trim().split('\n').flatMap(line => {
   if(line.startsWith('# ')){category=line.slice(2);return [];}
   return line.split(';').map(s=>s.trim()).filter(Boolean).map(row=>{
     const [word,translation,reading]=row.split('|');
     return {id:word,word,translation,reading,category};
   });
 });
+export const vocabulary:Word[]=[...baseVocabulary,...extraVocabulary];
 export const categories = [...new Set(vocabulary.map(w=>w.category))];
 export type WordStatus = 'learning' | 'known';
 export type VocabularyProgress = Record<string, WordStatus>;

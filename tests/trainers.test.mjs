@@ -20,7 +20,7 @@ test('Each sentence can be assembled from its bank; alternatives use the exact s
   assert.equal(isCorrectSentence(sentence,tokens.map(t=>t.text)),true,sentence.id);
   for(const alternative of sentence.alternatives??[]){assert.deepEqual(normalizeSentence(alternative).split(' ').sort(),normalizeSentence(sentence.german).split(' ').sort());assert.equal(isCorrectSentence(sentence,alternative.split(' ')),true);}
  }
- assert.equal(isCorrectSentence(sentences[0],['ich','heute','lerne','Deutsch']),false);
+ assert.equal(isCorrectSentence(sentences.find(s=>s.id==='learn'),['ich','heute','lerne','Deutsch']),false);
  assert.equal(validSentenceProgress(['learn']),true);
  assert.equal(validSentenceProgress(['learn','learn']),false);
 });
@@ -36,4 +36,8 @@ test('Daily plans stay stable for a date and change on the following day',()=>{
  assert.equal(validDailyProgress({'2026-10-27':{...day,words:['missing']}}),false);
  assert.equal(validDailyProgress({'invalid':day}),false);
  assert.equal(validDailyProgress({'2026-10-27':{...day,ruleRead:'yes'}}),false);
+ for(let month=1;month<=12;month++)for(let day=1;day<=28;day++){
+  const sample=makeDailyPlan(`2026-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`);
+  assert.ok(sample.topic&&sample.sentence,'Every grammar topic needs a matching daily exercise');
+ }
 });

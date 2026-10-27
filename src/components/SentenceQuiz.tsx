@@ -1,0 +1,18 @@
+import {useState} from 'react';
+import {ArrowRight, CheckCircle2, Undo2, Volume2} from 'lucide-react';
+import {sentenceTokens, isCorrectSentence, type Sentence} from '../data/sentences';
+import {shuffle} from '../data/vocabularyPractice';
+import {useSpeech} from '../hooks/useSpeech';
+export function SentenceQuiz({questions,onAnswer,onComplete}:{questions:Sentence[];onAnswer:(id:string,correct:boolean)=>void;onComplete?:(score:number)=>void}){
+ const [index,setIndex]=useState(0),[selected,setSelected]=useState<number[]>([]),[checked,setChecked]=useState(false),[results,setResults]=useState<boolean[]>([]);
+ const [banks]=useState(()=>questions.map(s=>shuffle(sentenceTokens(s))));
+ const speech=useSpeech();
+ const current=questions[index];
+ const score=results.filter(Boolean).length;
+ if(!current)return <div className="exercise-result"><CheckCircle2 size={39}/><h2>Предложения собраны</h2><p>Правильно: {score} из {questions.length}.</p><p className="muted">Каждая конструкция — ещё один шаг к собственной речи.</p></div>;
+ const tokens=sentenceTokens(current),bank=banks[index];
+ const words=selected.map(id=>tokens.find(t=>t.id===id)!.text);
+ function check(){if(checked||selected.length!==tokens.length)return;const correct=isCorrectSentence(current,words);setChecked(true);setResults(old=>[...old.slice(0,index),correct]);onAnswer(current.id,correct);}
+ function next(){if(index===questions.length-1)onComplete?.(score);setIndex(i=>i+1);setSelected([]);setChecked(false);speech.stop();}
+ return <section className="exercise-card sentence-exercise"><div className="section-heading"><span className="eyebrow">СОБЕРИТЕ ПРЕДЛОЖЕНИЕ</span><span className="muted">{index+1} / {questions.length}</span></div><div className="progress-track"><div style={{width:`${index/questions.length*100}%`}}/></div><h2 className="sentence-prompt">{current.translation}</h2><p className="sentence-hint">{current.hint}</p><div className="assembled-sentence" aria-label="Ваше предложение">{selected.length?selected.map(id=><button key={id} disabled={checked} aria-label={`Убрать слово ${tokens[id].text}`} onClick={()=>setSelected(old=>old.filter(i=>i!==id))}>{tokens[id].text}</button>):<span>Нажимайте на слова в нужном порядке…</span>}</div><div className="word-bank" aria-label="Доступные слова">{bank.map(token=><button key={token.id} disabled={checked||selected.includes(token.id)} onClick={()=>setSelected(old=>[...old,token.id])}>{token.text}</button>)}</div><div className="builder-actions"><button className="secondary" disabled={checked||!selected.length} onClick={()=>setSelected(old=>old.slice(0,-1))}><Undo2 size={15}/> Назад</button><button className="secondary" disabled={checked||!selected.length} onClick={()=>setSelected([])}>Очистить</button><button className="primary" disabled={checked||selected.length!==tokens.length} onClick={check}>Проверить</button></div><p className="punctuation-note">Нажмите на выбранное слово, чтобы вернуть его. Знаки препинания покажем в готовом ответе.</p><div aria-live="polite">{checked&&<div className={`exercise-feedback ${results[index]?'is-correct':'is-wrong'}`}><b>{results[index]?'Верно!': 'Посмотрите правильный порядок:'}</b><div className="sentence-answer"><p lang="de">{current.german}</p><button className="icon-button" aria-label="Прослушать предложение" onClick={()=>speech.speak(current.german)}><Volume2 size={19}/></button></div><p>{current.explanation}</p><button className="primary" onClick={next}>{index===questions.length-1?'Завершить':'Следующее предложение'}<ArrowRight size={16}/></button></div>}</div>{speech.message&&<p className="speech-status" role="status">{speech.message}</p>}</section>;
+}

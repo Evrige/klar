@@ -1,5 +1,6 @@
-export type Sentence={id:string;german:string;translation:string;hint:string;explanation:string;alternatives?:string[]};
-export const sentences:Sentence[]=[
+import {buildSentenceBank} from './sentenceBank.ts';
+export type Sentence={id:string;german:string;translation:string;hint:string;explanation:string;alternatives?:string[];topic?:string};
+const originalSentences:Sentence[]=[
  {id:'learn',german:'Ich lerne heute Deutsch.',translation:'Я сегодня учу немецкий.',hint:'Утверждение: спрягаемый глагол на второй позиции.',explanation:'Lerne стоит на второй позиции. Можно начать с heute — тогда ich идёт после глагола.',alternatives:['Heute lerne ich Deutsch']},
  {id:'inversion',german:'Morgen fahre ich nach Berlin.',translation:'Завтра я еду в Берлин.',hint:'Начните с Morgen.',explanation:'Morgen занимает первую позицию, fahre — вторую, затем подлежащее ich.'},
  {id:'time',german:'Wir haben heute Zeit.',translation:'У нас сегодня есть время.',hint:'Начните с Wir.',explanation:'Wir — подлежащее, haben — глагол на второй позиции.'},
@@ -31,6 +32,7 @@ export const sentences:Sentence[]=[
  {id:'direction',german:'Ich lege das Buch auf den Tisch.',translation:'Я кладу книгу на стол.',hint:'Начните с Ich.',explanation:'Вопрос Wohin? — куда? После auf нужен Akkusativ: auf den Tisch.'},
  {id:'therefore',german:'Deshalb lerne ich jeden Tag.',translation:'Поэтому я учусь каждый день.',hint:'Начните с Deshalb.',explanation:'Deshalb занимает первую позицию. Сразу после него идёт спрягаемый глагол lerne, затем ich.'}
 ];
+export const sentences:Sentence[]=[...new Map([...originalSentences.map(s=>({...s,topic:s.topic??'Порядок слов и падежи'})),...buildSentenceBank()].reverse().map(s=>[s.german.toLocaleLowerCase('de-DE'),s])).values()];
 export function sentenceTokens(sentence:Sentence){return sentence.german.replace(/[.,?!]/g,'').split(/\s+/).map((token,index)=>({id:index,text:index===0?token[0].toLocaleLowerCase('de-DE')+token.slice(1):token}));}
 export function normalizeSentence(value:string){return value.normalize('NFC').toLocaleLowerCase('de-DE').replace(/[.,?!]/g,'').trim().replace(/\s+/g,' ');}
 export function isCorrectSentence(sentence:Sentence,words:string[]){const actual=normalizeSentence(words.join(' '));return [sentence.german,...(sentence.alternatives??[])].some(s=>normalizeSentence(s)===actual);}
