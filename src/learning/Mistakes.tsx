@@ -1,4 +1,5 @@
-import {Badge, Button, Card} from '../components/ui';
+import {TextInput} from '../components/ui';
+import { Badge, Button, Card } from '../components/ui';
 import { useState } from 'react';
 import { CheckCircle2, RotateCcw, Volume2 } from 'lucide-react';
 import { useLearning } from './LearningContext';
@@ -22,9 +23,17 @@ function MistakeExercise({ mistake, onBack }: {
     const [answer, setAnswer] = useState(''), [checked, setChecked] = useState(false), [played, setPlayed] = useState(false);
     const speech = useSpeech();
     const correct = mistake.caseSensitive ? mistake.answers.includes(answer.trim()) : (mistake.mode === 'spelling' || mistake.mode === 'listening' ? acceptedSpelling : acceptedAnswer)(answer, mistake.answers);
-    function check() { if (checked || !answer.trim() || !!mistake.audio && !played)
-        return; setChecked(true); record({ ...mistake, answer, correct }); }
-    return <Card className="learning-panel" as="section"><h3>{mistake.mode === 'listening' ? t('Послушайте слово и запишите его', 'Послухайте слово й запишіть його') : mistake.prompt}</h3>{mistake.audio && <div className="learning-actions"><Button onClick={async () => { if (await speech.speak(mistake.audio!))
-        setPlayed(true); }} variant="secondary"><Volume2 size={17}/>{t('Слушать', 'Слухати')}</Button><Button onClick={async () => { if (await speech.speak(mistake.audio!, .75))
-        setPlayed(true); }} variant="secondary">0,75×</Button></div>}{speech.message && <p className="speech-status" role="status">{t(speech.message)}</p>}<form onSubmit={e => { e.preventDefault(); check(); }}><label className="learning-answer-label">{t('Ваш ответ', 'Ваша відповідь')}<input maxLength={1000} autoComplete="off" value={answer} onChange={e => setAnswer(e.target.value)} disabled={checked}/></label><Button disabled={checked || !answer.trim() || !!mistake.audio && !played} variant="primary">{t('Проверить', 'Перевірити')}</Button></form>{checked && <div className={`feedback ${correct ? 'success' : 'error'}`}><b>{correct ? t('Верно. Повторите позже для закрепления.', 'Правильно. Повторіть пізніше для закріплення.') : t(answerFeedback(answer, mistake.answers, mistake.domain))}</b><p>{mistake.answers[0]}</p><p>{mistake.explanation}</p></div>}<Button onClick={onBack} className="next" variant="text">{t('К списку ошибок', 'До списку помилок')}</Button></Card>;
+    function check() {
+        if (checked || !answer.trim() || !!mistake.audio && !played)
+            return;
+        setChecked(true);
+        record({ ...mistake, answer, correct });
+    }
+    return <Card className="learning-panel" as="section"><h3>{mistake.mode === 'listening' ? t('Послушайте слово и запишите его', 'Послухайте слово й запишіть його') : mistake.prompt}</h3>{mistake.audio && <div className="learning-actions"><Button onClick={async () => {
+                if (await speech.speak(mistake.audio!))
+                    setPlayed(true);
+            }} variant="secondary"><Volume2 size={17}/>{t('Слушать', 'Слухати')}</Button><Button onClick={async () => {
+                if (await speech.speak(mistake.audio!, .75))
+                    setPlayed(true);
+            }} variant="secondary">0,75×</Button></div>}{speech.message && <p className="speech-status" role="status">{t(speech.message)}</p>}<form onSubmit={e => { e.preventDefault(); check(); }}><label className="learning-answer-label">{t('Ваш ответ', 'Ваша відповідь')}<TextInput maxLength={1000} autoComplete="off" value={answer} onChange={e => setAnswer(e.target.value)} disabled={checked}/></label><Button disabled={checked || !answer.trim() || !!mistake.audio && !played} variant="primary">{t('Проверить', 'Перевірити')}</Button></form>{checked && <div className={`feedback ${correct ? 'success' : 'error'}`}><b>{correct ? t('Верно. Повторите позже для закрепления.', 'Правильно. Повторіть пізніше для закріплення.') : t(answerFeedback(answer, mistake.answers, mistake.domain))}</b><p>{mistake.answers[0]}</p><p>{mistake.explanation}</p></div>}<Button onClick={onBack} className="next" variant="text">{t('К списку ошибок', 'До списку помилок')}</Button></Card>;
 }

@@ -1,4 +1,5 @@
-import {Badge, Button, Card, ProgressBar} from '../components/ui';
+import {TextInput} from '../components/ui';
+import { Badge, Button, Card, ProgressBar } from '../components/ui';
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Headphones, Lightbulb, Volume2 } from 'lucide-react';
 import { miniLessons, lessonCompleted, type MiniLesson, type LessonTask } from './lessons';
@@ -47,11 +48,19 @@ function LessonExercise({ lesson, task, onNext }: {
     const [input, setInput] = useState(''), [checked, setChecked] = useState(false), [hint, setHint] = useState(false), [played, setPlayed] = useState(false), [fallback, setFallback] = useState(false);
     const correct = task.caseSensitive ? task.answers.includes(input.trim()) : (task.kind === 'write' ? acceptedSpelling : acceptedAnswer)(input, task.answers);
     const canAnswer = task.kind !== 'listen' || played || fallback;
-    async function listen(speed: number) { const started = await speech.speak(task.audio!, speed); if (started)
-        setPlayed(true); }
-    function check() { if (checked || !input.trim() || !canAnswer)
-        return; setChecked(true); record({ key: `lesson:${lesson.id}:${task.id}`, domain: 'lesson', lessonId: lesson.id, prompt: task.prompt[locale], answers: task.answers, answer: input, correct, caseSensitive: task.caseSensitive, audio: task.kind === 'listen' && !fallback ? task.audio : undefined, explanation: task.explanation[locale] }); if (correct)
-        complete(lesson.id, task.id); }
+    async function listen(speed: number) {
+        const started = await speech.speak(task.audio!, speed);
+        if (started)
+            setPlayed(true);
+    }
+    function check() {
+        if (checked || !input.trim() || !canAnswer)
+            return;
+        setChecked(true);
+        record({ key: `lesson:${lesson.id}:${task.id}`, domain: 'lesson', lessonId: lesson.id, prompt: task.prompt[locale], answers: task.answers, answer: input, correct, caseSensitive: task.caseSensitive, audio: task.kind === 'listen' && !fallback ? task.audio : undefined, explanation: task.explanation[locale] });
+        if (correct)
+            complete(lesson.id, task.id);
+    }
     return <div className="learning-exercise"><h4>{task.prompt[locale]}</h4>{task.kind === 'listen' && <><div className="learning-actions"><Button onClick={() => void listen(1)} variant="primary"><Volume2 size={17}/>{t('Слушать · 1×', 'Слухати · 1×')}</Button><Button onClick={() => void listen(.75)} variant="secondary">{t('Медленно', 'Повільно')}</Button><Button onClick={() => setFallback(true)} variant="text">{t('Прочитать вместо аудирования', 'Прочитати замість аудіювання')}</Button></div>{fallback && <div className="learning-note"><p lang="de">{task.audio}</p><small>{t('Вы работаете с текстом. Этот ответ не подтверждает понимание на слух.', 'Ви працюєте з текстом. Ця відповідь не підтверджує розуміння на слух.')}</small></div>}{speech.message && <p role="status" className="speech-status">{t(speech.message)}</p>}</>}
- <form onSubmit={e => { e.preventDefault(); check(); }}><label className="learning-answer-label">{t('Ваш ответ', 'Ваша відповідь')}<input maxLength={1000} value={input} onChange={e => setInput(e.target.value)} disabled={checked} autoComplete="off" spellCheck={false}/></label><div className="learning-actions"><Button disabled={checked || !input.trim() || !canAnswer} variant="primary">{t('Проверить', 'Перевірити')}</Button><Button type="button" onClick={() => setHint(!hint)} variant="secondary">{t('Подсказка', 'Підказка')}</Button></div></form>{hint && <p className="learning-note">{task.hint[locale]}</p>}{checked && <div className={`feedback ${correct ? 'success' : 'error'}`} role="status"><b>{correct ? t('Верно', 'Правильно') : t('Пока не совпало с подготовленными вариантами', 'Поки не збіглося з підготовленими варіантами')}</b><p>{correct ? task.explanation[locale] : task.caseSensitive ? t('Проверьте заглавную букву: вежливое Ihnen пишется с большой.', 'Перевірте велику літеру: ввічливе Ihnen пишеться з великої.') : t(answerFeedback(input, task.answers, 'lesson'))}</p><p lang="de">{task.answers[0]}</p>{!correct && <p>{task.explanation[locale]}</p>}<div className="learning-actions">{correct ? <Button onClick={onNext} variant="secondary">{t('Дальше', 'Далі')}</Button> : <Button onClick={() => { setChecked(false); setInput(''); }} variant="secondary">{t('Попробовать ещё раз', 'Спробувати ще раз')}</Button>}</div></div>}<p className="course-caption">{t('Проверка по подготовленным ответам. Возможны другие верные формулировки: отсутствие совпадения не всегда означает грамматическую ошибку.', 'Перевірка за підготовленими відповідями. Можливі інші правильні формулювання: відсутність збігу не завжди означає граматичну помилку.')}</p></div>;
+ <form onSubmit={e => { e.preventDefault(); check(); }}><label className="learning-answer-label">{t('Ваш ответ', 'Ваша відповідь')}<TextInput maxLength={1000} value={input} onChange={e => setInput(e.target.value)} disabled={checked} autoComplete="off" spellCheck={false}/></label><div className="learning-actions"><Button disabled={checked || !input.trim() || !canAnswer} variant="primary">{t('Проверить', 'Перевірити')}</Button><Button type="button" onClick={() => setHint(!hint)} variant="secondary">{t('Подсказка', 'Підказка')}</Button></div></form>{hint && <p className="learning-note">{task.hint[locale]}</p>}{checked && <div className={`feedback ${correct ? 'success' : 'error'}`} role="status"><b>{correct ? t('Верно', 'Правильно') : t('Пока не совпало с подготовленными вариантами', 'Поки не збіглося з підготовленими варіантами')}</b><p>{correct ? task.explanation[locale] : task.caseSensitive ? t('Проверьте заглавную букву: вежливое Ihnen пишется с большой.', 'Перевірте велику літеру: ввічливе Ihnen пишеться з великої.') : t(answerFeedback(input, task.answers, 'lesson'))}</p><p lang="de">{task.answers[0]}</p>{!correct && <p>{task.explanation[locale]}</p>}<div className="learning-actions">{correct ? <Button onClick={onNext} variant="secondary">{t('Дальше', 'Далі')}</Button> : <Button onClick={() => { setChecked(false); setInput(''); }} variant="secondary">{t('Попробовать ещё раз', 'Спробувати ще раз')}</Button>}</div></div>}<p className="course-caption">{t('Проверка по подготовленным ответам. Возможны другие верные формулировки: отсутствие совпадения не всегда означает грамматическую ошибку.', 'Перевірка за підготовленими відповідями. Можливі інші правильні формулювання: відсутність збігу не завжди означає граматичну помилку.')}</p></div>;
 }

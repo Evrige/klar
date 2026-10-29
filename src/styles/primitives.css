@@ -1,0 +1,6 @@
+/* Shared building blocks. Page recipes may refine these in the same layer. */
+@layer components {
+  .ui-card {
+    @apply bg-panel [border:1px_solid_var(--border)];
+  }
+}

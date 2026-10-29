@@ -1,82 +1,111 @@
-import {APP_VERSION} from "./version";
+import {Button, Card, PageIntro, ProgressBar} from './components/ui';
+import { APP_VERSION } from "./version";
 import Select from './components/Select';
-import {lazy,Suspense,useEffect,useState} from 'react';
-import {ArrowRight,Award,BookOpen,Flame,GraduationCap,LayoutDashboard,LibraryBig,Menu,Moon,Puzzle,Settings2,SpellCheck,Sun,Table2,Timer,TrendingUp,Trophy,X,Target,ChevronDown} from 'lucide-react';
-import {useStoredState} from './hooks/useStoredState';
-import {verbs} from './data/verbs';
-import {nouns,validNounProgress} from './data/nouns';
-import {sentences,validSentenceProgress} from './data/sentences';
-import {berlinDate,emptyDay,validDailyProgress,type DailyProgress} from './data/dailyPlan';
-import {isVocabularyProgress,markWord,vocabulary,type VocabularyProgress} from './data/vocabulary';
-import {courseLessons,lessonComplete,validCourseProgress,type CourseProgress,type CourseLevel} from './data/course';
-import {currentStreak,longestStreak,eligibleAchievements,validActivity,validEarned,type EarnedAchievements,type LearningActivity} from './data/achievements';
-import {useLocale} from './i18n/Locale';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { ArrowRight, Award, BookOpen, Flame, GraduationCap, LayoutDashboard, LibraryBig, Menu, Moon, Puzzle, Settings2, SpellCheck, Sun, Table2, Timer, TrendingUp, Trophy, X, Target, ChevronDown } from 'lucide-react';
+import { useStoredState } from './hooks/useStoredState';
+import { verbs } from './data/verbs';
+import { nouns, validNounProgress } from './data/nouns';
+import { sentences, validSentenceProgress } from './data/sentences';
+import { berlinDate, emptyDay, validDailyProgress, type DailyProgress } from './data/dailyPlan';
+import { isVocabularyProgress, markWord, vocabulary, type VocabularyProgress } from './data/vocabulary';
+import { courseLessons, lessonComplete, validCourseProgress, type CourseProgress, type CourseLevel } from './data/course';
+import { currentStreak, longestStreak, eligibleAchievements, validActivity, validEarned, type EarnedAchievements, type LearningActivity } from './data/achievements';
+import { useLocale } from './i18n/Locale';
 import InstallApp from './components/InstallApp';
 import Dashboard from './components/Dashboard';
-import {achievementCards} from './data/achievementTracks';
-import {useLearning} from './learning/LearningContext';
-import {miniLessons,lessonCompleted} from './learning/lessons';
-import {experienceLevel} from './learning/experience';
+import { achievementCards } from './data/achievementTracks';
+import { useLearning } from './learning/LearningContext';
+import { miniLessons, lessonCompleted } from './learning/lessons';
+import { experienceLevel } from './learning/experience';
 import BackToTop from './components/BackToTop';
-const Conjugation=lazy(()=>import('./components/Conjugation'));
-const Rules=lazy(()=>import('./components/Rules'));
-const Vocabulary=lazy(()=>import('./components/Vocabulary'));
-const NounTrainer=lazy(()=>import('./components/NounTrainer'));
-const SentenceTrainer=lazy(()=>import('./components/SentenceTrainer'));
-const DailyPlan=lazy(()=>import('./components/DailyPlan'));
-const Course=lazy(()=>import('./components/Course'));
-const LearningCenter=lazy(()=>import('./learning/LearningCenter'));
-const Achievements=lazy(()=>import('./components/Achievements'));
-export type Page='home'|'course'|'rules'|'vocabulary'|'verbs'|'articles'|'sentences'|'daily'|'progress'|'achievements'|'learning';
-function validKeys(v:unknown):v is string[]{return Array.isArray(v)&&v.every(k=>typeof k==='string'&&verbs.some(verb=>Array.from({length:6},(_,i)=>`${verb.id}:${i}`).includes(k)))&&new Set(v).size===v.length;}
-export default function App(){
- const {t,locale,setLocale}=useLocale();const {state:learning,storageError:learningStorageError}=useLearning();const [page,setPage]=useState<Page>('home'),[mobile,setMobile]=useState(false);
- const [trainersOpen,setTrainersOpen]=useState(false);
- const [dark,setDark]=useStoredState('klar:dark',false,(v):v is boolean=>typeof v==='boolean');
- const [mastered,setMastered]=useStoredState<string[]>('klar:mastered:v1',[],validKeys);
- const [wordProgress,setWordProgress]=useStoredState<VocabularyProgress>('klar:vocabulary:v1',{},isVocabularyProgress);
- const [nounProgress,setNounProgress]=useStoredState<string[]>('klar:nouns:v1',[],validNounProgress);
- const [sentenceProgress,setSentenceProgress]=useStoredState<string[]>('klar:sentences:v1',[],validSentenceProgress);
- const [dailyProgress,setDailyProgress]=useStoredState<DailyProgress>('klar:daily:v1',{},validDailyProgress);
- const [courseProgress,setCourseProgress]=useStoredState<CourseProgress>('klar:course:v1',{},validCourseProgress);
- const [activity,setActivity]=useStoredState<LearningActivity>('klar:activity:v1',{days:[],words:[]},validActivity);
- const [earned,setEarned]=useStoredState<EarnedAchievements>('klar:achievements:v1',{},validEarned);
- const [requestedLevel,setRequestedLevel]=useState<CourseLevel|undefined>();
- useEffect(()=>{if(!mobile)return;const previous=document.activeElement as HTMLElement|null;const panel=document.getElementById('learning-navigation');const overflow=document.body.style.overflow;document.body.style.overflow='hidden';panel?.querySelector<HTMLButtonElement>('.mobile-close')?.focus();const resize=()=>{if(window.innerWidth>680)setMobile(false);};const keydown=(event:KeyboardEvent)=>{if(event.key==='Escape'){event.preventDefault();setMobile(false);}if(event.key==='Tab'&&panel){const nodes=Array.from(panel.querySelectorAll<HTMLElement>('button:not([disabled]),a[href],summary')).filter(el=>el.getClientRects().length);const first=nodes[0],last=nodes[nodes.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}};document.addEventListener('keydown',keydown);window.addEventListener('resize',resize);return()=>{document.body.style.overflow=overflow;document.removeEventListener('keydown',keydown);window.removeEventListener('resize',resize);if(previous?.isConnected)previous.focus();};},[mobile]);
- const today=berlinDate();const known=Object.values(wordProgress).filter(s=>s==='known').length;
- const completedVerbs=verbs.filter(v=>mastered.filter(k=>k.startsWith(v.id+':')).length===6).length;
- const completedLessons=courseLessons.filter(l=>lessonComplete(courseProgress[l.id])).length;
- const completedMini=miniLessons.filter(l=>lessonCompleted(l,learning.lessons[l.id]??[])).length;
- const testedWords=[...new Set([...activity.words,...Object.entries(learning.skills).filter(([,s])=>s.correct>0).map(([key])=>key.slice(key.indexOf(':')+1))])].length;
- const learningDays=[...new Set([...activity.days,...learning.days])]; const streak=currentStreak(learningDays,today);const stats={lessons:completedLessons+completedMini,known,testedWords,verbs:completedVerbs,sentences:sentenceProgress.length,streak:longestStreak(learningDays)};
- 
- const [savedXP,setSavedXP]=useStoredState('klar:xp:v1',0,(v):v is number=>typeof v==='number'&&Number.isFinite(v)&&v>=0);
- const computedXP=mastered.length*5+nounProgress.length*5+sentenceProgress.length*10+testedWords*5+completedLessons*20+completedMini*30+Object.values(learning.skills).filter(s=>s.stage>=3).length*5;
- const xp=experienceLevel(Math.max(savedXP,computedXP));useEffect(()=>{if(computedXP>savedXP)setSavedXP(computedXP);},[computedXP,savedXP,setSavedXP]);
- const eligible=eligibleAchievements(stats).map(a=>a.id).join('|');
- useEffect(()=>{if(!eligible)return;setEarned(old=>{const ids=eligible.split('|').filter(id=>!old[id]);if(!ids.length)return old;return {...old,...Object.fromEntries(ids.map(id=>[id,new Date().toISOString()]))};});},[eligible,setEarned]);
- function study(word?:string){setActivity(old=>({days:old.days.includes(today)?old.days:[...old.days,today],words:word&&!old.words.includes(word)?[...old.words,word]:old.words}));}
- function nounAnswer(id:string,correct:boolean){study();if(correct)setNounProgress(old=>old.includes(id)?old:[...old,id]);}
- function sentenceAnswer(id:string,correct:boolean){study();if(correct)setSentenceProgress(old=>old.includes(id)?old:[...old,id]);}
- function navigate(next:Page){if(next!=='course')setRequestedLevel(undefined);setPage(next);setMobile(false);setTrainersOpen(false);window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
- const nav=[{id:'home',ru:'Обзор',uk:'Огляд',icon:LayoutDashboard},{id:'learning',ru:'Учебный центр',uk:'Навчальний центр',icon:Target},{id:'course',ru:'Мой курс',uk:'Мій курс',icon:GraduationCap},{id:'daily',ru:'План на 10 минут',uk:'План на 10 хвилин',icon:Timer},{id:'rules',ru:'Общие правила',uk:'Загальні правила',icon:Table2},{id:'vocabulary',ru:'Словарь',uk:'Словник',icon:LibraryBig},{id:'verbs',ru:'Спряжение глаголов',uk:'Дієвідмінювання',icon:BookOpen},{id:'articles',ru:'Артикли и мн. число',uk:'Артиклі та множина',icon:SpellCheck},{id:'sentences',ru:'Сборка предложений',uk:'Складання речень',icon:Puzzle},{id:'achievements',ru:'Достижения',uk:'Досягнення',icon:Trophy},{id:'progress',ru:'Мой прогресс',uk:'Мій прогрес',icon:TrendingUp}] as const;
- const secondary=['rules','verbs','articles','sentences','daily'];
- const renderNav=(n:typeof nav[number])=><button key={n.id} onClick={()=>navigate(n.id)} className={page===n.id?'nav-item active':'nav-item'} aria-current={page===n.id?'page':undefined}><n.icon size={18}/><span>{t(n.ru,n.uk)}</span>{n.id==='vocabulary'&&<small>2k</small>}</button>;
- const title=nav.find(n=>n.id===page)!;
- return <div className={dark?'app dark':'app'}><aside role={mobile?'dialog':undefined} aria-modal={mobile?true:undefined} aria-label={t('Разделы обучения','Розділи навчання')} id="learning-navigation" className={`sidebar ${mobile?'open':''}`}><a className="brand" href="#home" onClick={e=>{e.preventDefault();navigate('home');}}><span className="brand-mark">k.</span>klar<span className="brand-dot">.</span></a><button className="mobile-close icon-button" aria-label={t('Закрыть меню','Закрити меню')} onClick={()=>setMobile(false)}><X/></button><div className="sidebar-subtitle">{t('ВАШ НЕМЕЦКИЙ. ВАШ РИТМ.','ВАША НІМЕЦЬКА. ВАШ РИТМ.')}</div><div className="workspace-label">{t('ПРОСТРАНСТВО ОБУЧЕНИЯ','ПРОСТІР НАВЧАННЯ')}</div><nav>{nav.filter(n=>!secondary.includes(n.id)).map(renderNav)}<details className="nav-trainers" open={trainersOpen} onToggle={e=>setTrainersOpen(e.currentTarget.open)}><summary className={secondary.includes(page)?'active':''}><BookOpen size={18}/><span>{t('Тренажёры и справочник','Тренажери й довідник')}</span><ChevronDown size={15}/></summary>{nav.filter(n=>secondary.includes(n.id)).map(renderNav)}</details></nav><div className="sidebar-course"><span className="mini-icon"><Flame size={23}/></span><b>{t('У каждого шага есть смысл.','Кожен крок має значення.')}</b><p>{t('Немного каждый день — уже привычка.','Трохи щодня — уже звичка.')}</p><button onClick={()=>navigate('daily')}>{t('Мои 10 минут','Мої 10 хвилин')}<ArrowRight size={16}/></button></div><div className="sidebar-xp"><b>{t('Учебный уровень','Навчальний рівень')} {xp.level}</b><small>{xp.xp} / {xp.next} XP</small><div className="progress-track"><div style={{width:xp.percent+'%'}}/></div></div><div className="sidebar-bottom"><span className="flag">🇩🇪</span><div><b>{t('Немецкий язык','Німецька мова')}</b><small>A0 → C2 · {t('шаг за шагом','крок за кроком')}</small></div></div></aside>{mobile&&<button className="overlay" aria-label={t('Закрыть навигацию','Закрити навігацію')} onClick={()=>setMobile(false)}/>}
- <div className="main-shell"><header><div className="breadcrumb"><button className="mobile-menu icon-button" aria-label={t('Открыть меню','Відкрити меню')} onClick={()=>setMobile(true)}><Menu/></button><span>Klar</span><span className="slash">/</span><b>{t(title.ru,title.uk)}</b></div><div className="header-actions"><label className="language-select"><span className="sr-only">{t('Язык интерфейса','Мова інтерфейсу')}</span><Select value={locale} onChange={e=>setLocale(e.target.value as 'ru'|'uk')}><option value="ru">Русский</option><option value="uk">Українська</option></Select></label><span className="streak-pill" title={t('Учебных дней подряд','Навчальних днів поспіль')}><Flame size={17}/>{streak}</span><button className="theme-button" onClick={()=>setDark(!dark)} aria-label={t(dark?'Включить светлую тему':'Включить тёмную тему',dark?'Увімкнути світлу тему':'Увімкнути темну тему')}>{dark?<Sun size={19}/>:<Moon size={19}/>}</button></div></header><main>{learningStorageError&&page!=='learning'&&<div className="learning-note" role="alert"><p>{t(learningStorageError,'Не вдалося зберегти навчальні дані. Завантажте копію перед виходом.')}</p><button className="text-button" onClick={()=>navigate('learning')}>{t('Открыть сохранение прогресса','Відкрити збереження прогресу')}</button></div>}
- {locale==='uk'&&<p className="locale-material-note"><Settings2 size={15}/>Інтерфейс — українською. Оригінальні відео й частина навчальних пояснень та перекладів словника поки російською.</p>}
- <Suspense fallback={<p className="course-caption" role="status">{t('Открываем раздел…','Відкриваємо розділ…')}</p>}>
- {page==='home'?<Dashboard navigate={navigate} onLevel={level=>{setRequestedLevel(level);navigate('course');}} courseProgress={courseProgress} known={known} answers={mastered.length+nounProgress.length+sentenceProgress.length} achievements={achievementCards(stats,earned).filter(c=>c.rank>0).length}/>:
- page==='learning'?<LearningCenter/>:
- page==='course'?<Course initialLevel={requestedLevel} progress={courseProgress} onChange={(id,record)=>setCourseProgress(old=>({...old,[id]:record}))} onImport={setCourseProgress} onPractice={navigate} onActivity={()=>study()}/>:
- page==='achievements'?<Achievements stats={stats} earned={earned} streak={streak}/>:
- page==='rules'?<Rules onPractice={()=>navigate('verbs')}/>:
- page==='vocabulary'?<Vocabulary progress={wordProgress} onMark={(id,status)=>setWordProgress(old=>markWord(old,id,status))} onPracticeCorrect={id=>study(id)}/>:
- page==='articles'?<NounTrainer mastered={nounProgress} onAnswer={nounAnswer} onRules={()=>navigate('rules')}/>:
- page==='sentences'?<SentenceTrainer mastered={sentenceProgress} onAnswer={sentenceAnswer}/>:
- page==='daily'?<><LearningCenter/><details className="learning-backup"><summary>{t('Свободная разминка по старому плану','Вільна розминка за попереднім планом')}</summary><DailyPlan date={today} record={dailyProgress[today]??emptyDay()} onUpdate={update=>{study();setDailyProgress(old=>({...old,[today]:update(old[today]??emptyDay())}));}} onWord={(id,status)=>setWordProgress(old=>markWord(old,id,status))} onNoun={nounAnswer} onSentence={sentenceAnswer} onRules={()=>navigate('rules')}/></details></>:
- page==='verbs'?<><div className="page-intro"><span className="eyebrow">{t('ГРАММАТИКА В ДЕЙСТВИИ','ГРАМАТИКА В ДІЇ')}</span><h1>{t('Глаголы без путаницы.','Дієслова без плутанини.')}</h1><p>{t('Таблицы, примеры и практика для каждого глагола.','Таблиці, приклади й практика для кожного дієслова.')}</p></div><Conjugation mastered={mastered} onCorrect={id=>{study();setMastered(old=>old.includes(id)?old:[...old,id]);}}/></>:
- <><div className="page-intro"><span className="eyebrow">{t('КАЖДЫЙ ШАГ СЧИТАЕТСЯ','КОЖЕН КРОК ВАЖЛИВИЙ')}</span><h1>{t('Вы продвигаетесь.','Ви просуваєтеся.')}</h1><p>{t('Разные навыки — отдельные результаты. Все данные хранятся в этом браузере.','Різні навички — окремі результати. Усі дані зберігаються в цьому браузері.')}</p></div><section className="experience-panel"><Award size={28}/><div><h2>{t('Учебный уровень','Навчальний рівень')} {xp.level}</h2><p>{xp.xp} XP · {t('следующий на','наступний на')} {xp.next} XP</p><div className="progress-track"><div style={{width:xp.percent+'%'}}/></div><small>{t('Опыт за разные закреплённые ответы и завершённые уроки. Это игровой показатель активности, не уровень владения немецким.','Досвід за різні закріплені відповіді й завершені уроки. Це ігровий показник активності, не рівень володіння німецькою.')}</small></div></section><div className="progress-detail-grid">{[{id:'course',name:t('Курс','Курс'),done:completedLessons,total:courseLessons.length,icon:GraduationCap},{id:'vocabulary',name:t('Слова в «Знаю»','Слова у «Знаю»'),done:known,total:vocabulary.length,icon:LibraryBig},{id:'verbs',name:t('Формы глаголов','Форми дієслів'),done:mastered.length,total:verbs.length*6,icon:BookOpen},{id:'articles',name:t('Артикли и множественное','Артиклі та множина'),done:nounProgress.length,total:nouns.length*2,icon:SpellCheck},{id:'sentences',name:t('Предложения','Речення'),done:sentenceProgress.length,total:sentences.length,icon:Puzzle}].map(s=><button className="progress-detail-card" key={s.id} onClick={()=>navigate(s.id as Page)}><s.icon size={25}/><h2>{s.name}</h2><b>{s.done}<small> / {s.total}</small></b><div className="progress-track"><div style={{width:`${s.done/s.total*100}%`}}/></div><ArrowRight size={17}/></button>)}</div><div className="mastery-grid">{verbs.map(v=>{const count=mastered.filter(k=>k.startsWith(v.id+':')).length;return <div className="mastery-card" key={v.id}><b>{v.id}<span>{count}/6</span></b><p>{v.meaning}</p><div className="progress-track"><div style={{width:`${count/6*100}%`}}/></div></div>;})}</div><p className="course-caption">{t('Удаление данных браузера удалит прогресс. Сохраните копию курса на его странице. Между устройствами данные пока не синхронизируются.','Видалення даних браузера видалить прогрес. Збережіть копію курсу на його сторінці. Між пристроями дані поки не синхронізуються.')}</p></>}
- </Suspense><InstallApp/><BackToTop/><nav className="mobile-bottom-nav" aria-label={t('Главная навигация','Головна навігація')}>{[{id:'home' as const,icon:LayoutDashboard,ru:'Главная',uk:'Головна'},{id:'learning' as const,icon:GraduationCap,ru:'Учиться',uk:'Вчитися'},{id:'vocabulary' as const,icon:LibraryBig,ru:'Слова',uk:'Слова'},{id:'progress' as const,icon:TrendingUp,ru:'Прогресс',uk:'Прогрес'}].map(n=><button key={n.id} className={page===n.id?'active':''} aria-current={page===n.id?'page':undefined} onClick={()=>navigate(n.id)}><n.icon size={21}/><span>{t(n.ru,n.uk)}</span></button>)}<button className={mobile?'active':''} aria-expanded={mobile} aria-controls="learning-navigation" onClick={()=>setMobile(!mobile)}><Menu size={21}/><span>{t('Ещё','Ще')}</span></button></nav><footer><span className="footer-brand">klar.</span><span>{t('Понимать. Практиковаться. Говорить.','Розуміти. Практикуватися. Говорити.')}</span><span>Schritt für Schritt.</span><small className="app-version">{t("Версия","Версія")} {APP_VERSION}</small></footer></main></div></div>;
+const Conjugation = lazy(() => import('./components/Conjugation'));
+const Rules = lazy(() => import('./components/Rules'));
+const Vocabulary = lazy(() => import('./components/Vocabulary'));
+const NounTrainer = lazy(() => import('./components/NounTrainer'));
+const SentenceTrainer = lazy(() => import('./components/SentenceTrainer'));
+const DailyPlan = lazy(() => import('./components/DailyPlan'));
+const Course = lazy(() => import('./components/Course'));
+const LearningCenter = lazy(() => import('./learning/LearningCenter'));
+const Achievements = lazy(() => import('./components/Achievements'));
+export type Page = 'home' | 'course' | 'rules' | 'vocabulary' | 'verbs' | 'articles' | 'sentences' | 'daily' | 'progress' | 'achievements' | 'learning';
+function validKeys(v: unknown): v is string[] { return Array.isArray(v) && v.every(k => typeof k === 'string' && verbs.some(verb => Array.from({ length: 6 }, (_, i) => `${verb.id}:${i}`).includes(k))) && new Set(v).size === v.length; }
+export default function App() {
+    const { t, locale, setLocale } = useLocale();
+    const { state: learning, storageError: learningStorageError } = useLearning();
+    const [page, setPage] = useState<Page>('home'), [mobile, setMobile] = useState(false);
+    const [trainersOpen, setTrainersOpen] = useState(false);
+    const [dark, setDark] = useStoredState('klar:dark', false, (v): v is boolean => typeof v === 'boolean');
+    const [mastered, setMastered] = useStoredState<string[]>('klar:mastered:v1', [], validKeys);
+    const [wordProgress, setWordProgress] = useStoredState<VocabularyProgress>('klar:vocabulary:v1', {}, isVocabularyProgress);
+    const [nounProgress, setNounProgress] = useStoredState<string[]>('klar:nouns:v1', [], validNounProgress);
+    const [sentenceProgress, setSentenceProgress] = useStoredState<string[]>('klar:sentences:v1', [], validSentenceProgress);
+    const [dailyProgress, setDailyProgress] = useStoredState<DailyProgress>('klar:daily:v1', {}, validDailyProgress);
+    const [courseProgress, setCourseProgress] = useStoredState<CourseProgress>('klar:course:v1', {}, validCourseProgress);
+    const [activity, setActivity] = useStoredState<LearningActivity>('klar:activity:v1', { days: [], words: [] }, validActivity);
+    const [earned, setEarned] = useStoredState<EarnedAchievements>('klar:achievements:v1', {}, validEarned);
+    const [requestedLevel, setRequestedLevel] = useState<CourseLevel | undefined>();
+    useEffect(() => { if (!mobile)
+        return; const previous = document.activeElement as HTMLElement | null; const panel = document.getElementById('learning-navigation'); const overflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; panel?.querySelector<HTMLButtonElement>('.mobile-close')?.focus(); const resize = () => { if (window.innerWidth > 680)
+        setMobile(false); }; const keydown = (event: KeyboardEvent) => { if (event.key === 'Escape') {
+        event.preventDefault();
+        setMobile(false);
+    } if (event.key === 'Tab' && panel) {
+        const nodes = Array.from(panel.querySelectorAll<HTMLElement>('button:not([disabled]),a[href],summary')).filter(el => el.getClientRects().length);
+        const first = nodes[0], last = nodes[nodes.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+        }
+        else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+        }
+    } }; document.addEventListener('keydown', keydown); window.addEventListener('resize', resize); return () => { document.body.style.overflow = overflow; document.removeEventListener('keydown', keydown); window.removeEventListener('resize', resize); if (previous?.isConnected)
+        previous.focus(); }; }, [mobile]);
+    const today = berlinDate();
+    const known = Object.values(wordProgress).filter(s => s === 'known').length;
+    const completedVerbs = verbs.filter(v => mastered.filter(k => k.startsWith(v.id + ':')).length === 6).length;
+    const completedLessons = courseLessons.filter(l => lessonComplete(courseProgress[l.id])).length;
+    const completedMini = miniLessons.filter(l => lessonCompleted(l, learning.lessons[l.id] ?? [])).length;
+    const testedWords = [...new Set([...activity.words, ...Object.entries(learning.skills).filter(([, s]) => s.correct > 0).map(([key]) => key.slice(key.indexOf(':') + 1))])].length;
+    const learningDays = [...new Set([...activity.days, ...learning.days])];
+    const streak = currentStreak(learningDays, today);
+    const stats = { lessons: completedLessons + completedMini, known, testedWords, verbs: completedVerbs, sentences: sentenceProgress.length, streak: longestStreak(learningDays) };
+    const [savedXP, setSavedXP] = useStoredState('klar:xp:v1', 0, (v): v is number => typeof v === 'number' && Number.isFinite(v) && v >= 0);
+    const computedXP = mastered.length * 5 + nounProgress.length * 5 + sentenceProgress.length * 10 + testedWords * 5 + completedLessons * 20 + completedMini * 30 + Object.values(learning.skills).filter(s => s.stage >= 3).length * 5;
+    const xp = experienceLevel(Math.max(savedXP, computedXP));
+    useEffect(() => { if (computedXP > savedXP)
+        setSavedXP(computedXP); }, [computedXP, savedXP, setSavedXP]);
+    const eligible = eligibleAchievements(stats).map(a => a.id).join('|');
+    useEffect(() => { if (!eligible)
+        return; setEarned(old => { const ids = eligible.split('|').filter(id => !old[id]); if (!ids.length)
+        return old; return { ...old, ...Object.fromEntries(ids.map(id => [id, new Date().toISOString()])) }; }); }, [eligible, setEarned]);
+    function study(word?: string) { setActivity(old => ({ days: old.days.includes(today) ? old.days : [...old.days, today], words: word && !old.words.includes(word) ? [...old.words, word] : old.words })); }
+    function nounAnswer(id: string, correct: boolean) { study(); if (correct)
+        setNounProgress(old => old.includes(id) ? old : [...old, id]); }
+    function sentenceAnswer(id: string, correct: boolean) { study(); if (correct)
+        setSentenceProgress(old => old.includes(id) ? old : [...old, id]); }
+    function navigate(next: Page) { if (next !== 'course')
+        setRequestedLevel(undefined); setPage(next); setMobile(false); setTrainersOpen(false); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }); }
+    const nav = [{ id: 'home', ru: 'Обзор', uk: 'Огляд', icon: LayoutDashboard }, { id: 'learning', ru: 'Учебный центр', uk: 'Навчальний центр', icon: Target }, { id: 'course', ru: 'Мой курс', uk: 'Мій курс', icon: GraduationCap }, { id: 'daily', ru: 'План на 10 минут', uk: 'План на 10 хвилин', icon: Timer }, { id: 'rules', ru: 'Общие правила', uk: 'Загальні правила', icon: Table2 }, { id: 'vocabulary', ru: 'Словарь', uk: 'Словник', icon: LibraryBig }, { id: 'verbs', ru: 'Спряжение глаголов', uk: 'Дієвідмінювання', icon: BookOpen }, { id: 'articles', ru: 'Артикли и мн. число', uk: 'Артиклі та множина', icon: SpellCheck }, { id: 'sentences', ru: 'Сборка предложений', uk: 'Складання речень', icon: Puzzle }, { id: 'achievements', ru: 'Достижения', uk: 'Досягнення', icon: Trophy }, { id: 'progress', ru: 'Мой прогресс', uk: 'Мій прогрес', icon: TrendingUp }] as const;
+    const secondary = ['rules', 'verbs', 'articles', 'sentences', 'daily'];
+    const renderNav = (n: typeof nav[number]) => <button key={n.id} onClick={() => navigate(n.id)} className={page === n.id ? 'nav-item active' : 'nav-item'} aria-current={page === n.id ? 'page' : undefined}><n.icon size={18}/><span>{t(n.ru, n.uk)}</span>{n.id === 'vocabulary' && <small>2k</small>}</button>;
+    const title = nav.find(n => n.id === page)!;
+    return <div className={dark ? 'app dark' : 'app'}><aside role={mobile ? 'dialog' : undefined} aria-modal={mobile ? true : undefined} aria-label={t('Разделы обучения', 'Розділи навчання')} id="learning-navigation" className={`sidebar ${mobile ? 'open' : ''}`}><a className="brand" href="#home" onClick={e => { e.preventDefault(); navigate('home'); }}><span className="brand-mark">k.</span>klar<span className="brand-dot">.</span></a><Button aria-label={t('Закрыть меню', 'Закрити меню')} onClick={() => setMobile(false)} className="mobile-close" variant="icon"><X /></Button><div className="sidebar-subtitle">{t('ВАШ НЕМЕЦКИЙ. ВАШ РИТМ.', 'ВАША НІМЕЦЬКА. ВАШ РИТМ.')}</div><div className="workspace-label">{t('ПРОСТРАНСТВО ОБУЧЕНИЯ', 'ПРОСТІР НАВЧАННЯ')}</div><nav>{nav.filter(n => !secondary.includes(n.id)).map(renderNav)}<details className="nav-trainers" open={trainersOpen} onToggle={e => setTrainersOpen(e.currentTarget.open)}><summary className={secondary.includes(page) ? 'active' : ''}><BookOpen size={18}/><span>{t('Тренажёры и справочник', 'Тренажери й довідник')}</span><ChevronDown size={15}/></summary>{nav.filter(n => secondary.includes(n.id)).map(renderNav)}</details></nav><div className="sidebar-course"><span className="mini-icon"><Flame size={23}/></span><b>{t('У каждого шага есть смысл.', 'Кожен крок має значення.')}</b><p>{t('Немного каждый день — уже привычка.', 'Трохи щодня — уже звичка.')}</p><button onClick={() => navigate('daily')}>{t('Мои 10 минут', 'Мої 10 хвилин')}<ArrowRight size={16}/></button></div><div className="sidebar-xp"><b>{t('Учебный уровень', 'Навчальний рівень')} {xp.level}</b><small>{xp.xp} / {xp.next} XP</small><ProgressBar className="progress-track" fillStyle={{ width: xp.percent + '%' }}/></div><div className="sidebar-bottom"><span className="flag">🇩🇪</span><div><b>{t('Немецкий язык', 'Німецька мова')}</b><small>A0 → C2 · {t('шаг за шагом', 'крок за кроком')}</small></div></div></aside>{mobile && <button className="overlay" aria-label={t('Закрыть навигацию', 'Закрити навігацію')} onClick={() => setMobile(false)}/>}
+ <div className="main-shell"><header><div className="breadcrumb"><Button aria-label={t('Открыть меню', 'Відкрити меню')} onClick={() => setMobile(true)} className="mobile-menu" variant="icon"><Menu /></Button><span>Klar</span><span className="slash">/</span><b>{t(title.ru, title.uk)}</b></div><div className="header-actions"><label className="language-select"><span className="sr-only">{t('Язык интерфейса', 'Мова інтерфейсу')}</span><Select value={locale} onChange={e => setLocale(e.target.value as 'ru' | 'uk')}><option value="ru">Русский</option><option value="uk">Українська</option></Select></label><span className="streak-pill" title={t('Учебных дней подряд', 'Навчальних днів поспіль')}><Flame size={17}/>{streak}</span><button className="theme-button" onClick={() => setDark(!dark)} aria-label={t(dark ? 'Включить светлую тему' : 'Включить тёмную тему', dark ? 'Увімкнути світлу тему' : 'Увімкнути темну тему')}>{dark ? <Sun size={19}/> : <Moon size={19}/>}</button></div></header><main>{learningStorageError && page !== 'learning' && <div className="learning-note" role="alert"><p>{t(learningStorageError, 'Не вдалося зберегти навчальні дані. Завантажте копію перед виходом.')}</p><Button onClick={() => navigate('learning')} variant="text">{t('Открыть сохранение прогресса', 'Відкрити збереження прогресу')}</Button></div>}
+ {locale === 'uk' && <p className="locale-material-note"><Settings2 size={15}/>Інтерфейс — українською. Оригінальні відео й частина навчальних пояснень та перекладів словника поки російською.</p>}
+ <Suspense fallback={<p className="course-caption" role="status">{t('Открываем раздел…', 'Відкриваємо розділ…')}</p>}>
+ {page === 'home' ? <Dashboard navigate={navigate} onLevel={level => { setRequestedLevel(level); navigate('course'); }} courseProgress={courseProgress} known={known} answers={mastered.length + nounProgress.length + sentenceProgress.length} achievements={achievementCards(stats, earned).filter(c => c.rank > 0).length}/> :
+            page === 'learning' ? <LearningCenter /> :
+                page === 'course' ? <Course initialLevel={requestedLevel} progress={courseProgress} onChange={(id, record) => setCourseProgress(old => ({ ...old, [id]: record }))} onImport={setCourseProgress} onPractice={navigate} onActivity={() => study()}/> :
+                    page === 'achievements' ? <Achievements stats={stats} earned={earned} streak={streak}/> :
+                        page === 'rules' ? <Rules onPractice={() => navigate('verbs')}/> :
+                            page === 'vocabulary' ? <Vocabulary progress={wordProgress} onMark={(id, status) => setWordProgress(old => markWord(old, id, status))} onPracticeCorrect={id => study(id)}/> :
+                                page === 'articles' ? <NounTrainer mastered={nounProgress} onAnswer={nounAnswer} onRules={() => navigate('rules')}/> :
+                                    page === 'sentences' ? <SentenceTrainer mastered={sentenceProgress} onAnswer={sentenceAnswer}/> :
+                                        page === 'daily' ? <><LearningCenter /><details className="learning-backup"><summary>{t('Свободная разминка по старому плану', 'Вільна розминка за попереднім планом')}</summary><DailyPlan date={today} record={dailyProgress[today] ?? emptyDay()} onUpdate={update => { study(); setDailyProgress(old => ({ ...old, [today]: update(old[today] ?? emptyDay()) })); }} onWord={(id, status) => setWordProgress(old => markWord(old, id, status))} onNoun={nounAnswer} onSentence={sentenceAnswer} onRules={() => navigate('rules')}/></details></> :
+                                            page === 'verbs' ? <><PageIntro><span className="eyebrow">{t('ГРАММАТИКА В ДЕЙСТВИИ', 'ГРАМАТИКА В ДІЇ')}</span><h1>{t('Глаголы без путаницы.', 'Дієслова без плутанини.')}</h1><p>{t('Таблицы, примеры и практика для каждого глагола.', 'Таблиці, приклади й практика для кожного дієслова.')}</p></PageIntro><Conjugation mastered={mastered} onCorrect={id => { study(); setMastered(old => old.includes(id) ? old : [...old, id]); }}/></> :
+                                                <><PageIntro><span className="eyebrow">{t('КАЖДЫЙ ШАГ СЧИТАЕТСЯ', 'КОЖЕН КРОК ВАЖЛИВИЙ')}</span><h1>{t('Вы продвигаетесь.', 'Ви просуваєтеся.')}</h1><p>{t('Разные навыки — отдельные результаты. Все данные хранятся в этом браузере.', 'Різні навички — окремі результати. Усі дані зберігаються в цьому браузері.')}</p></PageIntro><Card className="experience-panel" as="section"><Award size={28}/><div><h2>{t('Учебный уровень', 'Навчальний рівень')} {xp.level}</h2><p>{xp.xp} XP · {t('следующий на', 'наступний на')} {xp.next} XP</p><ProgressBar className="progress-track" fillStyle={{ width: xp.percent + '%' }}/><small>{t('Опыт за разные закреплённые ответы и завершённые уроки. Это игровой показатель активности, не уровень владения немецким.', 'Досвід за різні закріплені відповіді й завершені уроки. Це ігровий показник активності, не рівень володіння німецькою.')}</small></div></Card><div className="progress-detail-grid">{[{ id: 'course', name: t('Курс', 'Курс'), done: completedLessons, total: courseLessons.length, icon: GraduationCap }, { id: 'vocabulary', name: t('Слова в «Знаю»', 'Слова у «Знаю»'), done: known, total: vocabulary.length, icon: LibraryBig }, { id: 'verbs', name: t('Формы глаголов', 'Форми дієслів'), done: mastered.length, total: verbs.length * 6, icon: BookOpen }, { id: 'articles', name: t('Артикли и множественное', 'Артиклі та множина'), done: nounProgress.length, total: nouns.length * 2, icon: SpellCheck }, { id: 'sentences', name: t('Предложения', 'Речення'), done: sentenceProgress.length, total: sentences.length, icon: Puzzle }].map(s => <button className="progress-detail-card" key={s.id} onClick={() => navigate(s.id as Page)}><s.icon size={25}/><h2>{s.name}</h2><b>{s.done}<small> / {s.total}</small></b><ProgressBar className="progress-track" fillStyle={{ width: `${s.done / s.total * 100}%` }}/><ArrowRight size={17}/></button>)}</div><div className="mastery-grid">{verbs.map(v => { const count = mastered.filter(k => k.startsWith(v.id + ':')).length; return <div className="mastery-card" key={v.id}><b>{v.id}<span>{count}/6</span></b><p>{v.meaning}</p><ProgressBar className="progress-track" fillStyle={{ width: `${count / 6 * 100}%` }}/></div>; })}</div><p className="course-caption">{t('Удаление данных браузера удалит прогресс. Сохраните копию курса на его странице. Между устройствами данные пока не синхронизируются.', 'Видалення даних браузера видалить прогрес. Збережіть копію курсу на його сторінці. Між пристроями дані поки не синхронізуються.')}</p></>}
+ </Suspense><InstallApp /><BackToTop /><nav className="mobile-bottom-nav" aria-label={t('Главная навигация', 'Головна навігація')}>{[{ id: 'home' as const, icon: LayoutDashboard, ru: 'Главная', uk: 'Головна' }, { id: 'learning' as const, icon: GraduationCap, ru: 'Учиться', uk: 'Вчитися' }, { id: 'vocabulary' as const, icon: LibraryBig, ru: 'Слова', uk: 'Слова' }, { id: 'progress' as const, icon: TrendingUp, ru: 'Прогресс', uk: 'Прогрес' }].map(n => <button key={n.id} className={page === n.id ? 'active' : ''} aria-current={page === n.id ? 'page' : undefined} onClick={() => navigate(n.id)}><n.icon size={21}/><span>{t(n.ru, n.uk)}</span></button>)}<button className={mobile ? 'active' : ''} aria-expanded={mobile} aria-controls="learning-navigation" onClick={() => setMobile(!mobile)}><Menu size={21}/><span>{t('Ещё', 'Ще')}</span></button></nav><footer><span className="footer-brand">klar.</span><span>{t('Понимать. Практиковаться. Говорить.', 'Розуміти. Практикуватися. Говорити.')}</span><span>Schritt für Schritt.</span><small className="app-version">{t("Версия", "Версія")} {APP_VERSION}</small></footer></main></div></div>;
 }
