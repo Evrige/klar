@@ -1,0 +1,713 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../server/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Source {
+  LOCAL_IMPORT
+  OFFLINE
+  SERVER_VERIFIED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum SkillMode {
+  recognition
+  recall
+  spelling
+  listening
+}
+
+enum WordStatus {
+  known
+  learning
+}
+
+enum RaceMode {
+  SENTENCE_RACE
+  WORD_CHOICE_RACE
+}
+
+enum MatchStatus {
+  WAITING
+  ACTIVE
+  FINISHED
+  CANCELLED
+}
+
+enum RoundStatus {
+  SCHEDULED
+  OPEN
+  FINISHED
+  EXPIRED
+}
+
+enum QueueStatus {
+  WAITING
+  MATCHED
+  CANCELLED
+  EXPIRED
+}
+
+model User {
+  id            String               @id
+  role          UserRole             @default(USER)
+  name          String
+  email         String               @unique
+  emailVerified Boolean              @default(false)
+  image         String?
+  createdAt     DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime             @updatedAt @db.Timestamptz(3)
+  sessions      Session[]
+  accounts      Account[]
+  profile       PublicProfile?
+  settings      UserSettings?
+  devices       Device[]
+  imports       ImportBatch[]
+  syncEvents    SyncEvent[]
+  wordStatuses  UserWordStatus[]
+  testedWords   UserTestedWord[]
+  skills        UserWordSkill[]
+  mastery       UserMastery[]
+  lessons       UserLessonProgress[]
+  steps         UserLessonStep[]
+  plans         UserDailyPlan[]
+  phrases       SavedPhrase[]
+  studyDays     StudyDay[]
+  summaries     DailySummary[]
+  mistakes      Mistake[]
+  achievements  UserAchievement[]
+  xp            XpLedger[]
+  queue         QueueEntry[]
+  participants  MatchParticipant[]
+  ratings       Rating[]
+}
+
+model Session {
+  id        String   @id
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime @db.Timestamptz(3)
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(3)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(3)
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime  @updatedAt @db.Timestamptz(3)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime @db.Timestamptz(3)
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([identifier])
+}
+
+model PublicProfile {
+  userId      String  @id
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  handle      String  @unique
+  displayName String
+  listed      Boolean @default(false)
+}
+
+model UserSettings {
+  userId           String    @id
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revision         Int       @default(0)
+  changeToken      String    @default("")
+  locale           String    @default("ru")
+  dark             Boolean   @default(false)
+  speechRate       Float     @default(1)
+  wordMode         SkillMode @default(recall)
+  vocabularyLevels String[]  @default(["A1", "A2", "B1", "extra"])
+  verbLevel        String    @default("all")
+  practiceLength   Int       @default(24)
+  timeZone         String    @default("Europe/Berlin")
+  journalStarted   DateTime? @db.Date
+}
+
+model Device {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientId  String
+  voiceURI  String?
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([userId, clientId])
+}
+
+model Course {
+  id     String        @id
+  title  String
+  levels CourseLevel[]
+}
+
+model CourseLevel {
+  id       String   @id
+  courseId String
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  cefr     String
+  lessons  Lesson[]
+
+  @@unique([courseId, cefr])
+}
+
+model Lesson {
+  id        String               @id
+  legacyKey String               @unique
+  levelId   String
+  level     CourseLevel          @relation(fields: [levelId], references: [id], onDelete: Restrict)
+  kind      String
+  title     String
+  content   Json                 @db.JsonB
+  steps     LessonStep[]
+  progress  UserLessonProgress[]
+}
+
+model LessonStep {
+  id        String           @id
+  lessonId  String
+  lesson    Lesson           @relation(fields: [lessonId], references: [id], onDelete: Restrict)
+  legacyKey String
+  content   Json             @db.JsonB
+  progress  UserLessonStep[]
+
+  @@unique([lessonId, legacyKey])
+}
+
+model RuleTopic {
+  id      String @id
+  content Json   @db.JsonB
+}
+
+model Word {
+  id           String              @id
+  legacyKey    String              @unique
+  german       String
+  reading      String
+  category     String
+  level        String
+  translations WordTranslation[]
+  statuses     UserWordStatus[]
+  skills       UserWordSkill[]
+  planWords    UserDailyPlanWord[]
+  testedBy     UserTestedWord[]
+
+  @@index([level, category])
+}
+
+model WordTranslation {
+  wordId   String
+  word     Word   @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  language String
+  text     String
+
+  @@id([wordId, language])
+}
+
+model NounForm {
+  id          String @id
+  article     String
+  singular    String
+  plural      String
+  translation String
+  tip         String
+}
+
+model Verb {
+  id      String     @id
+  level   String
+  content Json       @db.JsonB
+  forms   VerbForm[]
+}
+
+model VerbForm {
+  id          String @id
+  verbId      String
+  verb        Verb   @relation(fields: [verbId], references: [id], onDelete: Restrict)
+  person      Int
+  german      String
+  translation String
+
+  @@unique([verbId, person])
+}
+
+model Exercise {
+  id        String            @id
+  legacyKey String            @unique
+  domain    String
+  level     String?
+  versions  ExerciseVersion[]
+  mastery   UserMastery[]
+}
+
+model ExerciseVersion {
+  id         String          @id
+  exerciseId String
+  exercise   Exercise        @relation(fields: [exerciseId], references: [id], onDelete: Restrict)
+  checksum   String
+  prompt     String
+  publicData Json            @db.JsonB
+  createdAt  DateTime        @default(now()) @db.Timestamptz(3)
+  answers    AnswerVariant[]
+  rounds     MatchRound[]
+
+  @@unique([exerciseId, checksum])
+}
+
+model AnswerVariant {
+  versionId String
+  version   ExerciseVersion @relation(fields: [versionId], references: [id], onDelete: Restrict)
+  answer    String
+
+  @@id([versionId, answer])
+}
+
+model ImportBatch {
+  id            String          @id @default(uuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deviceId      String
+  source        Source          @default(LOCAL_IMPORT)
+  schemaVersion Int
+  checksum      String
+  createdAt     DateTime        @default(now()) @db.Timestamptz(3)
+  snapshot      Json            @db.JsonB
+  report        Json            @db.JsonB
+  mappings      ImportMapping[]
+
+  @@unique([userId, checksum])
+  @@index([userId, createdAt])
+}
+
+model ImportMapping {
+  batchId   String
+  batch     ImportBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  kind      String
+  legacyKey String
+  targetId  String?
+  reason    String?
+
+  @@id([batchId, kind, legacyKey])
+}
+
+model SyncEvent {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deviceId      String
+  clientEventId String
+  source        Source
+  kind          String
+  occurredAt    DateTime @db.Timestamptz(3)
+  receivedAt    DateTime @default(now()) @db.Timestamptz(3)
+  payload       Json     @db.JsonB
+  result        Json     @db.JsonB
+
+  @@unique([userId, deviceId, clientEventId])
+  @@index([userId, receivedAt])
+}
+
+model UserTestedWord {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wordId String
+  word Word @relation(fields:[wordId],references:[id],onDelete:Restrict,onUpdate:NoAction,map:"tested_word_fk")
+  source Source
+
+  @@id([userId, wordId])
+}
+
+model UserWordStatus {
+  userId   String
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wordId   String
+  word     Word       @relation(fields: [wordId], references: [id], onDelete: Restrict)
+  status   WordStatus
+  revision Int        @default(0)
+  changeToken String @default("")
+  source   Source
+
+  @@id([userId, wordId])
+}
+
+model UserWordSkill {
+  userId   String
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wordId   String
+  word     Word      @relation(fields: [wordId], references: [id], onDelete: Restrict)
+  mode     SkillMode
+  attempts Int
+  correct  Int
+  stage    Int
+  due      DateTime  @db.Timestamptz(3)
+  last     DateTime  @db.Timestamptz(3)
+  revision Int       @default(0)
+  source   Source
+
+  @@id([userId, wordId, mode])
+  @@index([userId, mode, due])
+}
+
+// One monotone relation for verb-person, noun-mode and sentence mastery;
+// its composite exercise FK avoids three copies of identical storage logic.
+model UserMastery {
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Restrict)
+  source     Source
+
+  @@id([userId, exerciseId])
+}
+
+model UserLessonProgress {
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId String
+  lesson   Lesson  @relation(fields: [lessonId], references: [id], onDelete: Restrict)
+  video    Boolean @default(false)
+  practice Boolean @default(false)
+  note     String  @default("")
+  revision Int     @default(0)
+  changeToken String @default("")
+  source   Source
+
+  @@id([userId, lessonId])
+}
+
+model UserLessonStep {
+  userId String
+  user   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stepId String
+  step   LessonStep @relation(fields: [stepId], references: [id], onDelete: Restrict)
+  source Source
+
+  @@id([userId, stepId])
+}
+
+model UserDailyPlan {
+  id           String              @id @default(uuid())
+  userId       String
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day          DateTime            @db.Date
+  ruleRead     Boolean
+  nounsDone    Boolean
+  sentenceDone Boolean
+  words        UserDailyPlanWord[]
+
+  @@unique([userId, day])
+}
+
+model UserDailyPlanWord {
+  planId String
+  plan   UserDailyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  wordId String
+  word   Word          @relation(fields: [wordId], references: [id], onDelete: Restrict)
+
+  @@id([planId, wordId])
+}
+
+model SavedPhrase {
+  id       String @id @default(uuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checksum String
+  russian  String
+  german   String
+  source   String
+
+  @@unique([userId, checksum])
+}
+
+model StudyDay {
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day      DateTime @db.Date
+  timeZone String   @default("Europe/Berlin")
+
+  @@id([userId, day])
+}
+
+// Imported lower bounds, not invented Attempt events. Arrays are unique sets.
+model DailySummary {
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day      DateTime @db.Date
+  source   Source
+  attempts Int
+  correct  Int
+  words    String[]
+  skills   String[]
+  resolved String[]
+  lessons  String[]
+
+  @@id([userId, day, source])
+}
+
+model Mistake {
+  id            String            @id @default(uuid())
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key           String
+  domain        String
+  prompt        String
+  answers       String[]
+  answer        String
+  correct       Boolean
+  explanation   String
+  wordId        String?
+  mode          SkillMode?
+  lessonId      String?
+  audio         String?
+  caseSensitive Boolean?
+  failures      Int
+  lastWrong     DateTime          @db.Timestamptz(3)
+  lastEventAt   DateTime          @db.Timestamptz(3)
+  due           DateTime          @db.Timestamptz(3)
+  recovery      Int
+  resolved      Boolean
+  source        Source
+  revision      Int               @default(0)
+  recoveries    MistakeRecovery[]
+
+  @@unique([userId, key])
+  @@index([userId, resolved, due])
+}
+
+model MistakeRecovery {
+  id        String   @id @default(uuid())
+  mistakeId String
+  mistake   Mistake  @relation(fields: [mistakeId], references: [id], onDelete: Cascade)
+  eventId   String   @unique
+  at        DateTime @db.Timestamptz(3)
+}
+
+model AchievementDefinition {
+  id    String            @id
+  title String
+  tiers AchievementTier[]
+}
+
+model AchievementTier {
+  id           String                @id
+  definitionId String
+  definition   AchievementDefinition @relation(fields: [definitionId], references: [id], onDelete: Restrict)
+  threshold    Int
+  awards       UserAchievement[]
+}
+
+model UserAchievement {
+  userId   String
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tierId   String
+  tier     AchievementTier @relation(fields: [tierId], references: [id], onDelete: Restrict)
+  earnedAt DateTime        @db.Timestamptz(3)
+  source   Source
+
+  @@id([userId, tierId])
+}
+
+model XpLedger {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventKey  String
+  amount    Int
+  source    Source
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([userId, eventKey])
+}
+
+model Season {
+  id       String       @id
+  startsAt DateTime     @db.Timestamptz(3)
+  endsAt   DateTime     @db.Timestamptz(3)
+  matches  Match[]
+  ratings  Rating[]
+  queues   QueueEntry[]
+}
+
+model QueueEntry {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  seasonId  String
+  season    Season      @relation(fields: [seasonId], references: [id], onDelete: Restrict)
+  mode      RaceMode
+  level     String
+  ranked    Boolean
+  status    QueueStatus @default(WAITING)
+  expiresAt DateTime    @db.Timestamptz(3)
+  createdAt DateTime    @default(now()) @db.Timestamptz(3)
+  matchId   String?
+
+  @@index([seasonId, mode, level, ranked, status, createdAt])
+}
+
+model Match {
+  id             String             @id @default(uuid())
+  seasonId       String
+  season         Season             @relation(fields: [seasonId], references: [id], onDelete: Restrict)
+  mode           RaceMode
+  level          String
+  ranked         Boolean
+  status         MatchStatus        @default(WAITING)
+  private        Boolean            @default(false)
+  invitationHash String?
+  deadlineAt     DateTime           @db.Timestamptz(3)
+  finishedAt     DateTime?          @db.Timestamptz(3)
+  reason         String?
+  ratingApplied  Boolean            @default(false)
+  participants   MatchParticipant[]
+  rounds         MatchRound[]
+  events         MatchEvent[]
+  histories      RatingHistory[]
+
+  @@index([status, deadlineAt])
+}
+
+model MatchParticipant {
+  id               String            @id @default(uuid())
+  matchId          String
+  match            Match             @relation(fields: [matchId], references: [id], onDelete: Restrict)
+  userId           String?
+  user             User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  seat             Int
+  score            Int               @default(0)
+  leftAt           DateTime?         @db.Timestamptz(3)
+  disqualification String?
+  submissions      RoundSubmission[]
+  wonRounds        MatchRound[] @relation("RoundWinner")
+
+  @@unique([matchId, userId])
+  @@unique([matchId, seat])
+  @@index([userId])
+}
+
+model MatchRound {
+  id          String            @id @default(uuid())
+  matchId     String
+  match       Match             @relation(fields: [matchId], references: [id], onDelete: Restrict)
+  number      Int
+  versionId   String
+  version     ExerciseVersion   @relation(fields: [versionId], references: [id], onDelete: Restrict)
+  tokenHash   String
+  startsAt    DateTime          @db.Timestamptz(3)
+  deadlineAt  DateTime          @db.Timestamptz(3)
+  status      RoundStatus       @default(SCHEDULED)
+  publicData  Json              @db.JsonB
+  winnerId    String?
+  winner      MatchParticipant? @relation("RoundWinner",fields:[winnerId],references:[id],onDelete:Restrict,onUpdate:NoAction,map:"round_winner_fk")
+  reason      String?
+  submissions RoundSubmission[]
+
+  @@unique([matchId, number])
+  @@index([status, deadlineAt])
+}
+
+model RoundSubmission {
+  id               String           @id @default(uuid())
+  roundId          String
+  round            MatchRound       @relation(fields: [roundId], references: [id], onDelete: Restrict)
+  participantId    String
+  participant      MatchParticipant @relation(fields: [participantId], references: [id], onDelete: Restrict)
+  requestId        String
+  answer           String
+  correct          Boolean
+  accepted         Boolean
+  serverReceivedAt DateTime         @default(now()) @db.Timestamptz(3)
+  clientSentAt     DateTime?        @db.Timestamptz(3)
+
+  @@unique([roundId, participantId])
+  @@unique([participantId, requestId])
+}
+
+model MatchEvent {
+  sequence  BigInt   @id @default(autoincrement())
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Restrict)
+  kind      String
+  payload   Json     @db.JsonB
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([matchId, sequence])
+}
+
+model Rating {
+  id       String          @id @default(uuid())
+  userId   String
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  seasonId String
+  season   Season          @relation(fields: [seasonId], references: [id], onDelete: Restrict)
+  mode     RaceMode
+  level    String
+  value    Int             @default(1000)
+  games    Int             @default(0)
+  history  RatingHistory[]
+
+  @@unique([userId, seasonId, mode, level])
+  @@index([seasonId, mode, level, value, games, userId])
+}
+
+model RatingHistory {
+  id        String   @id @default(uuid())
+  ratingId  String?
+  rating    Rating?  @relation(fields: [ratingId], references: [id], onDelete: SetNull)
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Restrict)
+  seat      Int
+  before    Int
+  after     Int
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([matchId, seat])
+}
+
+model RateLimit {
+  key    String   @id
+  window DateTime @db.Timestamptz(3)
+  count  Int
+}
+
+model AuthRateLimit {
+  id          String @id @default(uuid())
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+}

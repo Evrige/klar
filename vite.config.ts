@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import {VitePWA} from 'vite-plugin-pwa';
-export default defineConfig({build:{rollupOptions:{output:{manualChunks(id){if(/node_modules\/(react|react-dom|scheduler)\//.test(id.replace(/\\/g,'/')))return 'react-vendor';if(/\/data\/(extraVocabulary|vocabulary)\.ts$/.test(id))return 'vocabulary-data';if(/\/data\/(sentenceBank|sentences)\.ts$/.test(id))return 'sentence-data';if(/\/data\/(germanCourse\.json|course\.ts)$/.test(id))return 'course-data';}}}},plugins:[react(),tailwindcss(),VitePWA({
+export default defineConfig({server:{proxy:{'/api':{target:'http://127.0.0.1:3000',changeOrigin:false}}},build:{rollupOptions:{output:{manualChunks(id){if(/node_modules\/(react|react-dom|scheduler)\//.test(id.replace(/\\/g,'/')))return 'react-vendor';if(/\/data\/(extraVocabulary|vocabulary)\.ts$/.test(id))return 'vocabulary-data';if(/\/data\/(sentenceBank|sentences)\.ts$/.test(id))return 'sentence-data';if(/\/data\/(germanCourse\.json|course\.ts)$/.test(id))return 'course-data';}}}},plugins:[react(),tailwindcss(),VitePWA({
  registerType:'prompt',
  injectRegister:false,
  includeAssets:['icons/*.png','audio/de/hallo.ogg','audio/de/ATTRIBUTION.md'],

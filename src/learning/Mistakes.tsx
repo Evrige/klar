@@ -1,9 +1,10 @@
+import ErrorExplanation from './ErrorExplanation';
 import {TextInput} from '../components/ui';
 import { Badge, Button, Card } from '../components/ui';
 import { useState } from 'react';
 import { CheckCircle2, RotateCcw, Volume2 } from 'lucide-react';
 import { useLearning } from './LearningContext';
-import { acceptedAnswer, acceptedSpelling, answerFeedback, type Mistake } from './model';
+import { acceptedAnswer, acceptedSpelling, type Mistake } from './model';
 import { useSpeech } from '../hooks/useSpeech';
 import { useLocale } from '../i18n/Locale';
 export default function Mistakes() {
@@ -35,5 +36,5 @@ function MistakeExercise({ mistake, onBack }: {
             }} variant="secondary"><Volume2 size={17}/>{t('Слушать', 'Слухати')}</Button><Button onClick={async () => {
                 if (await speech.speak(mistake.audio!, .75))
                     setPlayed(true);
-            }} variant="secondary">0,75×</Button></div>}{speech.message && <p className="speech-status" role="status">{t(speech.message)}</p>}<form onSubmit={e => { e.preventDefault(); check(); }}><label className="learning-answer-label">{t('Ваш ответ', 'Ваша відповідь')}<TextInput maxLength={1000} autoComplete="off" value={answer} onChange={e => setAnswer(e.target.value)} disabled={checked}/></label><Button disabled={checked || !answer.trim() || !!mistake.audio && !played} variant="primary">{t('Проверить', 'Перевірити')}</Button></form>{checked && <div className={`feedback ${correct ? 'success' : 'error'}`}><b>{correct ? t('Верно. Повторите позже для закрепления.', 'Правильно. Повторіть пізніше для закріплення.') : t(answerFeedback(answer, mistake.answers, mistake.domain))}</b><p>{mistake.answers[0]}</p><p>{mistake.explanation}</p></div>}<Button onClick={onBack} className="next" variant="text">{t('К списку ошибок', 'До списку помилок')}</Button></Card>;
+            }} variant="secondary">0,75×</Button></div>}{speech.message && <p className="speech-status" role="status">{t(speech.message)}</p>}<form onSubmit={e => { e.preventDefault(); check(); }}><label className="learning-answer-label">{t('Ваш ответ', 'Ваша відповідь')}<TextInput maxLength={1000} autoComplete="off" value={answer} onChange={e => setAnswer(e.target.value)} disabled={checked}/></label><Button disabled={checked || !answer.trim() || !!mistake.audio && !played} variant="primary">{t('Проверить', 'Перевірити')}</Button></form>{checked && <div className={`feedback ${correct ? 'success' : 'error'}`}><b>{correct ? t('Верно. Повторите позже для закрепления.', 'Правильно. Повторіть пізніше для закріплення.') : t("Пока не совпало с образцом","Поки не збіглося зі зразком")}</b><p>{mistake.answers[0]}</p><p>{mistake.explanation}</p>{!correct&&<ErrorExplanation domain={mistake.domain} answer={answer} answers={mistake.answers} caseSensitive={mistake.caseSensitive}/>}</div>}<Button onClick={onBack} className="next" variant="text">{t('К списку ошибок', 'До списку помилок')}</Button></Card>;
 }

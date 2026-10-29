@@ -7,3 +7,8 @@ preview*.png
 *.tar.gz
 
 .reference-cache/
+.env*
+!.env.example
+.local-postgres/
+server/generated/
+coverage/

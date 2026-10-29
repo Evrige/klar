@@ -7,11 +7,12 @@ import { ruleTopics, regularExamples } from '../data/rules';
 import QuestionBuilder from './QuestionBuilder';
 const endings = ['e', 'st', 't', 'en', 't', 'en'];
 const persons = ['ich', 'du', 'er / sie / es', 'wir', 'ihr', 'sie / Sie'];
-export default function Rules({ onPractice }: {
+export default function Rules({ onPractice, initialTopic='verbs' }: {
     onPractice: () => void;
+    initialTopic?: string;
 }) {
     const { t: _ui } = useLocale();
-    const [topic, setTopic] = useState('verbs'), [example, setExample] = useState('machen'), [person, setPerson] = useState(0);
+    const [topic, setTopic] = useState(ruleTopics.some(t=>t.id===initialTopic)?initialTopic:'verbs'), [example, setExample] = useState('machen'), [person, setPerson] = useState(0);
     const current = ruleTopics.find(t => t.id === topic)!;
     const stem = example.slice(0, -2);
     const translation = regularExamples.find(v => v.infinitive === example)!.translations[person];

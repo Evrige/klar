@@ -3,11 +3,25 @@ export type SkillMode=typeof skills[number];
 export type SkillState={attempts:number;correct:number;stage:number;due:number;last:number};
 export type Attempt={key:string;domain:'word'|'verb'|'sentence'|'noun'|'lesson';prompt:string;answers:string[];answer:string;correct:boolean;explanation:string;wordId?:string;mode?:SkillMode;lessonId?:string;audio?:string;caseSensitive?:boolean};
 export type Mistake=Attempt&{failures:number;lastWrong:number;due:number;recovery:number;resolved:boolean};
-export type LearningState={version:1;skills:Record<string,SkillState>;mistakes:Record<string,Mistake>;lessons:Record<string,string[]>;processed:string[];days:string[]};
+export type DayLog={attempts:number;correct:number;words:string[];skills:string[];resolved:string[];lessons:string[]};
+export type Journal={started:string;days:Record<string,DayLog>};
+export type LearningState={version:1;skills:Record<string,SkillState>;mistakes:Record<string,Mistake>;lessons:Record<string,string[]>;processed:string[];days:string[];journal?:Journal};
 export const emptyLearning=():LearningState=>({version:1,skills:{},mistakes:{},lessons:{},processed:[],days:[]});
 export function studyDate(now:number){return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(now));}
 export const intervals=[10*60_000,86400_000,3*86400_000,7*86400_000,14*86400_000,30*86400_000,60*86400_000];
 export const skillKey=(id:string,mode:SkillMode)=>`${mode}:${id}`;
+const emptyLog=():DayLog=>({attempts:0,correct:0,words:[],skills:[],resolved:[],lessons:[]});
+export function updateJournal(state:LearningState,now:number,update:(log:DayLog)=>DayLog):Journal {
+ const day=studyDate(now),cutoff=studyDate(now-90*86400_000);
+ const days=Object.fromEntries(Object.entries(state.journal?.days??{}).filter(([date])=>date>=cutoff));
+ days[day]=update(days[day]??emptyLog());
+ return {started:state.journal?.started&&state.journal.started<day?state.journal.started:day,days};
+}
+export function completeLessonStep(state:LearningState,lesson:string,task:string,required:string[],now:number):LearningState {
+ const old=state.lessons[lesson]??[];if(old.includes(task))return state;
+ const completed=[...old,task];const finished=required.length>0&&required.every(id=>completed.includes(id))&&!required.every(id=>old.includes(id));
+ return {...state,lessons:{...state.lessons,[lesson]:completed},days:[...new Set([...state.days,studyDate(now)])],journal:updateJournal(state,now,log=>({...log,lessons:finished?[...new Set([...log.lessons,lesson])]:log.lessons}))};
+}
 export function normalizeAnswer(text:string){return text.normalize('NFC').toLocaleLowerCase('de-DE').replace(/[.,!?;:«»„“”]/g,'').replace(/\s+/g,' ').trim();}
 export function acceptedAnswer(answer:string,answers:readonly string[]){return !!normalizeAnswer(answer)&&answers.some(expected=>normalizeAnswer(expected)===normalizeAnswer(answer));}
 export function acceptedSpelling(answer:string,answers:readonly string[]){const canonical=(s:string)=>{const text=s.normalize('NFC').replace(/[.,!?;:]/g,'').replace(/\s+/g,' ').trim();return text?text[0].toLocaleUpperCase('de-DE')+text.slice(1):'';};return !!canonical(answer)&&answers.some(expected=>canonical(answer)===canonical(expected));}
@@ -34,7 +48,10 @@ export function applyAttempt(state:LearningState,attempt:Attempt,eventId:string,
  const old=state.mistakes[attempt.key];
  if(!attempt.correct)next.mistakes[attempt.key]={...attempt,failures:(old?.failures??0)+1,lastWrong:now,due:now+intervals[0],recovery:0,resolved:false};
  else if(old){const recovery=old.recovery+1;next.mistakes[attempt.key]={...old,recovery,due:now+intervals[1],resolved:recovery>=2&&now-old.lastWrong>=intervals[1]};}
- return next;
+ const sk=attempt.wordId&&attempt.mode?skillKey(attempt.wordId,attempt.mode):undefined;
+ const reached=sk&&next.skills[sk]?.stage>=3&&(state.skills[sk]?.stage??0)<3;
+ const resolved=next.mistakes[attempt.key]?.resolved&&!old?.resolved;
+ return {...next,journal:updateJournal(state,now,log=>({...log,attempts:log.attempts+1,correct:log.correct+Number(attempt.correct),words:attempt.correct&&attempt.wordId?[...new Set([...log.words,attempt.wordId])]:log.words,skills:reached?[...new Set([...log.skills,sk!])]:log.skills,resolved:resolved?[...new Set([...log.resolved,attempt.key])]:log.resolved}))};
 }
 export function validLearning(value:unknown):value is LearningState{
  if(!value||typeof value!=='object')return false;const v=value as LearningState;
@@ -44,6 +61,9 @@ export function validLearning(value:unknown):value is LearningState{
  if([v.skills,v.mistakes,v.lessons].some(o=>Object.keys(o).some(key=>['__proto__','constructor','prototype'].includes(key))))return false;
  if(!Object.entries(v.skills).every(([key,s])=>skills.some(mode=>key.startsWith(mode+':')&&key.length>mode.length+1)&&record(s)&&[s.attempts,s.correct,s.stage,s.due,s.last].every(n=>Number.isFinite(n)&&n>=0)&&Number.isInteger(s.stage)&&s.stage<=intervals.length&&s.correct<=s.attempts))return false;
  if(!Object.values(v.lessons).every(ids=>Array.isArray(ids)&&ids.every(id=>typeof id==='string')&&new Set(ids).size===ids.length))return false;
+ if(v.journal!==undefined){const j=v.journal;if(!record(j)||!validDay(j.started)||!record(j.days)||Object.keys(j.days).length>92)return false;
+  if(!Object.entries(j.days).every(([day,log])=>validDay(day)&&day>=j.started&&record(log)&&Number.isSafeInteger(log.attempts)&&log.attempts>=0&&Number.isSafeInteger(log.correct)&&log.correct>=0&&log.correct<=log.attempts&&[log.words,log.skills,log.resolved,log.lessons].every(ids=>Array.isArray(ids)&&ids.every(id=>typeof id==='string'&&id.length<=2000&&!['__proto__','constructor','prototype'].includes(id))&&new Set(ids).size===ids.length)))return false;
+ }
  return Object.entries(v.mistakes).every(([key,m])=>record(m)&&m.key===key&&['word','verb','sentence','noun','lesson'].includes(m.domain)&&typeof m.prompt==='string'&&Array.isArray(m.answers)&&m.answers.length>0&&m.answers.every(a=>typeof a==='string')&&typeof m.answer==='string'&&typeof m.explanation==='string'&&typeof m.correct==='boolean'&&typeof m.resolved==='boolean'&&[m.failures,m.lastWrong,m.due,m.recovery].every(n=>Number.isFinite(n)&&n>=0)&&(m.audio===undefined||typeof m.audio==='string')&&(m.mode===undefined||skills.includes(m.mode))&&(m.wordId===undefined||typeof m.wordId==='string')&&(m.lessonId===undefined||typeof m.lessonId==='string')&&(m.caseSensitive===undefined||typeof m.caseSensitive==='boolean'));
 }
 export function reviewQueue<T extends {id:string}>(words:T[],progress:LearningState['skills'],mode:SkillMode,now:number,limit=12){

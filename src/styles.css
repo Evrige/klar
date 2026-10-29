@@ -6,5 +6,6 @@
 @import "./styles/learning.css";
 @import "./styles/select.css";
 @import "./styles/navigation-achievements.css";
+@import "./styles/reports.css";
 
 @custom-variant dark (&:where(.dark, .dark *));

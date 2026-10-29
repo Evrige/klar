@@ -10,9 +10,12 @@ import MiniLessons from './MiniLessons';
 import Mistakes from './Mistakes';
 import { useNow } from '../hooks/useNow';
 import { useLocale } from '../i18n/Locale';
-export type LearningTab = 'plan' | 'lessons' | 'review' | 'mistakes' | 'skills';
-export default function LearningCenter({ initialTab = 'plan' }: {
+import WeeklyReport from './WeeklyReport';
+export type LearningTab = 'plan' | 'lessons' | 'review' | 'mistakes' | 'skills' | 'week';
+export default function LearningCenter({ initialTab = 'plan', known=0,activityDays }: {
     initialTab?: LearningTab;
+    known?:number;
+    activityDays?:string[];
 }) {
     const { state, restore, storageError } = useLearning();
     const { t } = useLocale();
@@ -20,7 +23,7 @@ export default function LearningCenter({ initialTab = 'plan' }: {
     const [recommendedMode, setRecommendedMode] = useState<SkillMode | undefined>();
     const [pending, setPending] = useState<LearningState | null>(null), [previous, setPrevious] = useState<LearningState | null>(null), [message, setMessage] = useState('');
     const file = useRef<HTMLInputElement>(null);
-    const tabs = [['plan', 'Мои 10 минут', 'Мої 10 хвилин'], ['lessons', 'Мини-уроки', 'Мініуроки'], ['review', 'Повторение', 'Повторення'], ['mistakes', 'Мои ошибки', 'Мої помилки'], ['skills', 'Мои навыки', 'Мої навички']] as const;
+    const tabs = [['plan', 'Мои 10 минут', 'Мої 10 хвилин'], ['lessons', 'Мини-уроки', 'Мініуроки'], ['review', 'Повторение', 'Повторення'], ['mistakes', 'Мои ошибки', 'Мої помилки'], ['skills', 'Мои навыки', 'Мої навички'],['week','Моя неделя','Мій тиждень']] as const;
     function openReview() { const next = Object.entries(state.skills).filter(([, s]) => s.due <= Date.now()).sort((a, b) => a[1].due - b[1].due)[0]; setRecommendedMode(next ? next[0].split(':')[0] as SkillMode : undefined); setTab('review'); }
     function backup() { const url = URL.createObjectURL(new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' })); const a = document.createElement('a'); a.href = url; a.download = 'klar-learning-backup.json'; a.click(); URL.revokeObjectURL(url); }
     async function read(f: File | undefined) { setMessage(''); setPending(null); if (!f)
@@ -37,7 +40,7 @@ export default function LearningCenter({ initialTab = 'plan' }: {
     } if (file.current)
         file.current.value = ''; }
     return <><PageIntro><span className="eyebrow">KLAR · {t('УЧИМСЯ ПОЛЬЗОВАТЬСЯ ЯЗЫКОМ', 'ВЧИМОСЯ КОРИСТУВАТИСЯ МОВОЮ')}</span><h1>{t('От знания — к своей речи.', 'Від знання — до власного мовлення.')}</h1><p>{t('Связанные уроки, слушание, письменные ответы и повторение слабых мест. Без подписки и платных запросов.', 'Пов’язані уроки, слухання, письмові відповіді й повторення слабких місць. Без підписки та платних запитів.')}</p></PageIntro>{storageError && <p className="learning-note" role="alert">{t(storageError, 'Не вдалося зберегти дані у браузері. Завантажте копію перед виходом.')}</p>}<div className="learning-center-tabs" role="tablist" aria-label={t('Учебный центр', 'Навчальний центр')}>{tabs.map(([id, ru, uk]) => <button key={id} role="tab" aria-selected={tab === id} className={tab === id ? 'active' : ''} onClick={() => { setTab(id); setLesson(undefined); }}>{t(ru, uk)}{id === 'mistakes' && <small>{Object.values(state.mistakes).filter(m => !m.resolved).length}</small>}</button>)}</div>
- {tab === 'plan' ? <AdaptivePlan onReview={openReview} onMistakes={() => setTab('mistakes')} onLesson={id => { setLesson(id); setTab('lessons'); }}/> : tab === 'lessons' ? <MiniLessons key={lesson ?? 'catalog'} initial={lesson}/> : tab === 'review' ? <WordReview initialMode={recommendedMode}/> : tab === 'mistakes' ? <Mistakes /> : <SkillOverview />}
+ {tab === 'plan' ? <AdaptivePlan onReview={openReview} onMistakes={() => setTab('mistakes')} onLesson={id => { setLesson(id); setTab('lessons'); }}/> : tab === 'lessons' ? <MiniLessons key={lesson ?? 'catalog'} initial={lesson}/> : tab === 'review' ? <WordReview initialMode={recommendedMode}/> : tab === 'mistakes' ? <Mistakes /> : tab==='week'?<WeeklyReport activityDays={activityDays} known={known} onReview={openReview} onMistakes={()=>setTab('mistakes')}/>:<SkillOverview />}
  <details className="learning-backup"><summary>{t('Сохранение и перенос учебного прогресса', 'Збереження й перенесення навчального прогресу')}</summary><p>{t('Уроки, ошибки и повторение хранятся в этом браузере. Эта копия переносит новый учебный центр; прежние списки слов и видеокурс хранятся отдельно.', 'Уроки, помилки й повторення зберігаються в цьому браузері. Ця копія переносить новий навчальний центр; попередні списки слів і відеокурс зберігаються окремо.')}</p><div className="learning-actions"><Button onClick={backup} variant="secondary"><Download size={16}/>{t('Скачать копию', 'Завантажити копію')}</Button><Button onClick={() => file.current?.click()} variant="secondary"><FileUp size={16}/>{t('Открыть копию', 'Відкрити копію')}</Button></div><input hidden type="file" accept="application/json,.json" ref={file} onChange={e => void read(e.target.files?.[0])}/>{pending && <div className="learning-note"><p>{Object.keys(pending.skills).length} {t('проверок слов', 'перевірок слів')} · {Object.keys(pending.lessons).length} {t('уроков с отметками', 'уроків із позначками')}</p><p>{t('Применение заменит данные учебного центра. Сначала скачайте текущую копию.', 'Застосування замінить дані навчального центру. Спочатку завантажте поточну копію.')}</p><Button onClick={() => { setPrevious(state); restore(pending); setPending(null); setMessage(t('Учебная копия применена.', 'Навчальну копію застосовано.')); }} variant="primary">{t('Заменить учебный прогресс', 'Замінити навчальний прогрес')}</Button><Button onClick={() => setPending(null)} variant="secondary">{t('Отмена', 'Скасувати')}</Button></div>}{previous && <Button onClick={() => { restore(previous); setPrevious(null); setMessage(t('Предыдущие данные восстановлены.', 'Попередні дані відновлено.')); }} variant="text">{t('Отменить последний импорт', 'Скасувати останній імпорт')}</Button>}{message && <p role="status">{message}</p>}</details></>;
 }
 export function AdaptivePlan({ onReview, onMistakes, onLesson }: {

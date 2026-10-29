@@ -1,0 +1,21 @@
+ALTER TABLE "UserWordSkill" ADD CONSTRAINT skill_counts CHECK (attempts >= 0 AND correct BETWEEN 0 AND attempts AND stage BETWEEN 0 AND 7);
+ALTER TABLE "UserSettings" ADD CONSTRAINT settings_values CHECK (locale IN ('ru','uk') AND "speechRate" IN (0.75,0.9,1) AND "practiceLength" IN (12,24,36) AND "verbLevel" IN ('all','A1','A2','B1') AND revision >= 0);
+ALTER TABLE "Mistake" ADD CONSTRAINT mistake_counts CHECK (failures >= 0 AND recovery >= 0 AND revision >= 0);
+ALTER TABLE "DailySummary" ADD CONSTRAINT summary_counts CHECK (attempts >= 0 AND correct BETWEEN 0 AND attempts);
+ALTER TABLE "XpLedger" ADD CONSTRAINT xp_nonnegative CHECK (amount >= 0);
+ALTER TABLE "VerbForm" ADD CONSTRAINT verb_person CHECK (person BETWEEN 0 AND 5);
+ALTER TABLE "NounForm" ADD CONSTRAINT noun_article CHECK (article IN ('der','die','das'));
+ALTER TABLE "Season" ADD CONSTRAINT season_window CHECK ("startsAt" < "endsAt");
+ALTER TABLE "MatchRound" ADD CONSTRAINT round_window CHECK ("startsAt" < "deadlineAt" AND number > 0);
+ALTER TABLE "MatchParticipant" ADD CONSTRAINT participant_score CHECK (seat >= 0 AND score >= 0);
+ALTER TABLE "Rating" ADD CONSTRAINT rating_games CHECK (games >= 0);
+ALTER TABLE "SavedPhrase" ADD CONSTRAINT phrase_source CHECK (source IN ('library','online'));
+ALTER TABLE "QueueEntry" ADD CONSTRAINT queue_level CHECK (level IN ('A1','A2','B1'));
+ALTER TABLE "Match" ADD CONSTRAINT match_level CHECK (level IN ('A1','A2','B1'));
+CREATE UNIQUE INDEX queue_one_waiting_user ON "QueueEntry" ("userId") WHERE status = 'WAITING';
+ALTER TABLE "UserTestedWord" ADD CONSTRAINT tested_word_fk FOREIGN KEY ("wordId") REFERENCES "Word"(id) ON DELETE RESTRICT;
+ALTER TABLE "MatchRound" ADD CONSTRAINT round_winner_fk FOREIGN KEY ("winnerId") REFERENCES "MatchParticipant"(id) ON DELETE RESTRICT;
+-- The service checks membership under the match row lock; this FK enforces existence.
+CREATE FUNCTION klar_unique_strings(v text[]) RETURNS boolean LANGUAGE sql IMMUTABLE AS $$ SELECT cardinality(v) = (SELECT count(DISTINCT x) FROM unnest(v) x) $$;
+ALTER TABLE "DailySummary" ADD CONSTRAINT summary_unique_sets CHECK (klar_unique_strings(words) AND klar_unique_strings(skills) AND klar_unique_strings(resolved) AND klar_unique_strings(lessons));
+ALTER TABLE "UserSettings" ADD CONSTRAINT settings_levels CHECK ("vocabularyLevels" <@ ARRAY['A1','A2','B1','extra']::text[] AND klar_unique_strings("vocabularyLevels"));

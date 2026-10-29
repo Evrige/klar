@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: klar
+      POSTGRES_PASSWORD: klar_local
+      POSTGRES_DB: klar_dev
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - klar_postgres:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U klar -d klar_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  mailpit:
+    image: axllent/mailpit:v1.27
+    profiles: ["mail"]
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+volumes:
+  klar_postgres:

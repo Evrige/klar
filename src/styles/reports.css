@@ -1,0 +1,43 @@
+@layer components {
+ .weekly-report { @apply my-7; }
+ .weekly-heading h2 { @apply flex items-center gap-3 text-[24px] font-semibold mb-3; }
+ .weekly-heading p { @apply text-muted text-[12px] leading-[1.8] mb-6; }
+ .weekly-stats { @apply grid grid-cols-4 gap-3 mb-5; }
+ .weekly-stat { @apply rounded-card p-5 flex flex-col gap-3; }
+ .weekly-stat svg { @apply text-accent; }
+ .weekly-stat b { @apply text-[30px] font-semibold; }
+ .weekly-stat span { @apply text-muted text-[11px] leading-[1.7]; }
+ .weekly-chart { @apply rounded-card p-5 mb-5; }
+ .weekly-chart h3,.weekly-panel h3 { @apply flex items-center gap-2 text-[17px] font-semibold mb-4; }
+ .weekly-bars { @apply grid grid-cols-7 gap-3 mt-5; }
+ .weekly-day { @apply flex flex-col items-center gap-2 text-[11px] text-muted; }
+ .weekly-day b { @apply font-medium; }
+ .weekly-day>span { @apply text-ink; }
+ .weekly-bar-slot { @apply h-[100px] w-full max-w-[48px] bg-subtle rounded-control flex items-end overflow-hidden; }
+ .weekly-bar-slot i { @apply block w-full bg-line rounded-control; }
+ .weekly-bar-slot i.active { @apply bg-accent; }
+ .weekly-details { @apply grid grid-cols-2 gap-5; }
+ .weekly-panel { @apply rounded-card p-5 min-w-0; }
+ .weekly-panel p,.weekly-chart p { @apply text-[12px] text-muted leading-[1.9] my-4; }
+ .weekly-panel ul { @apply list-disc pl-5 text-[13px] leading-[2]; }
+ .weekly-self-report { @apply border-t border-line pt-4 mt-5 flex items-center gap-4; }
+ .weekly-self-report b { @apply text-[26px]; }
+ .weekly-self-report span { @apply text-[11px] leading-[1.8] text-muted; }
+ .error-explanation { @apply flex items-start gap-3 my-4 p-4 rounded-control bg-subtle border border-line text-ink; }
+ .error-explanation>svg { @apply shrink-0 text-accent mt-1; }
+ .error-explanation>div { @apply min-w-0; }
+ .error-explanation small { @apply block text-[10px] text-muted mb-2; }
+ .error-explanation h4 { @apply text-[15px] font-semibold; }
+ .error-explanation p { @apply text-[12px] leading-[1.9] my-2; }
+ .error-explanation .error-pattern { @apply font-medium text-accent [overflow-wrap:anywhere]; }
+ .error-explanation button { @apply mt-3 text-[12px]; }
+ @media(max-width:680px) {
+  .weekly-stats { @apply grid-cols-2; }
+  .weekly-details { @apply grid-cols-1; }
+  .weekly-heading h2 { @apply text-[20px] items-start; }
+  .weekly-heading h2 svg { @apply shrink-0; }
+  .weekly-stat { @apply p-4; }
+  .weekly-bars { @apply gap-2; }
+  .error-explanation { @apply p-3 gap-2; }
+ }
+}
