@@ -5,3 +5,5 @@ dist/
 preview*.png
 *.tar
 *.tar.gz
+
+.reference-cache/

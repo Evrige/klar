@@ -19,13 +19,13 @@ export function useSpeech(){
   if('speechSynthesis'in window){if(utteranceRef.current){utteranceRef.current.onend=null;utteranceRef.current.onerror=null;}window.speechSynthesis.cancel();}
   utteranceRef.current=null;setPlaying(false);
  }
- async function speak(text:string){
+ async function speak(text:string,speed=rate){
   stop();setMessage('');const request=requestRef.current;
   const recording=nativeRecordings[text.trim().toLocaleLowerCase('de-DE')];
   if(recording){
-   const audio=new Audio(recording.url);audioRef.current=audio;audio.playbackRate=rate;audio.preservesPitch=true;
+   const audio=new Audio(recording.url);audioRef.current=audio;audio.playbackRate=speed;audio.preservesPitch=true;
    audio.onended=()=>{if(request===requestRef.current)setPlaying(false);};
-   try{setPlaying(true);await audio.play();if(request!==requestRef.current)return;setMessage('Запись носителя языка · Jeuwre.');return;}
+   try{setPlaying(true);await audio.play();if(request!==requestRef.current)return;setMessage('Запись носителя языка · Jeuwre.');return true;}
    catch{if(request!==requestRef.current)return;setPlaying(false);setMessage('Запись недоступна. Используется немецкий голос устройства.');}
   }
   if(!('speechSynthesis'in window)){setMessage('Браузер не поддерживает синтез речи. Запись Hallo доступна отдельно.');return;}
@@ -38,12 +38,19 @@ export function useSpeech(){
   if(!voice){setPlaying(false);setMessage('Немецкий голос недоступен. Откройте сайт в браузере с немецкими голосами или добавьте немецкий голос на устройстве.');return;}
   // Never let the browser choose a default voice of another language.
   const utterance=new SpeechSynthesisUtterance(text);
-  utterance.voice=voice;utterance.lang=voice.lang;utterance.rate=rate;utterance.pitch=1;utterance.volume=1;
+  utterance.voice=voice;utterance.lang=voice.lang;utterance.rate=speed;utterance.pitch=1;utterance.volume=1;
   utteranceRef.current=utterance;
   utterance.onend=()=>{if(request===requestRef.current)setPlaying(false);};
   utterance.onerror=event=>{if(request!==requestRef.current)return;setPlaying(false);if(event.error!=='canceled'&&event.error!=='interrupted')setMessage('Не удалось воспроизвести. Выберите другой немецкий голос в настройках озвучки.');};
   setPlaying(true);setMessage(`Немецкий голос: ${voice.name}.`);
-  synth.resume();synth.speak(utterance);
+  return await new Promise<boolean>(resolve=>{
+   let settled=false;const finish=(started:boolean)=>{if(settled)return;settled=true;clearTimeout(timer);resolve(started);};
+   const timer=setTimeout(()=>finish(false),5000);const onend=utterance.onend,onerror=utterance.onerror;
+   utterance.onstart=()=>finish(request===requestRef.current);
+   utterance.onend=e=>{onend?.call(utterance,e);finish(false);};
+   utterance.onerror=e=>{onerror?.call(utterance,e);finish(false);};
+   synth.resume();synth.speak(utterance);
+  });
  }
  const selectedVoice=chooseGermanVoice(voices,preferredVoice);
  return {speak,stop,message,voices,preferredVoice,setPreferredVoice,rate,setRate,selectedVoice,playing};

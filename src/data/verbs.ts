@@ -1,3 +1,4 @@
+import {extraVerbs} from './extraVerbs.ts';
 export type Level = 'A1' | 'A2' | 'B1';
 export type Verb = { id:string; meaning:string; group:'Слабые'|'Сильные'|'Модальные'|'Неправильные'; level:Level; forms:string[]; translations:string[]; stem:string; rule:string; example:string; translation:string };
 export const pronouns=['ich','du','er / sie / es','wir','ihr','sie / Sie'];
@@ -22,8 +23,17 @@ verb('wollen','хотеть','Модальные','A1','will,willst,will,wollen,
 verb('dürfen','иметь разрешение','Модальные','A2','darf,darfst,darf,dürfen,dürft,dürfen','могу,можешь,может,можем,можете,могут / можете','dürf','В единственном числе ü → a. Dürfen выражает разрешение; nicht dürfen — запрет («нельзя»).','Darf ich hier sitzen?','Можно мне здесь сесть?'),
 verb('sollen','следует • должен','Модальные','A2','soll,sollst,soll,sollen,sollt,sollen','должен,должен,должен,должны,должны,должны','soll','Основа не меняется. Sollen передаёт чужое поручение, совет или ожидание. Ich и er/sie/es совпадают.','Du sollst mehr Wasser trinken.','Тебе следует пить больше воды.'),
 verb('mögen','нравиться • любить','Модальные','A1','mag,magst,mag,mögen,mögt,mögen','люблю,любишь,любит,любим,любите,любят / любите','mög','В единственном числе основа mag-. Möchte — вежливое «хотел бы», форма Konjunktiv II от mögen, а не отдельный инфинитив.','Ich mag Musik.','Я люблю музыку.'),
-verb('wissen','знать (факт)','Неправильные','B1','weiß,weißt,weiß,wissen,wisst,wissen','знаю,знаешь,знает,знаем,знаете,знают / знаете','wiss','В единственном числе основа weiß-. Ich и er/sie/es совпадают. Wissen — знать факт; kennen — быть знакомым с человеком или местом.','Ich weiß, dass du recht hast.','Я знаю, что ты прав.')
+verb('wissen','знать (факт)','Неправильные','B1','weiß,weißt,weiß,wissen,wisst,wissen','знаю,знаешь,знает,знаем,знаете,знают / знаете','wiss','В единственном числе основа weiß-. Ich и er/sie/es совпадают. Wissen — знать факт; kennen — быть знакомым с человеком или местом.','Ich weiß, dass du recht hast.','Я знаю, что ты прав.'),
+...extraVerbs
 ];
-export function splitForm(v:Verb,index:number){const form=v.forms[index]; if(v.id==='sein')return {stem:form,ending:'',changed:true};const ends=v.group==='Модальные'||v.id==='wissen'?['','st','','en','t','en']:['e','st','t','en','t','en'];let ending=ends[index];if(v.id==='arbeiten'&&index===1)ending='est';if((v.id==='arbeiten'&&(index===2||index===4))||(v.id==='werden'&&index===4))ending='et';if(v.id==='wissen'&&index===1)ending='t';if(v.id==='heißen'&&index===1)ending='t';if(v.id==='lesen'&&index===1)ending='t';if(v.id==='essen'&&index===1)ending='t';if(v.id==='werden'&&index===1)ending='st';if(v.id==='werden'&&index===2)ending='';const stem=ending?form.slice(0,-ending.length):form;return {stem,ending,changed:stem!==v.stem};}
-
-
+export function splitForm(v:Verb,index:number){
+ const form=v.forms[index];if(v.id==='sein')return {stem:form,ending:'',changed:true};
+ const endings=v.group==='Модальные'||v.id==='wissen'?['','st','','en','t','en']:['e','st','t','en','t','en'];
+ let ending=endings[index];
+ if(index===1&&/[sßzx]$/.test(v.stem))ending='t';
+ if(v.id==='lesen'&&index===1)ending='t';
+ if(v.id==='werden'&&index===2)ending='';
+ if(form.startsWith(v.stem)&&['','e','st','t','en','n','est','et'].includes(form.slice(v.stem.length)))ending=form.slice(v.stem.length);
+ const stem=ending?form.slice(0,-ending.length):form;
+ return {stem,ending,changed:stem!==v.stem};
+}

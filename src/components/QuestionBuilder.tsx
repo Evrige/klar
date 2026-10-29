@@ -1,3 +1,5 @@
+import Select from './Select';
+import {useLocale} from '../i18n/Locale';
 import {useState} from 'react';
 import {ArrowDown,ArrowRight} from 'lucide-react';
 const examples=[
@@ -8,7 +10,9 @@ const examples=[
  {id:'prefix',label:'Отделяемая приставка',statement:'Du stehst um sieben Uhr auf.',ru:'Ты встаёшь в семь часов.',yes:['Stehst','du','um sieben Uhr','auf'],yesRu:'Ты встаёшь в семь часов?',wh:['Wann','stehst','du','auf'],whRu:'Когда ты встаёшь?'}
 ];
 export default function QuestionBuilder(){
+ const {t: _ui}=useLocale();
+
  const [example,setExample]=useState('learn'),[mode,setMode]=useState<'yes'|'wh'>('yes');
  const current=examples.find(e=>e.id===example)!;const words=current[mode];
- return <div className="question-builder rule-builder"><span className="eyebrow">ПРЕВРАТИТЕ УТВЕРЖДЕНИЕ В ВОПРОС</span><div className="builder-controls"><label>Конструкция<select value={example} onChange={e=>setExample(e.target.value)}>{examples.map(e=><option key={e.id} value={e.id}>{e.label}</option>)}</select></label><label>Тип вопроса<select value={mode} onChange={e=>setMode(e.target.value as 'yes'|'wh')}><option value="yes">Ответ да / нет</option><option value="wh">С вопросительным словом</option></select></label></div><div className="question-statement"><b lang="de">{current.statement}</b><ArrowRight size={18}/><span>{current.ru}</span></div><ArrowDown className="question-down" size={22}/><div className="question-output"><p lang="de">{words.map((word,i)=><span key={i} className={i===(mode==='yes'?0:1)?'question-verb':mode==='wh'&&i===0?'question-w':''}>{word}{i<words.length-1?' ':''}</span>)}?</p><ArrowRight size={21}/><strong>{mode==='yes'?current.yesRu:current.whRu}</strong></div><p>Выделенный зелёным — спрягаемый глагол. {mode==='yes'?'Ставим его в начало, затем подлежащее.':'Сначала вопросительное слово, затем глагол и подлежащее.'} Остальная часть глагольной рамки остаётся в конце.</p></div>;
+ return <div className="question-builder rule-builder"><span className="eyebrow">{_ui("ПРЕВРАТИТЕ УТВЕРЖДЕНИЕ В ВОПРОС")}</span><div className="builder-controls"><label>{_ui("Конструкция")}<Select value={example} onChange={e=>setExample(e.target.value)}>{_ui(examples.map(e=><option key={e.id} value={e.id}>{_ui(e.label)}</option>))}</Select></label><label>{_ui("Тип вопроса")}<Select value={mode} onChange={e=>setMode(e.target.value as 'yes'|'wh')}><option value="yes">{_ui("Ответ да / нет")}</option><option value="wh">{_ui("С вопросительным словом")}</option></Select></label></div><div className="question-statement"><b lang="de">{_ui(current.statement)}</b><ArrowRight size={18}/><span>{_ui(current.ru)}</span></div><ArrowDown className="question-down" size={22}/><div className="question-output"><p lang="de">{_ui(words.map((word,i)=><span key={i} className={i===(mode==='yes'?0:1)?'question-verb':mode==='wh'&&i===0?'question-w':''}>{_ui(word)}{_ui(i<words.length-1?' ':'')}</span>))}?</p><ArrowRight size={21}/><strong>{_ui(mode==='yes'?current.yesRu:current.whRu)}</strong></div><p>{_ui("Выделенный зелёным — спрягаемый глагол. ")}{_ui(mode==='yes'?'Ставим его в начало, затем подлежащее.':'Сначала вопросительное слово, затем глагол и подлежащее.')} {_ui(" Остальная часть глагольной рамки остаётся в конце.")}</p></div>;
 }

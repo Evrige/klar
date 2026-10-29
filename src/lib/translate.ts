@@ -12,18 +12,18 @@ export function findLocalTranslation(text:string):TranslationResult|undefined{
  const entry=[football,...sentences].find(s=>normalizeRussian(s.translation)===normalized);
  return entry?{russian:text.trim(),german:entry.german,source:'library',explanation:entry.explanation,sentence:entry}:undefined;
 }
-export async function translateRussian(text:string,{signal,fetcher=fetch}:{signal?:AbortSignal;fetcher?:typeof fetch}={}):Promise<TranslationResult>{
+export async function translateRussian(text:string,{signal,fetcher=fetch,sourceLanguage='ru'}:{signal?:AbortSignal;fetcher?:typeof fetch;sourceLanguage?:'ru'|'uk'}={}):Promise<TranslationResult>{
  const russian=text.trim();
  if(!russian)throw new Error('Напишите предложение на русском.');
  if(new TextEncoder().encode(russian).byteLength>500)throw new Error('Фраза слишком длинная. Разделите её на несколько предложений (до 500 байт за раз).');
- const local=findLocalTranslation(russian);if(local)return local;
- if(!/[а-яё]/i.test(russian))throw new Error('Введите исходную фразу на русском языке.');
+ const local=sourceLanguage==='ru'?findLocalTranslation(russian):normalizeRussian(russian)===normalizeRussian('Я вчора грав у футбол із друзями')?{russian,german:football.german,source:'library' as const}:undefined;if(local)return local;
+ if(!/[а-яёіїєґ]/i.test(russian))throw new Error(sourceLanguage==='uk'?'Введіть початкову фразу українською.':'Введите исходную фразу на русском языке.');
  const controller=new AbortController();
  const abort=()=>controller.abort();
  if(signal?.aborted)controller.abort();else signal?.addEventListener('abort',abort,{once:true});
  const timer=setTimeout(()=>controller.abort(),15000);
  try{
-  const response=await fetcher(`https://api.mymemory.translated.net/get?${new URLSearchParams({q:russian,langpair:'ru|de',mt:'1'})}`,{signal:controller.signal,credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store'});
+  const response=await fetcher(`https://api.mymemory.translated.net/get?${new URLSearchParams({q:russian,langpair:`${sourceLanguage}|de`,mt:'1'})}`,{signal:controller.signal,credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store'});
   if(response.status===429)throw new Error('Лимит онлайн-перевода временно исчерпан. Попробуйте позже; упражнения из библиотеки работают без сети.');
   if(!response.ok)throw new Error('Сервис перевода временно недоступен. Попробуйте ещё раз позже.');
   const data:unknown=await response.json();
