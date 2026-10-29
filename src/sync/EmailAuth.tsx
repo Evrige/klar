@@ -34,7 +34,7 @@ export function EmailAuth({options,onAuthenticated,authReturn}:{options:EmailOpt
             if(e.code==='AUTH_MAIL_NOT_CONFIGURED')setMessage(t('Отправка писем пока не настроена.','Надсилання листів ще не налаштовано.'));
             else if(e.status===429)setMessage(t('Слишком много попыток. Подождите и повторите.','Забагато спроб. Зачекайте й повторіть.'));
             else if(['INVALID_ORIGIN','INVALID_CALLBACK_URL','INVALID_REDIRECT_URL'].includes(e.code??''))setMessage(t('Адрес страницы не разрешён сервером. Откройте сайт по его основному адресу и обновите страницу.','Адресу сторінки не дозволено сервером. Відкрийте сайт за його основною адресою й оновіть сторінку.'));
-            else if(['USER_ALREADY_EXISTS','USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL'].includes(e.code??''))setMessage(t('Этот email уже зарегистрирован. Перейдите во вкладку «Вход».','Цей email уже зареєстровано. Перейдіть на вкладку «Вхід».'));
+            else if(['USER_ALREADY_EXISTS','USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL'].includes(e.code??''))setMessage(t('Этот email уже зарегистрирован. Войдите в аккаунт.','Цей email уже зареєстровано. Увійдіть до акаунта.'));
             else if(['PASSWORD_TOO_SHORT','PASSWORD_TOO_LONG'].includes(e.code??''))setMessage(t('Пароль должен содержать от 12 до 128 символов.','Пароль має містити від 12 до 128 символів.'));
             else if(e.status&&e.status>=500)setMessage(t('Сервер временно недоступен. Попробуйте позже.','Сервер тимчасово недоступний. Спробуйте пізніше.'));
             else if(mode==='login')setMessage(t('Не удалось войти. Проверьте email, пароль и соединение.','Не вдалося увійти. Перевірте email, пароль і з’єднання.'));
@@ -44,7 +44,6 @@ export function EmailAuth({options,onAuthenticated,authReturn}:{options:EmailOpt
     }
     const enabled=!!options.emailPassword;
     return <section className="account-section email-auth" aria-label={t('Вход по email и паролю','Вхід за email і паролем')}>
-        <div className="email-auth-tabs"><Button disabled={busy} variant={mode==='login'?'primary':'secondary'} onClick={()=>change('login')}>{t('Вход','Вхід')}</Button><Button disabled={busy} variant={mode==='register'?'primary':'secondary'} onClick={()=>change('register')}>{t('Регистрация','Реєстрація')}</Button></div>
         <form onSubmit={event=>void submit(event)}>
             {mode==='register'&&<label>{t('Имя','Ім’я')}<input name="name" autoComplete="name" required minLength={2} maxLength={80} value={name} onChange={e=>setName(e.target.value)} disabled={busy}/></label>}
             {mode!=='reset'&&<label>Email<input name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)} disabled={busy}/></label>}
@@ -53,6 +52,7 @@ export function EmailAuth({options,onAuthenticated,authReturn}:{options:EmailOpt
             {(mode==='register'||mode==='reset')&&<><p className="email-auth-hint">{t('От 12 до 128 символов.','Від 12 до 128 символів.')}</p><label>{t('Повторите пароль','Повторіть пароль')}<input name="confirm-password" type="password" autoComplete="new-password" required minLength={12} maxLength={128} value={repeat} onChange={e=>setRepeat(e.target.value)} disabled={busy}/></label></>}
             <Button type="submit" disabled={busy||!enabled||(mode==='forgot'&&!options.emailDelivery)}>{busy?t('Подождите…','Зачекайте…'):mode==='register'?t('Создать аккаунт','Створити акаунт'):mode==='forgot'?t('Отправить ссылку','Надіслати посилання'):mode==='reset'?t('Сохранить новый пароль','Зберегти новий пароль'):t('Войти','Увійти')}</Button>
         </form>
+        {mode==='login'?<p className="email-auth-switch">{t('Ещё нет аккаунта?','Ще немає акаунта?')} <Button type="button" variant="text" disabled={busy} onClick={()=>change('register')}>{t('Зарегистрироваться','Зареєструватися')}</Button></p>:mode==='register'?<p className="email-auth-switch">{t('Уже есть аккаунт?','Уже є акаунт?')} <Button type="button" variant="text" disabled={busy} onClick={()=>change('login')}>{t('Войти','Увійти')}</Button></p>:<p className="email-auth-switch"><Button type="button" variant="text" disabled={busy} onClick={()=>change('login')}>{t('Вернуться ко входу','Повернутися до входу')}</Button></p>}
         {message&&<p role="status">{message}</p>}
     </section>;
 }

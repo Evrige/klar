@@ -1,5 +1,7 @@
 # Klar: PostgreSQL, аккаунты и синхронизация
 
+Сборка API для Vercel: точка входа — `api/index.mjs`, прежний `api/index.ts` удалён. При ручном переносе файлов старую точку входа тоже нужно удалить. Серверная логика находится в `server/handler.ts`; `npm run build:server` собирает её вместе с локальными зависимостями и Prisma Client в `server/build/handler.mjs`. Артефакт генерируется при сборке и не коммитится. Команда Vercel в `vercel.json`: `npm run db:generate && npm run build:server && npm run build`. Проверка готовой функции обычным Node.js: `node scripts/check-server-build.mjs` с локальной `klar_test`.
+
 Отправка подтверждения email через Mailtrap: [пошаговая настройка](MAILTRAP-SETUP.md). SMTP и локальный Mailpit остаются резервными вариантами.
 
 Актуальная локальная конфигурация после переноса 29.10.2026: стандартный PostgreSQL пользователя на **127.0.0.1:5432**, базы **klar_dev/klar_test**, отдельная учётная запись приложения **klar_app**. Подключения уже записаны в локальном .env. При входе в pgAdmin под postgres обновите список Databases. Подтверждение email локально явно отключено (AUTH_REQUIRE_EMAIL_VERIFICATION=false). Исходные базы на 55432 и резервные копии в .local-postgres/backups сохранены для отката. Пример .env.example и Docker ниже остаются вариантом отдельного нового окружения на 55432.

@@ -1,4 +1,6 @@
 import {verbs} from './verbs.ts';
+import {vocabulary} from './vocabulary.ts';
+const vocabularyGlosses=new Map(vocabulary.map(word=>[word.word.replace(/^(der|die|das)\s+/i,'').toLocaleLowerCase('de-DE'),word.translation]));
 export type WordGloss={word:string;translation:string;note?:string;known:boolean};
 const source=`
 ich|я|я
@@ -121,6 +123,8 @@ export function sentenceGlosses(german:string,locale:'ru'|'uk'='ru'):WordGloss[]
    const meaning=verb.id==='lernen'?['учу / учусь','учишь / учишься','учит / учится','учим / учимся','учите / учитесь','учат / учатся'][formIndex]:verb.translations[formIndex];
    return {word,translation:meaning,note:pick(`Форма глагола ${verb.id} — ${verb.meaning}.`,`Форма дієслова ${verb.id}. Значення російською: ${verb.meaning}.`),known:true};
   }
+  const meaning=locale==='ru'?vocabularyGlosses.get(key):undefined;
+  if(meaning)return {word,translation:meaning,known:true};
   return {word,translation:pick('Нет проверенного перевода в словаре разбора','Немає перевіреного перекладу в словнику розбору'),known:false};
  });
 }
