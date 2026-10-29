@@ -11,4 +11,5 @@ preview*.png
 !.env.example
 .local-postgres/
 server/generated/
+server/build/
 coverage/

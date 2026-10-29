@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import {createServer} from 'node:http';
-import handler from '../api/index.ts';
+import handler from './handler.ts';
 import type {VercelRequest,VercelResponse} from './vercel.ts';
 export function createLocalServer(){
   return createServer(async(req,res)=>{
