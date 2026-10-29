@@ -1,0 +1,134 @@
+/* Tailwind component recipes. Keep selector order when editing overrides. */
+@layer components {
+  /* Accessible themed select, including its open list. */
+  .klar-select {
+    @apply relative;
+    @apply inline-flex;
+    @apply min-w-[0];
+    @apply max-w-full;
+    @apply [vertical-align:middle];
+  }
+
+  .klar-select>button {
+    @apply flex;
+    @apply items-center;
+    @apply justify-between;
+    @apply gap-3.5;
+    @apply w-full;
+    @apply min-w-[0];
+    @apply min-h-[41px];
+    @apply [border:1px_solid_var(--border)];
+    @apply bg-subtle;
+    @apply text-ink;
+    @apply p-[10px_12px];
+    @apply rounded-control;
+    @apply text-[12px];
+    @apply text-left;
+    @apply leading-[1.7];
+  }
+
+  .klar-select>button>span {
+    @apply overflow-hidden;
+    @apply text-ellipsis;
+    @apply whitespace-nowrap;
+  }
+
+  .klar-select>button>svg {
+    @apply shrink-0;
+    @apply text-muted;
+  }
+
+  .klar-select>button[aria-expanded=true] {
+    @apply [border-color:#9a83ad];
+    @apply [box-shadow:0_0_0_2px_#9a83ad24];
+  }
+
+  .klar-select>button:disabled {
+    @apply opacity-[.5];
+    @apply cursor-default;
+  }
+
+  .klar-select-popup {
+    @apply fixed;
+    @apply z-[90];
+    @apply overflow-y-auto;
+    @apply overscroll-contain;
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[11px];
+    @apply p-1.5;
+    @apply bg-panel;
+    @apply text-ink;
+    @apply [box-shadow:0_12px_35px_#0003];
+    @apply text-[12px];
+  }
+
+  .klar-select-popup>[role=option] {
+    @apply flex;
+    @apply items-center;
+    @apply justify-between;
+    @apply gap-3;
+    @apply p-[11px_12px];
+    @apply cursor-pointer;
+    @apply rounded-[7px];
+    @apply leading-[1.7];
+    @apply min-h-[39px];
+  }
+
+  .klar-select-popup>[role=option]>span {
+    @apply min-w-[0];
+    @apply [overflow-wrap:anywhere];
+  }
+
+  .klar-select-popup>[role=option]>svg {
+    @apply text-accent;
+    @apply shrink-0;
+  }
+
+  .klar-select-popup>.highlighted {
+    @apply bg-subtle;
+  }
+
+  .klar-select-popup>.selected {
+    @apply text-accent;
+    @apply font-semibold;
+  }
+
+  .klar-select-popup>.disabled {
+    @apply opacity-[.45];
+    @apply cursor-default;
+  }
+
+  .language-select .klar-select {
+    @apply w-[125px];
+  }
+
+  .language-select .klar-select>button {
+    @apply text-[11px];
+    @apply min-h-9.5;
+    @apply p-[8px_10px];
+  }
+
+  .verb-picker>.klar-select {
+    @apply w-full;
+    @apply m-[10px_0];
+  }
+
+  .builder-controls .klar-select,.speech-setting-fields .klar-select,.sentence-filters .klar-select {
+    @apply flex;
+    @apply w-full;
+    @apply mt-2;
+  }
+
+  .vocab-toolbar>.klar-select {
+    @apply min-w-[175px];
+  }
+
+  .verb-practice-toolbar .klar-select {
+    @apply min-w-[65px];
+  }
+
+  .speech-setting-fields .klar-select>button {
+    @apply text-[11px];
+  }
+
+}

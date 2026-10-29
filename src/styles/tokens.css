@@ -1,0 +1,16 @@
+/* Semantic colors resolve on .app, so portalled menus inherit the same theme. */
+@theme inline {
+  --color-panel: var(--panel);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--border);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-canvas: var(--bg);
+}
+
+@theme {
+  --spacing: 4px;
+  --radius-card: 14px;
+  --radius-control: 9px;
+}

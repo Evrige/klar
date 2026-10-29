@@ -1,0 +1,820 @@
+/* Tailwind component recipes. Keep selector order when editing overrides. */
+@layer components {
+  /* Compact desktop navigation and mobile bottom bar. */
+  .sidebar {
+    @apply p-[24px_17px_18px];
+    @apply w-58;
+    @apply gap-[0];
+  }
+
+  .main-shell {
+    @apply ml-58;
+  }
+
+  .sidebar .workspace-label {
+    @apply hidden;
+  }
+
+  .sidebar-subtitle {
+    @apply mb-[23px];
+    @apply text-[8px];
+    @apply leading-[1.8];
+  }
+
+  .sidebar .nav-item {
+    @apply min-h-9.5;
+    @apply p-[8px_10px];
+    @apply text-[11px];
+    @apply m-[0];
+    @apply gap-2.5;
+  }
+
+  .sidebar nav {
+    @apply gap-1;
+  }
+
+  .sidebar .sidebar-course {
+    @apply hidden;
+  }
+
+  .nav-trainers {
+    @apply mt-[5px];
+  }
+
+  .nav-trainers>summary {
+    @apply flex;
+    @apply items-center;
+    @apply gap-2.5;
+    @apply list-none;
+    @apply cursor-pointer;
+    @apply p-2.5;
+    @apply text-[11px];
+    @apply leading-[1.7];
+    @apply text-muted;
+  }
+
+  .nav-trainers>summary::-webkit-details-marker {
+    @apply hidden;
+  }
+
+  .nav-trainers>summary>span {
+    @apply flex-[1];
+  }
+
+  .nav-trainers[open]>summary>svg:last-child {
+    @apply [transform:rotate(180deg)];
+  }
+
+  .nav-trainers>.nav-item {
+    @apply pl-4.5;
+    @apply text-[10px];
+  }
+
+  .sidebar-xp {
+    @apply mt-[auto];
+    @apply p-[20px_9px_15px];
+    @apply [border-bottom:1px_solid_var(--border)];
+  }
+
+  .sidebar-xp>b {
+    @apply block;
+    @apply text-[12px];
+    @apply leading-[1.9];
+    @apply text-ink;
+  }
+
+  .sidebar-xp>small {
+    @apply block;
+    @apply text-[10px];
+    @apply text-muted;
+    @apply m-[6px_0_10px];
+  }
+
+  .sidebar .sidebar-bottom {
+    @apply pt-[15px];
+    @apply mt-[0];
+  }
+
+  .experience-panel {
+    @apply flex;
+    @apply items-start;
+    @apply gap-5;
+    @apply p-[25px];
+    @apply bg-panel;
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[15px];
+    @apply mb-6;
+  }
+
+  .experience-panel>svg {
+    @apply text-accent;
+    @apply shrink-0;
+  }
+
+  .experience-panel>div {
+    @apply flex-[1];
+  }
+
+  .experience-panel h2 {
+    @apply text-[23px];
+    @apply font-semibold;
+  }
+
+  .experience-panel p {
+    @apply text-[13px];
+    @apply text-muted;
+    @apply m-[12px_0];
+  }
+
+  .experience-panel small {
+    @apply text-[11px];
+    @apply text-muted;
+    @apply leading-[1.9];
+    @apply block;
+    @apply mt-[13px];
+  }
+
+  .achievement-tier {
+    @apply inline-block;
+    @apply text-[10px];
+    @apply text-accent;
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[5px];
+    @apply p-[3px_7px];
+    @apply mt-2;
+  }
+
+  .mobile-bottom-nav {
+    @apply hidden;
+  }
+
+  @media (max-width:1100px) {
+    .mini-lesson-grid {
+      @apply grid-cols-[repeat(2,minmax(0,1fr))];
+    }
+
+    .learning-mode-grid {
+      @apply grid-cols-[repeat(2,minmax(0,1fr))];
+    }
+
+    .adaptive-plan-grid {
+      @apply grid-cols-[1fr];
+    }
+
+    .adaptive-plan-grid>button {
+      @apply p-[23px];
+    }
+
+    .adaptive-plan-grid h3 {
+      @apply text-[20px];
+    }
+
+    .adaptive-plan-grid p {
+      @apply mb-[15px];
+    }
+
+    .learning-chunks {
+      @apply grid-cols-[1fr];
+    }
+
+    .mini-lesson-card p {
+      @apply min-h-[0];
+    }
+
+    .sidebar {
+      @apply w-53.5;
+      @apply p-[22px_13px];
+    }
+
+    .main-shell {
+      @apply ml-53.5;
+    }
+
+  }
+
+  @media (max-width:680px) {
+    .sidebar {
+      @apply left-3;
+      @apply right-3;
+      @apply bottom-[calc(76px_+_env(safe-area-inset-bottom,0px))];
+      @apply top-[auto];
+      @apply h-auto;
+      @apply max-h-[calc(100dvh_-_130px)];
+      @apply w-auto;
+      @apply p-[38px_16px_16px];
+      @apply [border:1px_solid_var(--border)];
+      @apply rounded-[18px];
+      @apply [transform:translateY(110%)];
+      @apply invisible;
+      @apply overflow-y-auto;
+      @apply [box-shadow:0_-10px_50px_#0003];
+    }
+
+    .sidebar.open {
+      @apply [transform:translateY(0)];
+      @apply visible;
+    }
+
+    .sidebar>.brand,.sidebar>.sidebar-subtitle,.sidebar>.sidebar-bottom,.sidebar>.sidebar-xp {
+      @apply hidden;
+    }
+
+    .sidebar .mobile-close {
+      @apply top-1.5;
+      @apply right-2.5;
+      @apply w-8;
+      @apply h-8;
+    }
+
+    .sidebar nav {
+      @apply grid;
+      @apply grid-cols-[repeat(2,minmax(0,1fr))];
+      @apply gap-1.5;
+    }
+
+    .sidebar .nav-item {
+      @apply min-h-11;
+      @apply p-2.5;
+      @apply text-[11px];
+    }
+
+    .nav-trainers {
+      @apply col-[1/-1];
+      @apply [border-top:1px_solid_var(--border)];
+      @apply pt-2;
+    }
+
+    .nav-trainers>.nav-item {
+      @apply pl-3.5;
+    }
+
+    .nav-trainers>summary {
+      @apply text-[12px];
+    }
+
+    .main-shell {
+      @apply ml-[0];
+    }
+
+    .mobile-menu {
+      @apply hidden;
+    }
+
+    .mobile-bottom-nav {
+      @apply grid;
+      @apply grid-cols-[repeat(5,minmax(0,1fr))];
+      @apply fixed;
+      @apply bottom-[0];
+      @apply left-[0];
+      @apply right-[0];
+      @apply z-[22];
+      @apply p-[8px_6px_calc(8px_+_env(safe-area-inset-bottom,0px))];
+      @apply bg-panel;
+      @apply [border-top:1px_solid_var(--border)];
+      @apply [box-shadow:0_-4px_20px_#00000008];
+    }
+
+    .mobile-bottom-nav>button {
+      @apply flex;
+      @apply flex-col;
+      @apply justify-center;
+      @apply items-center;
+      @apply gap-[5px];
+      @apply min-h-11;
+      @apply [background:transparent];
+      @apply text-muted;
+      @apply rounded-control;
+      @apply text-[9px];
+    }
+
+    .mobile-bottom-nav>button.active {
+      @apply text-accent;
+      @apply bg-subtle;
+    }
+
+    main {
+      @apply pb-22.5;
+    }
+
+    .back-to-top {
+      @apply bottom-[calc(88px_+_env(safe-area-inset-bottom,0px))];
+    }
+
+    .pwa-message {
+      @apply bottom-[calc(84px_+_env(safe-area-inset-bottom,0px))];
+    }
+
+    .app:has(.pwa-message) .back-to-top {
+      @apply bottom-60;
+    }
+
+    .mini-lesson-grid {
+      @apply grid-cols-[1fr];
+    }
+
+    .mini-lesson-card {
+      @apply p-[21px];
+    }
+
+    .mini-lesson-card h3 {
+      @apply text-[20px];
+    }
+
+    .learning-home-banner {
+      @apply p-4;
+      @apply gap-2.5;
+    }
+
+    .learning-home-banner b {
+      @apply text-[13px];
+    }
+
+    .learning-home-banner small {
+      @apply text-[10px];
+    }
+
+    .learning-center-tabs {
+      @apply gap-1.5;
+    }
+
+    .learning-center-tabs>button {
+      @apply text-[11px];
+      @apply p-[9px_10px];
+    }
+
+    .learning-section-heading h2 {
+      @apply text-[22px];
+    }
+
+    .learning-panel {
+      @apply p-[20px_15px];
+    }
+
+    .learning-panel>h3 {
+      @apply text-[19px];
+    }
+
+    .learning-panel h4 {
+      @apply text-[17px];
+    }
+
+    .learning-prose {
+      @apply text-[13px];
+    }
+
+    .learning-dialogue {
+      @apply gap-[9px];
+    }
+
+    .learning-dialogue>span {
+      @apply w-10;
+      @apply text-[9px];
+    }
+
+    .learning-dialogue p {
+      @apply text-[17px];
+    }
+
+    .learning-dialogue small {
+      @apply text-[11px];
+    }
+
+    .learning-dialogue>.icon-button {
+      @apply p-[5px];
+    }
+
+    .learning-actions .primary,.learning-actions .secondary {
+      @apply text-[11px];
+      @apply p-[11px_12px];
+    }
+
+    .learning-review-summary {
+      @apply gap-[17px];
+      @apply p-5;
+    }
+
+    .learning-review-summary>.primary {
+      @apply m-[0];
+      @apply w-full;
+      @apply justify-center;
+    }
+
+    .learning-mode-grid>button {
+      @apply text-[11px];
+      @apply p-2.5;
+    }
+
+    .learning-word-prompt {
+      @apply text-[27px];
+    }
+
+    .learning-lesson-intro h2 {
+      @apply text-[26px];
+    }
+
+    .noun-guide-heading {
+      @apply text-[17px];
+      @apply gap-[9px];
+    }
+
+    .noun-guide-examples {
+      @apply grid-cols-[1fr];
+    }
+
+    .noun-guide-examples>article {
+      @apply p-4.5;
+    }
+
+    .noun-guide-examples button {
+      @apply absolute;
+      @apply right-[17px];
+      @apply top-[17px];
+      @apply m-[0];
+    }
+
+    .noun-guide-pairs>span {
+      @apply text-[16px];
+      @apply w-full;
+    }
+
+    .noun-guide .lesson-steps {
+      @apply text-[12px];
+    }
+
+    .learning-mode-grid>.learning-panel {
+      @apply p-[17px_13px];
+    }
+
+    .learning-mode-grid>.learning-panel>h3 {
+      @apply text-[13px];
+    }
+
+    .language-select .klar-select {
+      @apply w-[115px];
+    }
+
+    .experience-panel {
+      @apply p-[20px_16px];
+      @apply gap-3;
+    }
+
+    .experience-panel h2 {
+      @apply text-[21px];
+    }
+
+  }
+
+  .vocab-plural {
+    @apply flex;
+    @apply items-center;
+    @apply justify-center;
+    @apply gap-[9px];
+    @apply text-[19px];
+    @apply text-accent;
+    @apply leading-[1.9];
+    @apply m-[12px_0];
+  }
+
+  .vocab-plural>span {
+    @apply text-[10px];
+    @apply text-muted;
+  }
+
+  .verb-principal-forms {
+    @apply bg-subtle;
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[10px];
+    @apply p-[15px];
+    @apply m-[20px_0];
+  }
+
+  .verb-principal-forms>span {
+    @apply block;
+    @apply text-[10px];
+    @apply text-muted;
+    @apply mb-[7px];
+  }
+
+  .verb-principal-forms>b {
+    @apply block;
+    @apply text-[17px];
+    @apply font-[550];
+    @apply leading-[1.9];
+    @apply [overflow-wrap:anywhere];
+  }
+
+  .verb-principal-forms>small {
+    @apply block;
+    @apply text-[10px];
+    @apply leading-[1.9];
+    @apply text-muted;
+    @apply mt-[9px];
+  }
+
+  .verb-principal-forms>p {
+    @apply text-[12px];
+    @apply leading-[1.9];
+    @apply text-accent;
+    @apply mt-[11px];
+  }
+
+  .nav-trainers>summary.active {
+    @apply text-accent;
+    @apply bg-subtle;
+    @apply rounded-control;
+  }
+
+  .evolution-card {
+    --medal-a:#d5a275;
+    --medal-b:#81502e;
+    --medal-ink:#6b3f20;
+    --medal-glow:#c792581a;
+    @apply relative;
+    @apply overflow-hidden;
+    @apply [background:radial-gradient(circle_at_100%_0%,var(--medal-glow),transparent_65%),var(--panel)];
+    @apply [border-color:color-mix(in_srgb,var(--medal-a)_45%,var(--border))];
+    @apply p-6.5;
+  }
+
+  .evolution-card:before {
+    @apply [content:''];
+    @apply absolute;
+    @apply left-[0];
+    @apply right-[0];
+    @apply top-[0];
+    @apply h-[3px];
+    @apply [background:linear-gradient(90deg,var(--medal-b),var(--medal-a),var(--medal-b))];
+  }
+
+  .rank-locked {
+    --medal-a:#c7c9cc;
+    --medal-b:#9b9ea6;
+    --medal-ink:#7e8388;
+    --medal-glow:transparent;
+    @apply border-line;
+  }
+
+  .rank-locked:before {
+    @apply opacity-[.25];
+  }
+
+  .rank-silver {
+    --medal-a:#e8edf4;
+    --medal-b:#8797aa;
+    --medal-ink:#536579;
+    --medal-glow:#94a6bf20;
+  }
+
+  .rank-gold {
+    --medal-a:#f7dfa0;
+    --medal-b:#c4902c;
+    --medal-ink:#896011;
+    --medal-glow:#dbba4f24;
+  }
+
+  .rank-diamond {
+    --medal-a:#d5f3ff;
+    --medal-b:#83a1de;
+    --medal-ink:#5560a2;
+    --medal-glow:#9dafe935;
+  }
+
+  .evolution-top {
+    @apply flex;
+    @apply justify-between;
+    @apply items-start;
+    @apply gap-3;
+  }
+
+  .evolution-emblem {
+    @apply w-19;
+    @apply h-19;
+    @apply rounded-[24px];
+    @apply [background:linear-gradient(140deg,var(--medal-a),var(--medal-b))];
+    @apply [color:var(--medal-ink)];
+    @apply [box-shadow:inset_0_1px_1px_#fff9,0_7px_21px_var(--medal-glow)];
+    @apply mb-6;
+    @apply [border:1px_solid_#ffffff25];
+  }
+
+  .rank-diamond .evolution-emblem {
+    @apply rounded-[23px_23px_29px_29px];
+    @apply [background:linear-gradient(135deg,#d5f3ff_0%,#b5d7f0_35%,#e1d8fa_60%,#90afe8_100%)];
+    @apply [color:#5e6aaf];
+    @apply [box-shadow:0_0_22px_#b5cafc3a,inset_0_1px_1px_#fff];
+  }
+
+  .rank-locked .evolution-emblem {
+    @apply bg-subtle;
+    @apply text-muted;
+    @apply [box-shadow:none];
+  }
+
+  .evolution-rank {
+    @apply text-[10px];
+    @apply leading-[1.7];
+    @apply [border:1px_solid_color-mix(in_srgb,var(--medal-a)_45%,var(--border))];
+    @apply p-[5px_9px];
+    @apply rounded-[7px];
+    @apply text-ink;
+    @apply bg-subtle;
+    @apply mt-1.5;
+  }
+
+  .evolution-card>p {
+    @apply min-h-11;
+    @apply m-[10px_0_17px];
+  }
+
+  .evolution-current {
+    @apply flex;
+    @apply gap-2.5;
+    @apply items-center;
+    @apply m-[20px_0];
+  }
+
+  .evolution-current>b {
+    @apply text-[35px];
+    @apply tracking-[-1px];
+    @apply font-[650];
+    @apply text-ink;
+  }
+
+  .evolution-current>span {
+    @apply text-[10px];
+    @apply leading-[1.8];
+    @apply text-muted;
+    @apply max-w-[125px];
+  }
+
+  .evolution-next {
+    @apply flex;
+    @apply items-center;
+    @apply justify-between;
+    @apply gap-2.5;
+    @apply m-[21px_0_11px];
+    @apply pt-[15px];
+    @apply [border-top:1px_solid_var(--border)];
+  }
+
+  .evolution-next>span {
+    @apply text-[10px];
+    @apply leading-[1.8];
+    @apply text-muted;
+  }
+
+  .evolution-next>b {
+    @apply text-[13px];
+    @apply whitespace-nowrap;
+    @apply font-[550];
+  }
+
+  .evolution-card .progress-track>div {
+    @apply [background:linear-gradient(90deg,var(--medal-b),var(--medal-a))];
+  }
+
+  .evolution-progress {
+    @apply mt-[9px];
+  }
+
+  .evolution-card .achievement-date {
+    @apply block;
+    @apply mt-[13px];
+    @apply text-muted;
+  }
+
+  .achievement-evolution-legend {
+    @apply flex;
+    @apply gap-3.5;
+    @apply items-center;
+    @apply flex-wrap;
+    @apply m-[7px_0_26px];
+  }
+
+  .evolution-label {
+    @apply flex;
+    @apply items-center;
+    @apply gap-[7px];
+    @apply text-[11px];
+    @apply text-muted;
+  }
+
+  .evolution-label>i {
+    @apply w-3;
+    @apply h-3;
+    @apply rounded-[4px];
+    @apply [background:linear-gradient(135deg,#e0b28b,#9f6b40)];
+  }
+
+  .evolution-label.silver>i {
+    @apply [background:linear-gradient(135deg,#edf1f6,#91a0b4)];
+  }
+
+  .evolution-label.gold>i {
+    @apply [background:linear-gradient(135deg,#f3dda1,#c3953a)];
+  }
+
+  .evolution-label.diamond>i {
+    @apply [background:linear-gradient(135deg,#d5f3ff,#b6a8e8)];
+    @apply [box-shadow:0_0_8px_#a6bde836];
+  }
+
+  .evolution-label>b {
+    @apply font-normal;
+    @apply text-muted;
+    @apply ml-1.5;
+  }
+
+  .achievement-evolution-legend .evolution-label {
+    @apply [background:transparent];
+    @apply p-[0];
+  }
+
+  .dark .evolution-card {
+    @apply [background:radial-gradient(circle_at_100%_0%,var(--medal-glow),transparent_65%),var(--panel)];
+  }
+
+  .dark .rank-silver {
+    --medal-glow:#97acc318;
+  }
+
+  .dark .rank-gold {
+    --medal-glow:#c69c3321;
+  }
+
+  .dark .rank-diamond {
+    --medal-glow:#879ad326;
+  }
+
+  @media (max-width:680px) {
+    .evolution-card {
+      @apply p-[20px_14px];
+    }
+
+    .evolution-emblem {
+      @apply w-[59px];
+      @apply h-[59px];
+      @apply rounded-[19px];
+    }
+
+    .rank-diamond .evolution-emblem {
+      @apply rounded-[18px];
+    }
+
+    .evolution-top {
+      @apply gap-1.5;
+    }
+
+    .evolution-rank {
+      @apply text-[8px];
+      @apply p-[4px_6px];
+    }
+
+    .evolution-card>p {
+      @apply min-h-14.5;
+    }
+
+    .evolution-current {
+      @apply block;
+      @apply m-[15px_0];
+    }
+
+    .evolution-current>b {
+      @apply text-[31px];
+    }
+
+    .evolution-current>span {
+      @apply block;
+      @apply mt-[5px];
+    }
+
+    .evolution-next {
+      @apply flex-wrap;
+      @apply gap-[3px];
+    }
+
+    .evolution-next>span {
+      @apply text-[9px];
+    }
+
+    .evolution-next>b {
+      @apply text-[12px];
+    }
+
+    .achievement-evolution-legend {
+      @apply gap-[9px];
+    }
+
+    .evolution-label {
+      @apply text-[10px];
+    }
+
+  }
+
+  .app-version {
+    @apply text-muted;
+    @apply text-[12px];
+    @apply whitespace-nowrap;
+  }
+
+}

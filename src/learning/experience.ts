@@ -1,0 +1,1 @@
+export function experienceLevel(xp:number){const safe=Math.max(0,Math.floor(xp));const level=Math.floor(Math.sqrt(safe/100))+1;const start=(level-1)**2*100;const next=level**2*100;return {level,xp:safe,start,next,percent:(safe-start)/(next-start)*100};}

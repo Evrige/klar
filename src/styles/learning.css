@@ -1,0 +1,666 @@
+/* Tailwind component recipes. Keep selector order when editing overrides. */
+@layer components {
+  /* Learning centre */
+  [hidden] {
+    @apply hidden!;
+  }
+
+  .learning-home-banner {
+    @apply flex;
+    @apply items-center;
+    @apply gap-[15px];
+    @apply w-full;
+    @apply [border:1px_solid_var(--border)];
+    @apply [background:linear-gradient(125deg,var(--panel),var(--subtle))];
+    @apply text-ink;
+    @apply rounded-[15px];
+    @apply p-[18px_21px];
+    @apply mb-[25px];
+    @apply text-left;
+  }
+
+  .learning-home-banner>svg {
+    @apply text-accent;
+    @apply shrink-0;
+  }
+
+  .learning-home-banner>span {
+    @apply flex-[1];
+  }
+
+  .learning-home-banner b {
+    @apply text-[14px];
+    @apply leading-[1.7];
+  }
+
+  .learning-home-banner small {
+    @apply block;
+    @apply text-[11px];
+    @apply text-muted;
+    @apply leading-[1.8];
+    @apply mt-[5px];
+  }
+
+  .learning-center-tabs {
+    @apply flex;
+    @apply gap-[7px];
+    @apply flex-wrap;
+    @apply [border-bottom:1px_solid_var(--border)];
+    @apply pb-4;
+    @apply mb-[27px];
+  }
+
+  .learning-center-tabs>button,.learning-task-tabs>button {
+    @apply flex;
+    @apply items-center;
+    @apply gap-[7px];
+    @apply bg-panel;
+    @apply [border:1px_solid_var(--border)];
+    @apply text-muted;
+    @apply p-[11px_14px];
+    @apply rounded-control;
+    @apply text-[12px];
+    @apply leading-[1.6];
+  }
+
+  .learning-center-tabs>button.active,.learning-task-tabs>button.active {
+    @apply bg-subtle;
+    @apply [border-color:#87a18a];
+    @apply text-accent;
+  }
+
+  .learning-center-tabs small {
+    @apply text-[10px];
+    @apply bg-subtle;
+    @apply p-[1px_5px];
+    @apply rounded-[5px];
+  }
+
+  .learning-section-heading h2 {
+    @apply text-[23px];
+    @apply font-semibold;
+    @apply leading-[1.5];
+  }
+
+  .learning-section-heading>p {
+    @apply text-[12px];
+    @apply leading-[1.9];
+    @apply text-muted;
+    @apply m-[11px_0_22px];
+  }
+
+  .mini-lesson-grid {
+    @apply grid;
+    @apply grid-cols-[repeat(3,minmax(0,1fr))];
+    @apply gap-4;
+  }
+
+  .mini-lesson-card {
+    @apply relative;
+    @apply text-left;
+    @apply [border:1px_solid_var(--border)];
+    @apply bg-panel;
+    @apply text-ink;
+    @apply rounded-[17px];
+    @apply p-6;
+  }
+
+  .mini-lesson-card>svg:nth-child(2) {
+    @apply block;
+    @apply text-accent;
+    @apply m-[20px_0_15px];
+  }
+
+  .mini-lesson-card>svg:last-child {
+    @apply absolute;
+    @apply right-[21px];
+    @apply bottom-[23px];
+    @apply text-muted;
+  }
+
+  .mini-lesson-card h3 {
+    @apply text-[19px];
+    @apply font-semibold;
+    @apply leading-[1.5];
+    @apply mb-[11px];
+  }
+
+  .mini-lesson-card p {
+    @apply text-[12px];
+    @apply text-muted;
+    @apply leading-[1.9];
+    @apply min-h-[67px];
+    @apply mb-[21px];
+  }
+
+  .mini-lesson-card small {
+    @apply block;
+    @apply text-[10px];
+    @apply text-muted;
+    @apply mt-3;
+  }
+
+  .mini-lesson-card.complete {
+    @apply [border-color:#8da682];
+  }
+
+  .learning-lesson-intro {
+    @apply m-[23px_0];
+  }
+
+  .learning-lesson-intro h2 {
+    @apply text-[29px];
+    @apply font-semibold;
+    @apply m-[14px_0];
+  }
+
+  .learning-lesson-intro p {
+    @apply text-[14px];
+    @apply leading-[1.8];
+    @apply text-muted;
+  }
+
+  .learning-panel {
+    @apply [border:1px_solid_var(--border)];
+    @apply bg-panel;
+    @apply text-ink;
+    @apply rounded-[16px];
+    @apply p-[25px];
+    @apply m-[18px_0];
+  }
+
+  .learning-panel>h3 {
+    @apply flex;
+    @apply items-center;
+    @apply gap-2.5;
+    @apply text-[21px];
+    @apply font-semibold;
+    @apply leading-[1.5];
+    @apply mb-[19px];
+  }
+
+  .learning-panel>h3>svg {
+    @apply text-accent;
+    @apply shrink-0;
+  }
+
+  .learning-panel h4 {
+    @apply text-[18px];
+    @apply font-[550];
+    @apply leading-[1.8];
+    @apply m-[17px_0];
+  }
+
+  .learning-actions {
+    @apply flex;
+    @apply items-center;
+    @apply gap-2.5;
+    @apply flex-wrap;
+    @apply m-[16px_0];
+  }
+
+  .learning-actions .primary,.learning-actions .secondary {
+    @apply text-[12px];
+  }
+
+  .learning-prose {
+    @apply text-[14px];
+    @apply leading-[2];
+    @apply text-muted;
+    @apply m-[15px_0];
+  }
+
+  .learning-dialogue {
+    @apply flex;
+    @apply items-start;
+    @apply gap-4;
+    @apply [border-bottom:1px_solid_var(--border)];
+    @apply p-[19px_0];
+  }
+
+  .learning-dialogue>span {
+    @apply text-accent;
+    @apply text-[11px];
+    @apply w-[55px];
+    @apply shrink-0;
+    @apply leading-[1.9];
+  }
+
+  .learning-dialogue>div {
+    @apply flex-[1];
+    @apply min-w-[0];
+  }
+
+  .learning-dialogue p {
+    @apply text-[19px];
+    @apply leading-[1.8];
+  }
+
+  .learning-dialogue small {
+    @apply block;
+    @apply text-[12px];
+    @apply text-muted;
+    @apply leading-[1.9];
+    @apply mt-[7px];
+  }
+
+  .learning-chunks {
+    @apply grid;
+    @apply grid-cols-[repeat(3,minmax(0,1fr))];
+    @apply gap-3;
+    @apply mb-5;
+  }
+
+  .learning-chunks>article {
+    @apply p-[17px];
+    @apply [border:1px_solid_var(--border)];
+    @apply bg-subtle;
+    @apply rounded-[11px];
+  }
+
+  .learning-chunks b {
+    @apply text-[17px];
+    @apply font-[550];
+    @apply leading-[1.8];
+  }
+
+  .learning-chunks p {
+    @apply text-[12px];
+    @apply leading-[1.9];
+    @apply text-muted;
+    @apply m-[8px_0_13px];
+  }
+
+  .learning-note {
+    @apply text-[12px];
+    @apply leading-[1.9];
+    @apply p-[16px_18px];
+    @apply bg-subtle;
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[10px];
+    @apply m-[17px_0];
+    @apply text-muted;
+  }
+
+  .learning-note p[lang=de] {
+    @apply text-[19px];
+    @apply text-ink;
+    @apply mb-2.5;
+  }
+
+  .learning-note small {
+    @apply text-[11px];
+  }
+
+  .learning-task-tabs {
+    @apply flex;
+    @apply flex-wrap;
+    @apply gap-2;
+    @apply m-[18px_0];
+  }
+
+  .learning-answer-label {
+    @apply block;
+    @apply text-[12px];
+    @apply text-muted;
+    @apply leading-[1.9];
+    @apply m-[20px_0_15px];
+  }
+
+  .learning-answer-label>input {
+    @apply block;
+    @apply w-full;
+    @apply [border:1px_solid_var(--border)];
+    @apply bg-subtle;
+    @apply rounded-control;
+    @apply p-[13px_15px];
+    @apply text-ink;
+    @apply text-[18px];
+    @apply mt-[9px];
+    @apply min-w-[0];
+  }
+
+  .learning-exercise .feedback {
+    @apply mt-5;
+  }
+
+  .learning-finished {
+    @apply text-center;
+    @apply p-[32px_22px];
+    @apply [border:1px_solid_#8aa17e];
+    @apply rounded-[15px];
+    @apply bg-panel;
+    @apply m-[22px_0];
+  }
+
+  .learning-finished>svg {
+    @apply m-[0_auto_14px];
+    @apply text-accent;
+  }
+
+  .learning-finished h3 {
+    @apply text-[23px];
+    @apply font-semibold;
+    @apply leading-[1.7];
+  }
+
+  .learning-finished p {
+    @apply text-[13px];
+    @apply text-muted;
+    @apply leading-[1.9];
+    @apply m-[12px_0_19px];
+  }
+
+  .learning-finished>.primary {
+    @apply m-[auto];
+  }
+
+  .voice-recorder audio {
+    @apply w-full;
+    @apply max-w-110;
+    @apply mt-3;
+  }
+
+  .voice-recorder>p[role=status] {
+    @apply text-[12px];
+    @apply text-accent;
+  }
+
+  .voice-recorder>p[role=alert] {
+    @apply text-[12px];
+    @apply leading-[1.8];
+    @apply [color:#b97c57];
+  }
+
+  .learning-mode-grid {
+    @apply grid;
+    @apply grid-cols-[repeat(4,minmax(0,1fr))];
+    @apply gap-2.5;
+    @apply m-[20px_0];
+  }
+
+  .learning-mode-grid>button {
+    @apply min-h-[67px];
+    @apply text-center;
+    @apply bg-panel;
+    @apply text-muted;
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[11px];
+    @apply p-[15px];
+    @apply text-[12px];
+    @apply leading-[1.8];
+  }
+
+  .learning-mode-grid>button.active {
+    @apply [border-color:#8aa681];
+    @apply bg-subtle;
+    @apply text-accent;
+  }
+
+  .learning-mode-grid>.learning-panel {
+    @apply m-[0];
+    @apply p-5;
+  }
+
+  .learning-mode-grid>.learning-panel>h3 {
+    @apply text-[15px];
+    @apply min-h-[47px];
+    @apply leading-[1.7];
+  }
+
+  .learning-mode-grid>.learning-panel>p {
+    @apply text-[11px];
+    @apply text-muted;
+    @apply leading-[1.9];
+    @apply mt-2;
+  }
+
+  .learning-big-number {
+    @apply text-[35px];
+    @apply font-semibold;
+    @apply text-accent;
+  }
+
+  .learning-review-summary {
+    @apply flex;
+    @apply items-center;
+    @apply gap-7.5;
+    @apply flex-wrap;
+    @apply bg-panel;
+    @apply [border:1px_solid_var(--border)];
+    @apply p-[23px];
+    @apply rounded-card;
+    @apply m-[21px_0];
+  }
+
+  .learning-review-summary>span {
+    @apply text-[12px];
+    @apply text-muted;
+    @apply leading-[1.8];
+  }
+
+  .learning-review-summary b {
+    @apply text-[27px];
+    @apply text-ink;
+    @apply block;
+    @apply mb-1;
+  }
+
+  .learning-review-summary>.primary {
+    @apply ml-[auto];
+  }
+
+  .learning-word-prompt {
+    @apply text-[32px];
+    @apply leading-[1.8];
+    @apply m-[24px_0_14px];
+  }
+
+  .learning-panel>p {
+    @apply leading-[1.9];
+  }
+
+  .learning-checkbox {
+    @apply flex;
+    @apply items-center;
+    @apply gap-2.5;
+    @apply text-[12px];
+    @apply text-muted;
+  }
+
+  .learning-checkbox>input {
+    @apply w-[17px];
+    @apply h-[17px];
+    @apply [accent-color:#6b8c65];
+  }
+
+  .mistake-list {
+    @apply grid;
+    @apply gap-[13px];
+  }
+
+  .mistake-list>article {
+    @apply bg-panel;
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[13px];
+    @apply p-[21px];
+  }
+
+  .mistake-list h3 {
+    @apply text-[17px];
+    @apply leading-[1.9];
+    @apply m-[13px_0];
+  }
+
+  .mistake-list p {
+    @apply text-[12px];
+    @apply text-muted;
+    @apply leading-[1.9];
+    @apply [overflow-wrap:anywhere];
+  }
+
+  .mistake-list small {
+    @apply block;
+    @apply text-[11px];
+    @apply text-muted;
+    @apply m-[12px_0];
+  }
+
+  .mistake-list>.secondary {
+    @apply mt-3;
+  }
+
+  .learning-backup {
+    @apply [border-top:1px_solid_var(--border)];
+    @apply mt-7.5;
+    @apply p-[20px_0];
+  }
+
+  .learning-backup summary {
+    @apply text-[12px];
+    @apply text-muted;
+    @apply cursor-pointer;
+    @apply leading-[1.8];
+  }
+
+  .learning-backup>p {
+    @apply text-[12px];
+    @apply leading-[1.9];
+    @apply text-muted;
+    @apply mt-4;
+  }
+
+  .adaptive-plan-grid {
+    @apply grid;
+    @apply grid-cols-[repeat(3,minmax(0,1fr))];
+    @apply gap-[15px];
+  }
+
+  .adaptive-plan-grid>button {
+    @apply relative;
+    @apply p-6;
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[17px];
+    @apply text-ink;
+    @apply bg-panel;
+    @apply text-left;
+  }
+
+  .adaptive-plan-grid small {
+    @apply block;
+    @apply text-[10px];
+    @apply text-muted;
+    @apply m-[18px_0_10px];
+  }
+
+  .adaptive-plan-grid h3 {
+    @apply text-[20px];
+    @apply font-semibold;
+    @apply leading-[1.6];
+    @apply mb-[11px];
+  }
+
+  .adaptive-plan-grid p {
+    @apply text-[12px];
+    @apply text-muted;
+    @apply leading-[1.9];
+    @apply mb-[25px];
+  }
+
+  .adaptive-plan-grid>button>svg {
+    @apply text-accent;
+  }
+
+  .noun-guide-heading {
+    @apply flex;
+    @apply items-center;
+    @apply gap-3;
+    @apply w-full;
+    @apply text-ink;
+    @apply [background:transparent];
+    @apply text-left;
+    @apply text-[19px];
+    @apply font-semibold;
+    @apply leading-[1.7];
+  }
+
+  .noun-guide-heading>svg {
+    @apply text-accent;
+    @apply shrink-0;
+  }
+
+  .noun-guide-heading>span:nth-child(2) {
+    @apply flex-[1];
+  }
+
+  .noun-guide-examples {
+    @apply grid;
+    @apply grid-cols-[repeat(3,1fr)];
+    @apply gap-3;
+    @apply m-[23px_0];
+  }
+
+  .noun-guide-examples>article {
+    @apply relative;
+    @apply bg-subtle;
+    @apply [border:1px_solid_var(--border)];
+    @apply p-5;
+    @apply rounded-[12px];
+  }
+
+  .noun-guide-examples b {
+    @apply text-[22px];
+  }
+
+  .noun-guide-examples p {
+    @apply text-[13px];
+    @apply text-muted;
+    @apply m-[10px_0];
+  }
+
+  .noun-guide-examples small {
+    @apply text-[11px];
+    @apply text-muted;
+  }
+
+  .noun-guide-examples button {
+    @apply block;
+    @apply mt-[15px];
+  }
+
+  .noun-guide-pairs {
+    @apply flex;
+    @apply gap-3;
+    @apply flex-wrap;
+    @apply m-[20px_0];
+  }
+
+  .noun-guide-pairs>span {
+    @apply flex;
+    @apply items-center;
+    @apply gap-2.5;
+    @apply p-[12px_15px];
+    @apply [border:1px_solid_var(--border)];
+    @apply rounded-[10px];
+    @apply bg-subtle;
+    @apply text-[17px];
+  }
+
+  .noun-guide>h3 {
+    @apply mt-6;
+  }
+
+  .rule-note {
+    @apply items-center;
+  }
+
+  .rule-note>svg {
+    @apply shrink-0;
+    @apply self-center;
+  }
+
+  .rule-note>p {
+    @apply m-[0];
+  }
+
+}
