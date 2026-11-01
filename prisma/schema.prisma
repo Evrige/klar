@@ -564,6 +564,7 @@ model Season {
 }
 
 model QueueEntry {
+  searchType String @default("AUTO")
   id        String      @id @default(uuid())
   userId    String
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -572,12 +573,15 @@ model QueueEntry {
   mode      RaceMode
   level     String
   ranked    Boolean
+  scoring   String      @default("FIRST_CORRECT")
+  questionCount Int     @default(1)
   status    QueueStatus @default(WAITING)
   expiresAt DateTime    @db.Timestamptz(3)
   createdAt DateTime    @default(now()) @db.Timestamptz(3)
   matchId   String?
 
-  @@index([seasonId, mode, level, ranked, status, createdAt])
+  @@index([searchType, status, expiresAt, createdAt], map:"QueueEntry_open_games_idx")
+  @@index([seasonId, mode, level, ranked, scoring, questionCount, status, createdAt], map:"QueueEntry_matchmaking_idx")
 }
 
 model Match {
@@ -587,6 +591,8 @@ model Match {
   mode           RaceMode
   level          String
   ranked         Boolean
+  scoring        String             @default("FIRST_CORRECT")
+  questionCount  Int                @default(1)
   status         MatchStatus        @default(WAITING)
   private        Boolean            @default(false)
   invitationHash String?
@@ -677,12 +683,13 @@ model Rating {
   season   Season          @relation(fields: [seasonId], references: [id], onDelete: Restrict)
   mode     RaceMode
   level    String
+  scoring  String          @default("FIRST_CORRECT")
   value    Int             @default(1000)
   games    Int             @default(0)
   history  RatingHistory[]
 
-  @@unique([userId, seasonId, mode, level])
-  @@index([seasonId, mode, level, value, games, userId])
+  @@unique([userId, seasonId, mode, level, scoring])
+  @@index([seasonId, mode, level, scoring, value, games, userId], map:"Rating_leaderboard_idx")
 }
 
 model RatingHistory {

@@ -8,7 +8,7 @@ import { importSchema, unknownIds } from './validation.ts';
 import { readProgress } from './progress.ts';
 import { syncEvents } from './sync.ts';
 import { exportAccount, deleteAccount } from './account.ts';
-import { joinQueue, cancelQueue, getMatch, submitRound, leaveMatch, leaderboard, queueSchema } from './competition.ts';
+import { openGames, competitionLobby, getQueue, joinQueue, cancelQueue, getMatch, submitRound, leaveMatch, leaderboard, queueSchema } from './competition.ts';
 import { db } from './db.ts';
 import {getProfile,setProfile} from './profile.ts';
 import {expireMatches} from './competition.ts';
@@ -107,22 +107,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             res.json({ role: 'ADMIN' });
             return;
         }
+        if(path==='competition/lobby'&&method==='GET'){res.json(await competitionLobby(userId));return;}
+        if(path==='competition/rooms'&&method==='GET'){res.json(await openGames(userId));return;}
         if (path === 'competition/queue' && method === 'POST') {
             await rateLimit(userId, 'queue', 10);
             res.json(await joinQueue(userId, body));
             return;
         }
         if (path === 'competition/queue' && method === 'DELETE') {
-            await cancelQueue(userId);
-            res.json({ cancelled: true });
+            res.json(await cancelQueue(userId));
             return;
         }
         if (path === 'competition/queue' && method === 'GET') {
-            res.json(await db.queueEntry.findFirst({ where: { userId }, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], select: { id: true, status: true, matchId: true, expiresAt: true } }));
+            res.json(await getQueue(userId));
             return;
         }
         if (path === 'competition/submit' && method === 'POST') {
-            await rateLimit(userId, 'submit', 20);
+            await rateLimit(userId, 'submit', 60);
             res.json(await submitRound(userId, body));
             return;
         }
@@ -137,8 +138,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return;
         }
         if (path === 'competition/leaderboard' && method === 'GET') {
-            const filter = queueSchema.omit({ ranked: true }).parse({ seasonId: req.query.seasonId, mode: req.query.mode, level: req.query.level });
-            const entries = await leaderboard(filter.seasonId, filter.mode, filter.level);
+            const filter = queueSchema.omit({ ranked: true,questionCount:true }).parse({ seasonId: req.query.seasonId, mode: req.query.mode, level: req.query.level,scoring:req.query.scoring });
+            const entries = await leaderboard(filter.seasonId, filter.mode, filter.level,filter.scoring);
             res.json(entries.map((e, i) => ({ place: i + 1, ...e })));
             return;
         }

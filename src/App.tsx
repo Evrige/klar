@@ -6,7 +6,7 @@ import {Button, Card, PageIntro, ProgressBar} from './components/ui';
 import { APP_VERSION } from "./version";
 import Select from './components/Select';
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { ArrowRight, Award, BookOpen, Flame, GraduationCap, LayoutDashboard, LibraryBig, Menu, Moon, Puzzle, Settings2, SpellCheck, Sun, Table2, Timer, TrendingUp, Trophy, X, Target, ChevronDown } from 'lucide-react';
+import { ArrowRight, Award, BookOpen, Flame, GraduationCap, LayoutDashboard, LibraryBig, Menu, Moon, Puzzle, Settings2, SpellCheck, Sun, Table2, Timer, TrendingUp, Trophy, X, Target, ChevronDown, Swords } from 'lucide-react';
 import { useStoredState } from './hooks/useStoredState';
 import { verbs } from './data/verbs';
 import { nouns, validNounProgress } from './data/nouns';
@@ -23,6 +23,8 @@ import { useLearning } from './learning/LearningContext';
 import { miniLessons, lessonCompleted } from './learning/lessons';
 import { experienceLevel } from './learning/experience';
 import BackToTop from './components/BackToTop';
+const FirstSteps = lazy(() => import('./components/FirstSteps'));
+const OnlineActivities = lazy(() => import('./online/OnlineActivities'));
 const ProfilePage = lazy(() => import('./sync/ProfilePage'));
 const Conjugation = lazy(() => import('./components/Conjugation'));
 const Rules = lazy(() => import('./components/Rules'));
@@ -33,7 +35,7 @@ const DailyPlan = lazy(() => import('./components/DailyPlan'));
 const Course = lazy(() => import('./components/Course'));
 const LearningCenter = lazy(() => import('./learning/LearningCenter'));
 const Achievements = lazy(() => import('./components/Achievements'));
-export type Page = 'home' | 'course' | 'rules' | 'vocabulary' | 'verbs' | 'articles' | 'sentences' | 'daily' | 'progress' | 'achievements' | 'learning' | 'profile' | 'settings';
+export type Page = 'home' | 'course' | 'rules' | 'vocabulary' | 'verbs' | 'articles' | 'sentences' | 'daily' | 'progress' | 'achievements' | 'learning' | 'profile' | 'settings' | 'online' | 'first-steps';
 function validKeys(v: unknown): v is string[] { return Array.isArray(v) && v.every(k => typeof k === 'string' && verbs.some(verb => Array.from({ length: 6 }, (_, i) => `${verb.id}:${i}`).includes(k))) && new Set(v).size === v.length; }
 export default function App() {
     const { t, locale, setLocale } = useLocale();
@@ -42,7 +44,7 @@ export default function App() {
     const [trainersOpen, setTrainersOpen] = useState(false);
     const [dark, setDark] = useStoredState('klar:dark', false, (v): v is boolean => typeof v === 'boolean');
     useEffect(()=>{document.documentElement.dataset.theme=dark?'dark':'light';localStorage.setItem('klar:appearance:v1',dark?'dark':'light');},[dark]);
-    useEffect(()=>{const handler=(event:Event)=>{const next=(event as CustomEvent).detail;if(['profile','settings','progress'].includes(next)){setPage(next);setMobile(false);window.scrollTo({top:0});}};window.addEventListener('klar:navigate',handler);return ()=>window.removeEventListener('klar:navigate',handler);},[]);
+    useEffect(()=>{const handler=(event:Event)=>{const next=(event as CustomEvent).detail;if(['profile','settings','progress','online'].includes(next)){setPage(next);setMobile(false);window.scrollTo({top:0});}};window.addEventListener('klar:navigate',handler);return ()=>window.removeEventListener('klar:navigate',handler);},[]);
     const [mastered, setMastered] = useStoredState<string[]>('klar:mastered:v1', [], validKeys);
     const [wordProgress, setWordProgress] = useStoredState<VocabularyProgress>('klar:vocabulary:v1', {}, isVocabularyProgress);
     const [nounProgress, setNounProgress] = useStoredState<string[]>('klar:nouns:v1', [], validNounProgress);
@@ -97,7 +99,7 @@ export default function App() {
         setSentenceProgress(old => old.includes(id) ? old : [...old, id]); }
     function navigate(next: Page, learningTab:LearningTab='plan') { if(next==='learning')setRequestedLearningTab(learningTab); if (next !== 'course')
         setRequestedLevel(undefined); setPage(next); setMobile(false); setTrainersOpen(false); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }); }
-    const nav = [{ id: 'home', ru: 'Обзор', uk: 'Огляд', icon: LayoutDashboard }, { id: 'learning', ru: 'Учебный центр', uk: 'Навчальний центр', icon: Target }, { id: 'course', ru: 'Мой курс', uk: 'Мій курс', icon: GraduationCap }, { id: 'daily', ru: 'План на 10 минут', uk: 'План на 10 хвилин', icon: Timer }, { id: 'rules', ru: 'Общие правила', uk: 'Загальні правила', icon: Table2 }, { id: 'vocabulary', ru: 'Словарь', uk: 'Словник', icon: LibraryBig }, { id: 'verbs', ru: 'Спряжение глаголов', uk: 'Дієвідмінювання', icon: BookOpen }, { id: 'articles', ru: 'Артикли и мн. число', uk: 'Артиклі та множина', icon: SpellCheck }, { id: 'sentences', ru: 'Сборка предложений', uk: 'Складання речень', icon: Puzzle }, { id: 'achievements', ru: 'Достижения', uk: 'Досягнення', icon: Trophy }, { id: 'progress', ru: 'Мой прогресс', uk: 'Мій прогрес', icon: TrendingUp }] as const;
+    const nav = [{ id: 'home', ru: 'Обзор', uk: 'Огляд', icon: LayoutDashboard }, { id: 'learning', ru: 'Учебный центр', uk: 'Навчальний центр', icon: Target }, {id:'first-steps',ru:'Первые шаги',uk:'Перші кроки',icon:BookOpen}, { id: 'course', ru: 'Мой курс', uk: 'Мій курс', icon: GraduationCap }, { id: 'daily', ru: 'План на 10 минут', uk: 'План на 10 хвилин', icon: Timer }, { id: 'rules', ru: 'Общие правила', uk: 'Загальні правила', icon: Table2 }, { id: 'vocabulary', ru: 'Словарь', uk: 'Словник', icon: LibraryBig }, { id: 'verbs', ru: 'Спряжение глаголов', uk: 'Дієвідмінювання', icon: BookOpen }, { id: 'articles', ru: 'Артикли и мн. число', uk: 'Артиклі та множина', icon: SpellCheck }, { id: 'sentences', ru: 'Сборка предложений', uk: 'Складання речень', icon: Puzzle }, {id:'online',ru:'Онлайн-дуэли',uk:'Онлайн-дуелі',icon:Swords}, { id: 'achievements', ru: 'Достижения', uk: 'Досягнення', icon: Trophy }, { id: 'progress', ru: 'Мой прогресс', uk: 'Мій прогрес', icon: TrendingUp }] as const;
     const secondary = ['rules', 'verbs', 'articles', 'sentences', 'daily'];
     const renderNav = (n: typeof nav[number]) => <button key={n.id} onClick={() => navigate(n.id)} className={page === n.id ? 'nav-item active' : 'nav-item'} aria-current={page === n.id ? 'page' : undefined}><n.icon size={18}/><span>{t(n.ru, n.uk)}</span>{n.id === 'vocabulary' && <small>2k</small>}</button>;
     const title = nav.find(n => n.id === page)??(page==='profile'?{ru:'Мой профиль',uk:'Мій профіль'}:{ru:'Настройки',uk:'Налаштування'});
@@ -105,7 +107,7 @@ export default function App() {
  <div className="main-shell"><header><div className="breadcrumb"><Button aria-label={t('Открыть меню', 'Відкрити меню')} onClick={() => setMobile(true)} className="mobile-menu" variant="icon"><Menu /></Button><span>Klar</span><span className="slash">/</span><b>{t(title.ru, title.uk)}</b></div><div className="header-actions"><label className="language-select"><span className="sr-only">{t('Язык интерфейса', 'Мова інтерфейсу')}</span><Select value={locale} onChange={e => setLocale(e.target.value as 'ru' | 'uk')}><option value="ru">Русский</option><option value="uk">Українська</option></Select></label><span className="streak-pill" title={t('Учебных дней подряд', 'Навчальних днів поспіль')}><Flame size={17}/>{streak}</span><button className="theme-button" onClick={() => setDark(!dark)} aria-label={t(dark ? 'Включить светлую тему' : 'Включить тёмную тему', dark ? 'Увімкнути світлу тему' : 'Увімкнути темну тему')}>{dark ? <Sun size={19}/> : <Moon size={19}/>}</button></div></header><main>{learningStorageError && page !== 'learning' && <div className="learning-note" role="alert"><p>{t(learningStorageError, 'Не вдалося зберегти навчальні дані. Завантажте копію перед виходом.')}</p><Button onClick={() => navigate('learning')} variant="text">{t('Открыть сохранение прогресса', 'Відкрити збереження прогресу')}</Button></div>}
  {locale === 'uk' && <p className="locale-material-note"><Settings2 size={15}/>Інтерфейс — українською. Оригінальні відео й частина навчальних пояснень та перекладів словника поки російською.</p>}
  <Suspense fallback={<Loading label={t('Открываем раздел…', 'Відкриваємо розділ…')}/>}>
- {page === 'profile'||page === 'settings' ? <ProfilePage key={page} settings={page==='settings'} dark={dark} setDark={setDark} locale={locale} setLocale={setLocale} xp={xp} known={known} lessons={completedLessons+completedMini} streak={streak} onProgress={()=>navigate('progress')}/> : page === 'home' ? <Dashboard navigate={navigate} onLevel={level => { setRequestedLevel(level); navigate('course'); }} courseProgress={courseProgress} known={known} answers={mastered.length + nounProgress.length + sentenceProgress.length} achievements={achievementCards(stats, earned).filter(c => c.rank > 0).length}/> :
+ {page === 'first-steps' ? <FirstSteps/> : page === 'online' ? <OnlineActivities/> : page === 'profile'||page === 'settings' ? <ProfilePage key={page} settings={page==='settings'} dark={dark} setDark={setDark} locale={locale} setLocale={setLocale} xp={xp} known={known} lessons={completedLessons+completedMini} streak={streak} onProgress={()=>navigate('progress')}/> : page === 'home' ? <Dashboard navigate={navigate} onLevel={level => { setRequestedLevel(level); navigate('course'); }} courseProgress={courseProgress} known={known} answers={mastered.length + nounProgress.length + sentenceProgress.length} achievements={achievementCards(stats, earned).filter(c => c.rank > 0).length}/> :
             page === 'learning' ? <LearningCenter key={requestedLearningTab} initialTab={requestedLearningTab} activityDays={learningDays} known={known}/> :
                 page === 'course' ? <Course initialLevel={requestedLevel} progress={courseProgress} onChange={(id, record) => setCourseProgress(old => ({ ...old, [id]: record }))} onImport={setCourseProgress} onPractice={navigate} onActivity={() => study()}/> :
                     page === 'achievements' ? <Achievements stats={stats} earned={earned} streak={streak}/> :

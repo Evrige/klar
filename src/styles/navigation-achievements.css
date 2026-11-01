@@ -817,4 +817,8 @@
     @apply whitespace-nowrap;
   }
 
+  .sidebar { overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .sidebar > * { flex-shrink: 0; }
+  @media (min-width:681px) { .sidebar { height: 100dvh; max-height: 100dvh; overflow-y: auto; } }
+
 }
