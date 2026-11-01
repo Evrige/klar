@@ -1,0 +1,1583 @@
+{
+  "engine": "eSpeak NG · German · machine-generated",
+  "entries": {
+    "first-steps:alphabet:1": {
+      "german": "Auge",
+      "ipa": "ˈaʊɡə",
+      "ru": "аугэ",
+      "uk": "ауґе"
+    },
+    "first-steps:alphabet:2": {
+      "german": "Ball",
+      "ipa": "bˈal",
+      "ru": "бал",
+      "uk": "бал"
+    },
+    "first-steps:alphabet:3": {
+      "german": "Computer",
+      "ipa": "kɔmpjˈuːtɜ",
+      "ru": "компйу:тэ",
+      "uk": "компйу:те"
+    },
+    "first-steps:alphabet:4": {
+      "german": "Delfin",
+      "ipa": "dˈɛlfɪn",
+      "ru": "дэлфин",
+      "uk": "делфін"
+    },
+    "first-steps:alphabet:5": {
+      "german": "Ehering",
+      "ipa": "ˈeːeːrˌɪŋ",
+      "ru": "э:э:ринг",
+      "uk": "е:е:рінг"
+    },
+    "first-steps:alphabet:6": {
+      "german": "Fuchs",
+      "ipa": "fˈʊxs",
+      "ru": "фухс",
+      "uk": "фухс"
+    },
+    "first-steps:alphabet:7": {
+      "german": "Geld",
+      "ipa": "ɡˈɛlt",
+      "ru": "гэлт",
+      "uk": "ґелт"
+    },
+    "first-steps:alphabet:8": {
+      "german": "Hand",
+      "ipa": "hˈant",
+      "ru": "хант",
+      "uk": "хант"
+    },
+    "first-steps:alphabet:9": {
+      "german": "Indianer",
+      "ipa": "ˌɪndiːˈɑːnɜ",
+      "ru": "инди:а:нэ",
+      "uk": "інді:а:не"
+    },
+    "first-steps:alphabet:10": {
+      "german": "Jacke",
+      "ipa": "jˈakə",
+      "ru": "йакэ",
+      "uk": "йаке"
+    },
+    "first-steps:alphabet:11": {
+      "german": "Kind",
+      "ipa": "kˈɪnt",
+      "ru": "кинт",
+      "uk": "кінт"
+    },
+    "first-steps:alphabet:12": {
+      "german": "Lampe",
+      "ipa": "lˈampə",
+      "ru": "лампэ",
+      "uk": "лампе"
+    },
+    "first-steps:alphabet:13": {
+      "german": "Mutter",
+      "ipa": "mˈʊtɜ",
+      "ru": "мутэ",
+      "uk": "муте"
+    },
+    "first-steps:alphabet:14": {
+      "german": "Nase",
+      "ipa": "nˈɑːzə",
+      "ru": "на:зэ",
+      "uk": "на:зе"
+    },
+    "first-steps:alphabet:15": {
+      "german": "Ohr",
+      "ipa": "ˈoːɾ",
+      "ru": "о:р",
+      "uk": "о:р"
+    },
+    "first-steps:alphabet:16": {
+      "german": "Pass",
+      "ipa": "pˈas",
+      "ru": "пас",
+      "uk": "пас"
+    },
+    "first-steps:alphabet:17": {
+      "german": "Quadrat",
+      "ipa": "kvadɾˈɑːt",
+      "ru": "квадра:т",
+      "uk": "квадра:т"
+    },
+    "first-steps:alphabet:18": {
+      "german": "Rad",
+      "ipa": "rˈɑːt",
+      "ru": "ра:т",
+      "uk": "ра:т"
+    },
+    "first-steps:alphabet:19": {
+      "german": "Sonne",
+      "ipa": "zˈɔnə",
+      "ru": "зонэ",
+      "uk": "зоне"
+    },
+    "first-steps:alphabet:20": {
+      "german": "Tanz",
+      "ipa": "tˈants",
+      "ru": "танц",
+      "uk": "танц"
+    },
+    "first-steps:alphabet:21": {
+      "german": "Uhr",
+      "ipa": "ˈuːɾ",
+      "ru": "у:р",
+      "uk": "у:р"
+    },
+    "first-steps:alphabet:22": {
+      "german": "Vogel",
+      "ipa": "fˈoːɡəl",
+      "ru": "фо:гэл",
+      "uk": "фо:ґел"
+    },
+    "first-steps:alphabet:23": {
+      "german": "Waage",
+      "ipa": "vˈɑːɡə",
+      "ru": "ва:гэ",
+      "uk": "ва:ґе"
+    },
+    "first-steps:alphabet:24": {
+      "german": "Xylophon",
+      "ipa": "ksˈyːloːfˌoːn",
+      "ru": "ксю:ло:фо:н",
+      "uk": "ксю:ло:фо:н"
+    },
+    "first-steps:alphabet:25": {
+      "german": "Yoga",
+      "ipa": "jˈoːɡɑː",
+      "ru": "йо:га:",
+      "uk": "йо:ґа:"
+    },
+    "first-steps:alphabet:26": {
+      "german": "Zebra",
+      "ipa": "tsˈɛbɾɑː",
+      "ru": "цэбра:",
+      "uk": "цебра:"
+    },
+    "first-steps:alphabet:27": {
+      "german": "Äpfel",
+      "ipa": "ˈɛpfəl",
+      "ru": "эпфэл",
+      "uk": "епфел"
+    },
+    "first-steps:alphabet:28": {
+      "german": "Öl",
+      "ipa": "ˈøːl",
+      "ru": "ё:л",
+      "uk": "ьо:л"
+    },
+    "first-steps:alphabet:29": {
+      "german": "Tür",
+      "ipa": "tˈyːɾ",
+      "ru": "тю:р",
+      "uk": "тю:р"
+    },
+    "first-steps:consonants:1": {
+      "german": "Sport",
+      "ipa": "ʃpˈɔɾt",
+      "ru": "шпорт",
+      "uk": "шпорт"
+    },
+    "first-steps:consonants:2": {
+      "german": "spielen",
+      "ipa": "ʃpˈiːlən",
+      "ru": "шпи:лэн",
+      "uk": "шпі:лен"
+    },
+    "first-steps:consonants:3": {
+      "german": "sprechen",
+      "ipa": "ʃpɾˈɛçən",
+      "ru": "шпрэхьэн",
+      "uk": "шпрехьен"
+    },
+    "first-steps:consonants:4": {
+      "german": "Stern",
+      "ipa": "ʃtˈɛɾn",
+      "ru": "штэрн",
+      "uk": "штерн"
+    },
+    "first-steps:consonants:5": {
+      "german": "stehen",
+      "ipa": "ʃtˈeːən",
+      "ru": "штэ:эн",
+      "uk": "ште:ен"
+    },
+    "first-steps:consonants:6": {
+      "german": "Stunde",
+      "ipa": "ʃtˈʊndə",
+      "ru": "штундэ",
+      "uk": "штунде"
+    },
+    "first-steps:consonants:7": {
+      "german": "backen",
+      "ipa": "bˈakən",
+      "ru": "бакэн",
+      "uk": "бакен"
+    },
+    "first-steps:consonants:8": {
+      "german": "Ecke",
+      "ipa": "ˈɛkə",
+      "ru": "экэ",
+      "uk": "еке"
+    },
+    "first-steps:consonants:9": {
+      "german": "sechs",
+      "ipa": "zˈɛks",
+      "ru": "зэкс",
+      "uk": "зекс"
+    },
+    "first-steps:consonants:10": {
+      "german": "wachsen",
+      "ipa": "vˈaxzən",
+      "ru": "вахзэн",
+      "uk": "вахзен"
+    },
+    "first-steps:consonants:11": {
+      "german": "ich",
+      "ipa": "ˈɪç",
+      "ru": "ихь",
+      "uk": "іхь"
+    },
+    "first-steps:consonants:12": {
+      "german": "Buch",
+      "ipa": "bˈuːx",
+      "ru": "бу:х",
+      "uk": "бу:х"
+    },
+    "first-steps:consonants:13": {
+      "german": "machen",
+      "ipa": "mˈaxən",
+      "ru": "махэн",
+      "uk": "махен"
+    },
+    "first-steps:consonants:14": {
+      "german": "Schule",
+      "ipa": "ʃˈuːlə",
+      "ru": "шу:лэ",
+      "uk": "шу:ле"
+    },
+    "first-steps:consonants:15": {
+      "german": "Schwester",
+      "ipa": "ʃvˈɛstɜ",
+      "ru": "швэстэ",
+      "uk": "швесте"
+    },
+    "first-steps:consonants:16": {
+      "german": "Deutsch",
+      "ipa": "dˈɔʏtʃ",
+      "ru": "дойч",
+      "uk": "дойч"
+    },
+    "first-steps:consonants:17": {
+      "german": "sitzen",
+      "ipa": "zˈɪtsən",
+      "ru": "зицэн",
+      "uk": "зіцен"
+    },
+    "first-steps:consonants:18": {
+      "german": "Quark",
+      "ipa": "kvˈaɾk",
+      "ru": "кварк",
+      "uk": "кварк"
+    },
+    "first-steps:consonants:19": {
+      "german": "Das ist meine Schwester.",
+      "ipa": "das ɪst mˌaɪnə ʃvˈɛstɜ",
+      "ru": "дас ист майнэ швэстэ",
+      "uk": "дас іст майне швесте"
+    },
+    "first-steps:consonants:20": {
+      "german": "Ich lerne Deutsch.",
+      "ipa": "ɪç lˈɛɾnə dˈɔʏtʃ",
+      "ru": "ихь лэрнэ дойч",
+      "uk": "іхь лерне дойч"
+    },
+    "first-steps:vowels:1": {
+      "german": "Bier",
+      "ipa": "bˈiːɾ",
+      "ru": "би:р",
+      "uk": "бі:р"
+    },
+    "first-steps:vowels:2": {
+      "german": "liegen",
+      "ipa": "lˈiːɡən",
+      "ru": "ли:гэн",
+      "uk": "лі:ґен"
+    },
+    "first-steps:vowels:3": {
+      "german": "biegen",
+      "ipa": "bˈiːɡən",
+      "ru": "би:гэн",
+      "uk": "бі:ґен"
+    },
+    "first-steps:vowels:4": {
+      "german": "Heimat",
+      "ipa": "hˈaɪmɑːt",
+      "ru": "хайма:т",
+      "uk": "хайма:т"
+    },
+    "first-steps:vowels:5": {
+      "german": "mein",
+      "ipa": "mˈaɪn",
+      "ru": "майн",
+      "uk": "майн"
+    },
+    "first-steps:vowels:6": {
+      "german": "dein",
+      "ipa": "dˈaɪn",
+      "ru": "дайн",
+      "uk": "дайн"
+    },
+    "first-steps:vowels:7": {
+      "german": "nein",
+      "ipa": "nˈaɪn",
+      "ru": "найн",
+      "uk": "найн"
+    },
+    "first-steps:vowels:8": {
+      "german": "heute",
+      "ipa": "hˈɔʏtə",
+      "ru": "хойтэ",
+      "uk": "хойте"
+    },
+    "first-steps:vowels:9": {
+      "german": "neu",
+      "ipa": "nˈɔʏ",
+      "ru": "ной",
+      "uk": "ной"
+    },
+    "first-steps:vowels:10": {
+      "german": "neun",
+      "ipa": "nˈɔʏn",
+      "ru": "нойн",
+      "uk": "нойн"
+    },
+    "first-steps:vowels:11": {
+      "german": "Bäume",
+      "ipa": "bˈɔʏmə",
+      "ru": "боймэ",
+      "uk": "бойме"
+    },
+    "first-steps:vowels:12": {
+      "german": "Tee",
+      "ipa": "tˈeː",
+      "ru": "тэ:",
+      "uk": "те:"
+    },
+    "first-steps:vowels:13": {
+      "german": "Paar",
+      "ipa": "pˈɑːɾ",
+      "ru": "па:р",
+      "uk": "па:р"
+    },
+    "first-steps:vowels:14": {
+      "german": "Boot",
+      "ipa": "bˈoːt",
+      "ru": "бо:т",
+      "uk": "бо:т"
+    },
+    "first-steps:vowels:15": {
+      "german": "Heißer Tee",
+      "ipa": "hˈaɪsɜ tˈeː",
+      "ru": "хайсэ тэ:",
+      "uk": "хайсе те:"
+    },
+    "first-steps:greetings:1": {
+      "german": "Hallo!",
+      "ipa": "hˈaloː",
+      "ru": "хало:",
+      "uk": "хало:"
+    },
+    "first-steps:greetings:2": {
+      "german": "Guten Morgen!",
+      "ipa": "ɡˈuːtən mˈɔɾɡən",
+      "ru": "гу:тэн моргэн",
+      "uk": "ґу:тен морґен"
+    },
+    "first-steps:greetings:3": {
+      "german": "Guten Tag!",
+      "ipa": "ɡˈuːtən tˈɑːk",
+      "ru": "гу:тэн та:к",
+      "uk": "ґу:тен та:к"
+    },
+    "first-steps:greetings:4": {
+      "german": "Guten Abend!",
+      "ipa": "ɡˈuːtən ˈɑːbənt",
+      "ru": "гу:тэн а:бэнт",
+      "uk": "ґу:тен а:бент"
+    },
+    "first-steps:greetings:5": {
+      "german": "Wie geht es dir?",
+      "ipa": "viː ɡˈeːt ɛs dˈiːɾ",
+      "ru": "ви: гэ:т эс ди:р",
+      "uk": "ві: ґе:т ес ді:р"
+    },
+    "first-steps:greetings:6": {
+      "german": "Mir geht es gut, danke!",
+      "ipa": "miːɾ ɡˈeːt ɛs ɡˈuːt dˈaŋkə",
+      "ru": "ми:р гэ:т эс гу:т дангкэ",
+      "uk": "мі:р ґе:т ес ґу:т дангке"
+    },
+    "first-steps:greetings:7": {
+      "german": "Und dir?",
+      "ipa": "ʊnt dˈiːɾ",
+      "ru": "унт ди:р",
+      "uk": "унт ді:р"
+    },
+    "first-steps:greetings:8": {
+      "german": "Es geht so.",
+      "ipa": "ɛs ɡˈeːt zˈoː",
+      "ru": "эс гэ:т зо:",
+      "uk": "ес ґе:т зо:"
+    },
+    "first-steps:goodbyes:1": {
+      "german": "Auf Wiedersehen!",
+      "ipa": "aʊf viːdɜzˈeːən",
+      "ru": "ауф ви:дэзэ:эн",
+      "uk": "ауф ві:дезе:ен"
+    },
+    "first-steps:goodbyes:2": {
+      "german": "Tschüss!",
+      "ipa": "tʃˈʏs",
+      "ru": "чюс",
+      "uk": "чюс"
+    },
+    "first-steps:goodbyes:3": {
+      "german": "Bis morgen!",
+      "ipa": "bɪs mˈɔɾɡən",
+      "ru": "бис моргэн",
+      "uk": "біс морґен"
+    },
+    "first-steps:goodbyes:4": {
+      "german": "Mach’s gut!",
+      "ipa": "mˈaxs ɡˈuːt",
+      "ru": "махс гу:т",
+      "uk": "махс ґу:т"
+    },
+    "first-steps:goodbyes:5": {
+      "german": "Alles Gute!",
+      "ipa": "ˈaləs ɡˈuːtə",
+      "ru": "алэс гу:тэ",
+      "uk": "алес ґу:те"
+    },
+    "first-steps:goodbyes:6": {
+      "german": "Einen schönen Abend!",
+      "ipa": "ˌaɪnən ʃˈøːnən ˈɑːbənt",
+      "ru": "айнэн шё:нэн а:бэнт",
+      "uk": "айнен шьо:нен а:бент"
+    },
+    "first-steps:goodbyes:7": {
+      "german": "Gute Nacht!",
+      "ipa": "ɡˈuːtə nˈaxt",
+      "ru": "гу:тэ нахт",
+      "uk": "ґу:те нахт"
+    },
+    "first-steps:introductions:1": {
+      "german": "Darf ich mich vorstellen?",
+      "ipa": "dˈaɾf ɪç mɪç fˈoːɾʃtˌɛlən",
+      "ru": "дарф ихь михь фо:рштэлэн",
+      "uk": "дарф іхь міхь фо:рштелен"
+    },
+    "first-steps:introductions:2": {
+      "german": "Mein Name ist …",
+      "ipa": "maɪn nˈɑːmə ɪst …",
+      "ru": "майн на:мэ ист …",
+      "uk": "майн на:ме іст …"
+    },
+    "first-steps:introductions:3": {
+      "german": "Wie ist dein Name?",
+      "ipa": "viː ɪst daɪn nˈɑːmə",
+      "ru": "ви: ист дайн на:мэ",
+      "uk": "ві: іст дайн на:ме"
+    },
+    "first-steps:introductions:4": {
+      "german": "Schön, dich zu treffen!",
+      "ipa": "ʃˈøːn dɪç tsuː tɾˈɛfən",
+      "ru": "шё:н дихь цу: трэфэн",
+      "uk": "шьо:н діхь цу: трефен"
+    },
+    "first-steps:introductions:5": {
+      "german": "Ich komme aus …",
+      "ipa": "ɪç kˈɔmə ˈaʊs …",
+      "ru": "ихь комэ аус …",
+      "uk": "іхь коме аус …"
+    },
+    "first-steps:introductions:6": {
+      "german": "Woher kommst du?",
+      "ipa": "voːhˈeːɾ kˈɔmst duː",
+      "ru": "во:хэ:р комст ду:",
+      "uk": "во:хе:р комст ду:"
+    },
+    "first-steps:introductions:7": {
+      "german": "Wie alt bist du?",
+      "ipa": "viː ˈalt bɪst duː",
+      "ru": "ви: алт бист ду:",
+      "uk": "ві: алт біст ду:"
+    },
+    "first-steps:introductions:8": {
+      "german": "Ich bin dreißig Jahre alt.",
+      "ipa": "ɪç bɪn dɾˈaɪsɪç jˈɑːrə ˈalt",
+      "ru": "ихь бин драйсихь йа:рэ алт",
+      "uk": "іхь бін драйсіхь йа:ре алт"
+    },
+    "first-steps:introductions:9": {
+      "german": "Wo wohnst du?",
+      "ipa": "vˌoː vˈoːnst duː",
+      "ru": "во: во:нст ду:",
+      "uk": "во: во:нст ду:"
+    },
+    "first-steps:introductions:10": {
+      "german": "Schön, dich kennenzulernen!",
+      "ipa": "ʃˈøːn dɪç kˈɛnəntsˌuːlɜnən",
+      "ru": "шё:н дихь кэнэнцу:лэнэн",
+      "uk": "шьо:н діхь кененцу:ленен"
+    },
+    "first-steps:introductions:11": {
+      "german": "Wie ist Ihr Name?",
+      "ipa": "viː ɪst iːɾ nˈɑːmə",
+      "ru": "ви: ист и:р на:мэ",
+      "uk": "ві: іст і:р на:ме"
+    },
+    "first-steps:time:1": {
+      "german": "Ein Tag hat vierundzwanzig Stunden.",
+      "ipa": "aɪn tˈɑːk hat fˈiːrʊnttsvˌantsɪç ʃtˈʊndən",
+      "ru": "айн та:к хат фи:рунтцванцихь штундэн",
+      "uk": "айн та:к хат фі:рунтцванціхь штунден"
+    },
+    "first-steps:time:2": {
+      "german": "Eine Stunde hat sechzig Minuten.",
+      "ipa": "ˌaɪnə ʃtˈʊndə hat zˈɛçtsɪç miːnˈuːtən",
+      "ru": "айнэ штундэ хат зэхьцихь ми:ну:тэн",
+      "uk": "айне штунде хат зехьціхь мі:ну:тен"
+    },
+    "first-steps:time:3": {
+      "german": "Eine Minute hat sechzig Sekunden.",
+      "ipa": "ˌaɪnə miːnˈuːtə hat zˈɛçtsɪç zeːkˈʊndən",
+      "ru": "айнэ ми:ну:тэ хат зэхьцихь зэ:кундэн",
+      "uk": "айне мі:ну:те хат зехьціхь зе:кунден"
+    },
+    "first-steps:time:4": {
+      "german": "Wie spät ist es?",
+      "ipa": "viː ʃpˈɛːt ɪst ɛs",
+      "ru": "ви: шпэ:т ист эс",
+      "uk": "ві: шпе:т іст ес"
+    },
+    "first-steps:time:5": {
+      "german": "Es ist vier Uhr.",
+      "ipa": "ɛsɪst fˈiːɾ ˈuːɾ",
+      "ru": "эсист фи:р у:р",
+      "uk": "есіст фі:р у:р"
+    },
+    "first-steps:time:6": {
+      "german": "Es ist vierzehn Uhr.",
+      "ipa": "ɛsɪst fˈiːɾtseːn ˈuːɾ",
+      "ru": "эсист фи:рцэ:н у:р",
+      "uk": "есіст фі:рце:н у:р"
+    },
+    "first-steps:time:7": {
+      "german": "Es ist zehn Minuten nach fünf.",
+      "ipa": "ɛsɪst tsˈeːn miːnˈuːtən nɑːx fˈʏnf",
+      "ru": "эсист цэ:н ми:ну:тэн на:х фюнф",
+      "uk": "есіст це:н мі:ну:тен на:х фюнф"
+    },
+    "first-steps:time:8": {
+      "german": "Es ist siebzehn Uhr zehn.",
+      "ipa": "ɛsɪst zˈiːptseːn ˈuːɾ tsˈeːn",
+      "ru": "эсист зи:пцэ:н у:р цэ:н",
+      "uk": "есіст зі:пце:н у:р це:н"
+    },
+    "first-steps:time:9": {
+      "german": "Es ist halb drei.",
+      "ipa": "ɛsɪst hˈalp dɾˈaɪ",
+      "ru": "эсист халп драй",
+      "uk": "есіст халп драй"
+    },
+    "first-steps:time:10": {
+      "german": "Es ist vierzehn Uhr dreißig.",
+      "ipa": "ɛsɪst fˈiːɾtseːn ˈuːɾ dɾˈaɪsɪç",
+      "ru": "эсист фи:рцэ:н у:р драйсихь",
+      "uk": "есіст фі:рце:н у:р драйсіхь"
+    },
+    "first-steps:time:11": {
+      "german": "Es ist zehn Minuten vor fünf.",
+      "ipa": "ɛsɪst tsˈeːn miːnˈuːtən fˌɔɾ fˈʏnf",
+      "ru": "эсист цэ:н ми:ну:тэн фор фюнф",
+      "uk": "есіст це:н мі:ну:тен фор фюнф"
+    },
+    "first-steps:time:12": {
+      "german": "Es ist sechzehn Uhr fünfzig.",
+      "ipa": "ɛsɪst zˈɛçtseːn ˈuːɾ fˈʏnftsɪç",
+      "ru": "эсист зэхьцэ:н у:р фюнфцихь",
+      "uk": "есіст зехьце:н у:р фюнфціхь"
+    },
+    "first-steps:hours:1": {
+      "german": "Es ist ein Uhr.",
+      "ipa": "ɛsɪst aɪn ˈuːɾ",
+      "ru": "эсист айн у:р",
+      "uk": "есіст айн у:р"
+    },
+    "first-steps:hours:2": {
+      "german": "Es ist zwei Uhr.",
+      "ipa": "ɛsɪst tsvˈaɪ ˈuːɾ",
+      "ru": "эсист цвай у:р",
+      "uk": "есіст цвай у:р"
+    },
+    "first-steps:hours:3": {
+      "german": "Es ist drei Uhr.",
+      "ipa": "ɛsɪst dɾˈaɪ ˈuːɾ",
+      "ru": "эсист драй у:р",
+      "uk": "есіст драй у:р"
+    },
+    "first-steps:hours:4": {
+      "german": "Es ist vier Uhr.",
+      "ipa": "ɛsɪst fˈiːɾ ˈuːɾ",
+      "ru": "эсист фи:р у:р",
+      "uk": "есіст фі:р у:р"
+    },
+    "first-steps:hours:5": {
+      "german": "Es ist fünf Uhr.",
+      "ipa": "ɛsɪst fˈʏnf ˈuːɾ",
+      "ru": "эсист фюнф у:р",
+      "uk": "есіст фюнф у:р"
+    },
+    "first-steps:hours:6": {
+      "german": "Es ist sechs Uhr.",
+      "ipa": "ɛsɪst zˈɛks ˈuːɾ",
+      "ru": "эсист зэкс у:р",
+      "uk": "есіст зекс у:р"
+    },
+    "first-steps:hours:7": {
+      "german": "Es ist sieben Uhr.",
+      "ipa": "ɛsɪst zˈiːbən ˈuːɾ",
+      "ru": "эсист зи:бэн у:р",
+      "uk": "есіст зі:бен у:р"
+    },
+    "first-steps:hours:8": {
+      "german": "Es ist acht Uhr.",
+      "ipa": "ɛsɪst ˈaxt ˈuːɾ",
+      "ru": "эсист ахт у:р",
+      "uk": "есіст ахт у:р"
+    },
+    "first-steps:hours:9": {
+      "german": "Es ist neun Uhr.",
+      "ipa": "ɛsɪst nˈɔʏn ˈuːɾ",
+      "ru": "эсист нойн у:р",
+      "uk": "есіст нойн у:р"
+    },
+    "first-steps:hours:10": {
+      "german": "Es ist zehn Uhr.",
+      "ipa": "ɛsɪst tsˈeːn ˈuːɾ",
+      "ru": "эсист цэ:н у:р",
+      "uk": "есіст це:н у:р"
+    },
+    "first-steps:hours:11": {
+      "german": "Es ist elf Uhr.",
+      "ipa": "ɛsɪst ˈɛlf ˈuːɾ",
+      "ru": "эсист элф у:р",
+      "uk": "есіст елф у:р"
+    },
+    "first-steps:hours:12": {
+      "german": "Es ist zwölf Uhr.",
+      "ipa": "ɛsɪst tsvˈœlf ˈuːɾ",
+      "ru": "эсист цвёлф у:р",
+      "uk": "есіст цвьолф у:р"
+    },
+    "first-steps:hours:13": {
+      "german": "Es ist dreizehn Uhr.",
+      "ipa": "ɛsɪst dɾˈaɪtseːn ˈuːɾ",
+      "ru": "эсист драйцэ:н у:р",
+      "uk": "есіст драйце:н у:р"
+    },
+    "first-steps:hours:14": {
+      "german": "Es ist vierzehn Uhr.",
+      "ipa": "ɛsɪst fˈiːɾtseːn ˈuːɾ",
+      "ru": "эсист фи:рцэ:н у:р",
+      "uk": "есіст фі:рце:н у:р"
+    },
+    "first-steps:hours:15": {
+      "german": "Es ist fünfzehn Uhr.",
+      "ipa": "ɛsɪst fˈʏnftseːn ˈuːɾ",
+      "ru": "эсист фюнфцэ:н у:р",
+      "uk": "есіст фюнфце:н у:р"
+    },
+    "first-steps:hours:16": {
+      "german": "Es ist sechzehn Uhr.",
+      "ipa": "ɛsɪst zˈɛçtseːn ˈuːɾ",
+      "ru": "эсист зэхьцэ:н у:р",
+      "uk": "есіст зехьце:н у:р"
+    },
+    "first-steps:hours:17": {
+      "german": "Es ist siebzehn Uhr.",
+      "ipa": "ɛsɪst zˈiːptseːn ˈuːɾ",
+      "ru": "эсист зи:пцэ:н у:р",
+      "uk": "есіст зі:пце:н у:р"
+    },
+    "first-steps:hours:18": {
+      "german": "Es ist achtzehn Uhr.",
+      "ipa": "ɛsɪst ˈaxtseːn ˈuːɾ",
+      "ru": "эсист ахцэ:н у:р",
+      "uk": "есіст ахце:н у:р"
+    },
+    "first-steps:hours:19": {
+      "german": "Es ist neunzehn Uhr.",
+      "ipa": "ɛsɪst nˈɔʏntseːn ˈuːɾ",
+      "ru": "эсист нойнцэ:н у:р",
+      "uk": "есіст нойнце:н у:р"
+    },
+    "first-steps:hours:20": {
+      "german": "Es ist zwanzig Uhr.",
+      "ipa": "ɛsɪst tsvˈantsɪç ˈuːɾ",
+      "ru": "эсист цванцихь у:р",
+      "uk": "есіст цванціхь у:р"
+    },
+    "first-steps:hours:21": {
+      "german": "Es ist einundzwanzig Uhr.",
+      "ipa": "ɛsɪst ˈaɪnˌʊnttsvˌantsɪç ˈuːɾ",
+      "ru": "эсист айнунтцванцихь у:р",
+      "uk": "есіст айнунтцванціхь у:р"
+    },
+    "first-steps:hours:22": {
+      "german": "Es ist zweiundzwanzig Uhr.",
+      "ipa": "ɛsɪst tsvˈaɪʊnttsvˌantsɪç ˈuːɾ",
+      "ru": "эсист цвайунтцванцихь у:р",
+      "uk": "есіст цвайунтцванціхь у:р"
+    },
+    "first-steps:hours:23": {
+      "german": "Es ist dreiundzwanzig Uhr.",
+      "ipa": "ɛsɪst dɾˈaɪʊnttsvˌantsɪç ˈuːɾ",
+      "ru": "эсист драйунтцванцихь у:р",
+      "uk": "есіст драйунтцванціхь у:р"
+    },
+    "first-steps:hours:24": {
+      "german": "Es ist vierundzwanzig Uhr.",
+      "ipa": "ɛsɪst fˈiːrʊnttsvˌantsɪç ˈuːɾ",
+      "ru": "эсист фи:рунтцванцихь у:р",
+      "uk": "есіст фі:рунтцванціхь у:р"
+    },
+    "first-steps:hours:25": {
+      "german": "Es ist null Uhr.",
+      "ipa": "ɛsɪst nˈʊl ˈuːɾ",
+      "ru": "эсист нул у:р",
+      "uk": "есіст нул у:р"
+    },
+    "first-steps:hours:26": {
+      "german": "Es ist Mitternacht.",
+      "ipa": "ɛsɪst mˈɪtɜnˌaxt",
+      "ru": "эсист митэнахт",
+      "uk": "есіст мітенахт"
+    },
+    "first-steps:weekdays:1": {
+      "german": "Montag",
+      "ipa": "mˈoːntɑːk",
+      "ru": "мо:нта:к",
+      "uk": "мо:нта:к"
+    },
+    "first-steps:weekdays:2": {
+      "german": "Dienstag",
+      "ipa": "dˈiːnstɑːk",
+      "ru": "ди:нста:к",
+      "uk": "ді:нста:к"
+    },
+    "first-steps:weekdays:3": {
+      "german": "Mittwoch",
+      "ipa": "mˈɪtvɔx",
+      "ru": "митвох",
+      "uk": "мітвох"
+    },
+    "first-steps:weekdays:4": {
+      "german": "Donnerstag",
+      "ipa": "dˈɔnɜstˌɑːk",
+      "ru": "донэста:к",
+      "uk": "донеста:к"
+    },
+    "first-steps:weekdays:5": {
+      "german": "Freitag",
+      "ipa": "frˈaɪtɑːk",
+      "ru": "фрайта:к",
+      "uk": "фрайта:к"
+    },
+    "first-steps:weekdays:6": {
+      "german": "Samstag",
+      "ipa": "zˈamstɑːk",
+      "ru": "замста:к",
+      "uk": "замста:к"
+    },
+    "first-steps:weekdays:7": {
+      "german": "Sonntag",
+      "ipa": "zˈɔntɑːk",
+      "ru": "зонта:к",
+      "uk": "зонта:к"
+    },
+    "first-steps:weekdays:8": {
+      "german": "Welcher Tag ist heute?",
+      "ipa": "vˈɛlçɜ tˈɑːk ɪst hˈɔʏtə",
+      "ru": "вэлхьэ та:к ист хойтэ",
+      "uk": "велхье та:к іст хойте"
+    },
+    "first-steps:weekdays:9": {
+      "german": "Heute ist …",
+      "ipa": "hˈɔʏtə ɪst …",
+      "ru": "хойтэ ист …",
+      "uk": "хойте іст …"
+    },
+    "first-steps:weekdays:10": {
+      "german": "Morgen ist …",
+      "ipa": "mˈɔɾɡən ɪst …",
+      "ru": "моргэн ист …",
+      "uk": "морґен іст …"
+    },
+    "first-steps:weekdays:11": {
+      "german": "Gestern war …",
+      "ipa": "ɡˈɛstɜn vɑːɾ …",
+      "ru": "гэстэн ва:р …",
+      "uk": "ґестен ва:р …"
+    },
+    "first-steps:address:1": {
+      "german": "Wo wohnen Sie?",
+      "ipa": "vˌoː vˈoːnən ziː",
+      "ru": "во: во:нэн зи:",
+      "uk": "во: во:нен зі:"
+    },
+    "first-steps:address:2": {
+      "german": "Ich wohne in …",
+      "ipa": "ɪç vˈoːnə ˈɪn …",
+      "ru": "ихь во:нэ ин …",
+      "uk": "іхь во:не ін …"
+    },
+    "first-steps:address:3": {
+      "german": "Meine Adresse lautet: …",
+      "ipa": "mˌaɪnə adɾˈɛsə lˈaʊtət …",
+      "ru": "майнэ адрэсэ лаутэт …",
+      "uk": "майне адресе лаутет …"
+    },
+    "first-steps:address:4": {
+      "german": "Straße",
+      "ipa": "ʃtɾˈɑːsə",
+      "ru": "штра:сэ",
+      "uk": "штра:се"
+    },
+    "first-steps:address:5": {
+      "german": "Hausnummer",
+      "ipa": "hˈaʊsnˌʊmɜ",
+      "ru": "хауснумэ",
+      "uk": "хауснуме"
+    },
+    "first-steps:address:6": {
+      "german": "Postleitzahl",
+      "ipa": "pˈɔstlaɪtsˌɑːl",
+      "ru": "постлайца:л",
+      "uk": "постлайца:л"
+    },
+    "first-steps:address:7": {
+      "german": "Stadt",
+      "ipa": "ʃtˈat",
+      "ru": "штат",
+      "uk": "штат"
+    },
+    "first-steps:numbers:1": {
+      "german": "null",
+      "ipa": "nˈʊl",
+      "ru": "нул",
+      "uk": "нул"
+    },
+    "first-steps:numbers:2": {
+      "german": "eins",
+      "ipa": "ˈaɪns",
+      "ru": "айнс",
+      "uk": "айнс"
+    },
+    "first-steps:numbers:3": {
+      "german": "zwei",
+      "ipa": "tsvˈaɪ",
+      "ru": "цвай",
+      "uk": "цвай"
+    },
+    "first-steps:numbers:4": {
+      "german": "drei",
+      "ipa": "dɾˈaɪ",
+      "ru": "драй",
+      "uk": "драй"
+    },
+    "first-steps:numbers:5": {
+      "german": "vier",
+      "ipa": "fˈiːɾ",
+      "ru": "фи:р",
+      "uk": "фі:р"
+    },
+    "first-steps:numbers:6": {
+      "german": "fünf",
+      "ipa": "fˈʏnf",
+      "ru": "фюнф",
+      "uk": "фюнф"
+    },
+    "first-steps:numbers:7": {
+      "german": "sechs",
+      "ipa": "zˈɛks",
+      "ru": "зэкс",
+      "uk": "зекс"
+    },
+    "first-steps:numbers:8": {
+      "german": "sieben",
+      "ipa": "zˈiːbən",
+      "ru": "зи:бэн",
+      "uk": "зі:бен"
+    },
+    "first-steps:numbers:9": {
+      "german": "acht",
+      "ipa": "ˈaxt",
+      "ru": "ахт",
+      "uk": "ахт"
+    },
+    "first-steps:numbers:10": {
+      "german": "neun",
+      "ipa": "nˈɔʏn",
+      "ru": "нойн",
+      "uk": "нойн"
+    },
+    "first-steps:numbers:11": {
+      "german": "zehn",
+      "ipa": "tsˈeːn",
+      "ru": "цэ:н",
+      "uk": "це:н"
+    },
+    "first-steps:numbers:12": {
+      "german": "elf",
+      "ipa": "ˈɛlf",
+      "ru": "элф",
+      "uk": "елф"
+    },
+    "first-steps:numbers:13": {
+      "german": "zwölf",
+      "ipa": "tsvˈœlf",
+      "ru": "цвёлф",
+      "uk": "цвьолф"
+    },
+    "first-steps:numbers:14": {
+      "german": "dreizehn",
+      "ipa": "dɾˈaɪtseːn",
+      "ru": "драйцэ:н",
+      "uk": "драйце:н"
+    },
+    "first-steps:numbers:15": {
+      "german": "vierzehn",
+      "ipa": "fˈiːɾtseːn",
+      "ru": "фи:рцэ:н",
+      "uk": "фі:рце:н"
+    },
+    "first-steps:numbers:16": {
+      "german": "fünfzehn",
+      "ipa": "fˈʏnftseːn",
+      "ru": "фюнфцэ:н",
+      "uk": "фюнфце:н"
+    },
+    "first-steps:numbers:17": {
+      "german": "sechzehn",
+      "ipa": "zˈɛçtseːn",
+      "ru": "зэхьцэ:н",
+      "uk": "зехьце:н"
+    },
+    "first-steps:numbers:18": {
+      "german": "siebzehn",
+      "ipa": "zˈiːptseːn",
+      "ru": "зи:пцэ:н",
+      "uk": "зі:пце:н"
+    },
+    "first-steps:numbers:19": {
+      "german": "achtzehn",
+      "ipa": "ˈaxtseːn",
+      "ru": "ахцэ:н",
+      "uk": "ахце:н"
+    },
+    "first-steps:numbers:20": {
+      "german": "neunzehn",
+      "ipa": "nˈɔʏntseːn",
+      "ru": "нойнцэ:н",
+      "uk": "нойнце:н"
+    },
+    "first-steps:numbers:21": {
+      "german": "zwanzig",
+      "ipa": "tsvˈantsɪç",
+      "ru": "цванцихь",
+      "uk": "цванціхь"
+    },
+    "first-steps:numbers:22": {
+      "german": "sechzig",
+      "ipa": "zˈɛçtsɪç",
+      "ru": "зэхьцихь",
+      "uk": "зехьціхь"
+    },
+    "first-steps:numbers:23": {
+      "german": "siebzig",
+      "ipa": "zˈiːptsɪç",
+      "ru": "зи:пцихь",
+      "uk": "зі:пціхь"
+    },
+    "first-steps:numbers:24": {
+      "german": "achtzig",
+      "ipa": "ˈaxtsɪç",
+      "ru": "ахцихь",
+      "uk": "ахціхь"
+    },
+    "first-steps:numbers:25": {
+      "german": "neunzig",
+      "ipa": "nˈɔʏntsɪç",
+      "ru": "нойнцихь",
+      "uk": "нойнціхь"
+    },
+    "first-steps:numbers:26": {
+      "german": "einhundert",
+      "ipa": "ˈaɪnhˌʊndɜt",
+      "ru": "айнхундэт",
+      "uk": "айнхундет"
+    },
+    "first-steps:numbers:27": {
+      "german": "einhunderteins",
+      "ipa": "ˈaɪnhˌʊndɜtˌaɪns",
+      "ru": "айнхундэтайнс",
+      "uk": "айнхундетайнс"
+    },
+    "first-steps:numbers:28": {
+      "german": "einhundertzwei",
+      "ipa": "ˈaɪnhˌʊndɜtsvˌaɪ",
+      "ru": "айнхундэцвай",
+      "uk": "айнхундецвай"
+    },
+    "first-steps:numbers:29": {
+      "german": "einhundertdrei",
+      "ipa": "ˈaɪnhˌʊndɜtdɾˌaɪ",
+      "ru": "айнхундэтдрай",
+      "uk": "айнхундетдрай"
+    },
+    "first-steps:numbers:30": {
+      "german": "zweihundert",
+      "ipa": "tsvˈaɪhʊndɜt",
+      "ru": "цвайхундэт",
+      "uk": "цвайхундет"
+    },
+    "first-steps:numbers:31": {
+      "german": "dreihundert",
+      "ipa": "dɾˈaɪhʊndɜt",
+      "ru": "драйхундэт",
+      "uk": "драйхундет"
+    },
+    "first-steps:numbers:32": {
+      "german": "vierhundert",
+      "ipa": "fˈiːɾhʊndɜt",
+      "ru": "фи:рхундэт",
+      "uk": "фі:рхундет"
+    },
+    "first-steps:numbers:33": {
+      "german": "eintausend",
+      "ipa": "ˈaɪntˌaʊzənt",
+      "ru": "айнтаузэнт",
+      "uk": "айнтаузент"
+    },
+    "first-steps:numbers:34": {
+      "german": "eintausendeins",
+      "ipa": "ˈaɪntˌaʊzəndˌaɪns",
+      "ru": "айнтаузэндайнс",
+      "uk": "айнтаузендайнс"
+    },
+    "first-steps:numbers:35": {
+      "german": "zweitausend",
+      "ipa": "tsvˈaɪtaʊzənt",
+      "ru": "цвайтаузэнт",
+      "uk": "цвайтаузент"
+    },
+    "first-steps:numbers:36": {
+      "german": "zehntausend",
+      "ipa": "tsˈeːntaʊzənt",
+      "ru": "цэ:нтаузэнт",
+      "uk": "це:нтаузент"
+    },
+    "first-steps:numbers:37": {
+      "german": "einhunderttausend",
+      "ipa": "ˈaɪnhˌʊndɜtˌaʊzənt",
+      "ru": "айнхундэтаузэнт",
+      "uk": "айнхундетаузент"
+    },
+    "first-steps:numbers:38": {
+      "german": "eine Million",
+      "ipa": "ˌaɪnə mɪljˈoːn",
+      "ru": "айнэ милйо:н",
+      "uk": "айне мілйо:н"
+    },
+    "first-steps:feelings:1": {
+      "german": "Wie geht es Ihnen?",
+      "ipa": "viː ɡˈeːt ɛs ˈiːnən",
+      "ru": "ви: гэ:т эс и:нэн",
+      "uk": "ві: ґе:т ес і:нен"
+    },
+    "first-steps:feelings:2": {
+      "german": "Wie geht es dir?",
+      "ipa": "viː ɡˈeːt ɛs dˈiːɾ",
+      "ru": "ви: гэ:т эс ди:р",
+      "uk": "ві: ґе:т ес ді:р"
+    },
+    "first-steps:feelings:3": {
+      "german": "Es geht mir gut.",
+      "ipa": "ɛs ɡˈeːt miːɾ ɡˈuːt",
+      "ru": "эс гэ:т ми:р гу:т",
+      "uk": "ес ґе:т мі:р ґу:т"
+    },
+    "first-steps:feelings:4": {
+      "german": "Ich bin glücklich.",
+      "ipa": "ɪç bɪn ɡlˈʏklɪç",
+      "ru": "ихь бин глюклихь",
+      "uk": "іхь бін ґлюкліхь"
+    },
+    "first-steps:feelings:5": {
+      "german": "Ich bin wütend.",
+      "ipa": "ɪç bɪn vˈyːtənt",
+      "ru": "ихь бин вю:тэнт",
+      "uk": "іхь бін вю:тент"
+    },
+    "first-steps:feelings:6": {
+      "german": "Ich bin müde.",
+      "ipa": "ɪç bɪn mˈyːdə",
+      "ru": "ихь бин мю:дэ",
+      "uk": "іхь бін мю:де"
+    },
+    "first-steps:feelings:7": {
+      "german": "Es geht mir nicht so gut.",
+      "ipa": "ɛs ɡˈeːt miːɾ nˈɪçt zoː ɡˈuːt",
+      "ru": "эс гэ:т ми:р нихьт зо: гу:т",
+      "uk": "ес ґе:т мі:р ніхьт зо: ґу:т"
+    },
+    "first-steps:feelings:8": {
+      "german": "Ich bin traurig.",
+      "ipa": "ɪç bɪn tɾˈaʊrɪç",
+      "ru": "ихь бин траурихь",
+      "uk": "іхь бін трауріхь"
+    },
+    "first-steps:feelings:9": {
+      "german": "Ich habe Angst.",
+      "ipa": "ɪç hɑːbə ˈaŋst",
+      "ru": "ихь ха:бэ ангст",
+      "uk": "іхь ха:бе ангст"
+    },
+    "first-steps:feelings:10": {
+      "german": "Ich bin verliebt.",
+      "ipa": "ɪç bɪn fɛɾlˈiːpt",
+      "ru": "ихь бин фэрли:пт",
+      "uk": "іхь бін ферлі:пт"
+    },
+    "first-steps:health:1": {
+      "german": "Ich bin gesund.",
+      "ipa": "ɪç bɪn ɡəzˈʊnt",
+      "ru": "ихь бин гэзунт",
+      "uk": "іхь бін ґезунт"
+    },
+    "first-steps:health:2": {
+      "german": "Ich bin krank.",
+      "ipa": "ɪç bɪn kɾˈaŋk",
+      "ru": "ихь бин крангк",
+      "uk": "іхь бін крангк"
+    },
+    "first-steps:health:3": {
+      "german": "Ich brauche einen Arzt.",
+      "ipa": "ɪç bɾˈaʊxə ˌaɪnən ˈaɾtst",
+      "ru": "ихь браухэ айнэн арцт",
+      "uk": "іхь браухе айнен арцт"
+    },
+    "first-steps:health:4": {
+      "german": "Ich habe Kopfschmerzen.",
+      "ipa": "ɪç hɑːbə kˈɔpfʃmɜtsən",
+      "ru": "ихь ха:бэ копфшмэцэн",
+      "uk": "іхь ха:бе копфшмецен"
+    },
+    "first-steps:health:5": {
+      "german": "Ich habe Zahnschmerzen.",
+      "ipa": "ɪç hɑːbə tsˈɑːnʃmɜtsən",
+      "ru": "ихь ха:бэ ца:ншмэцэн",
+      "uk": "іхь ха:бе ца:ншмецен"
+    },
+    "first-steps:health:6": {
+      "german": "Ich habe Halsschmerzen.",
+      "ipa": "ɪç hɑːbə hˈalsçmɜtsən",
+      "ru": "ихь ха:бэ халсхьмэцэн",
+      "uk": "іхь ха:бе халсхьмецен"
+    },
+    "first-steps:health:7": {
+      "german": "Ich bin erkältet.",
+      "ipa": "ɪç bɪn ɛɾkˈɛltət",
+      "ru": "ихь бин эркэлтэт",
+      "uk": "іхь бін еркелтет"
+    },
+    "first-steps:health:8": {
+      "german": "Ich habe Fieber.",
+      "ipa": "ɪç hɑːbə fˈiːbɜ",
+      "ru": "ихь ха:бэ фи:бэ",
+      "uk": "іхь ха:бе фі:бе"
+    },
+    "first-steps:health:9": {
+      "german": "Ich habe Husten.",
+      "ipa": "ɪç hɑːbə hˈuːstən",
+      "ru": "ихь ха:бэ ху:стэн",
+      "uk": "іхь ха:бе ху:стен"
+    },
+    "first-steps:health:10": {
+      "german": "Ich habe Bauchschmerzen.",
+      "ipa": "ɪç hɑːbə bˈaʊxʃmɜtsən",
+      "ru": "ихь ха:бэ баухшмэцэн",
+      "uk": "іхь ха:бе баухшмецен"
+    },
+    "first-steps:health:11": {
+      "german": "Ich muss in die Apotheke.",
+      "ipa": "ɪç mˈʊs ɪn diː ˌapoːtˈeːkə",
+      "ru": "ихь мус ин ди: апо:тэ:кэ",
+      "uk": "іхь мус ін ді: апо:те:ке"
+    },
+    "first-steps:food:1": {
+      "german": "Brot",
+      "ipa": "bɾˈoːt",
+      "ru": "бро:т",
+      "uk": "бро:т"
+    },
+    "first-steps:food:2": {
+      "german": "Kuchen",
+      "ipa": "kˈuːxən",
+      "ru": "ку:хэн",
+      "uk": "ку:хен"
+    },
+    "first-steps:food:3": {
+      "german": "Fleisch",
+      "ipa": "flˈaɪʃ",
+      "ru": "флайш",
+      "uk": "флайш"
+    },
+    "first-steps:food:4": {
+      "german": "Hähnchen",
+      "ipa": "hˈɛːnçən",
+      "ru": "хэ:нхьэн",
+      "uk": "хе:нхьен"
+    },
+    "first-steps:food:5": {
+      "german": "Rindfleisch",
+      "ipa": "rˈɪntflaɪʃ",
+      "ru": "ринтфлайш",
+      "uk": "рінтфлайш"
+    },
+    "first-steps:food:6": {
+      "german": "Lammfleisch",
+      "ipa": "lˈamflaɪʃ",
+      "ru": "ламфлайш",
+      "uk": "ламфлайш"
+    },
+    "first-steps:food:7": {
+      "german": "Käse",
+      "ipa": "kˈɛːzə",
+      "ru": "кэ:зэ",
+      "uk": "ке:зе"
+    },
+    "first-steps:food:8": {
+      "german": "Ei",
+      "ipa": "ˈaɪ",
+      "ru": "ай",
+      "uk": "ай"
+    },
+    "first-steps:food:9": {
+      "german": "Tomate",
+      "ipa": "toːmˈɑːtə",
+      "ru": "то:ма:тэ",
+      "uk": "то:ма:те"
+    },
+    "first-steps:food:10": {
+      "german": "Zwiebel",
+      "ipa": "tsvˈiːbəl",
+      "ru": "цви:бэл",
+      "uk": "цві:бел"
+    },
+    "first-steps:food:11": {
+      "german": "Reis",
+      "ipa": "rˈaɪs",
+      "ru": "райс",
+      "uk": "райс"
+    },
+    "first-steps:food:12": {
+      "german": "Kartoffeln",
+      "ipa": "kaɾtˈɔfəln",
+      "ru": "картофэлн",
+      "uk": "картофелн"
+    },
+    "first-steps:food:13": {
+      "german": "Fisch",
+      "ipa": "fˈɪʃ",
+      "ru": "фиш",
+      "uk": "фіш"
+    },
+    "first-steps:food:14": {
+      "german": "Kiwis",
+      "ipa": "kˈiːvɪs",
+      "ru": "ки:вис",
+      "uk": "кі:віс"
+    },
+    "first-steps:food:15": {
+      "german": "Gurken",
+      "ipa": "ɡˈʊɐkən",
+      "ru": "гуакэн",
+      "uk": "ґуакен"
+    },
+    "first-steps:food:16": {
+      "german": "Joghurt",
+      "ipa": "jˈɔkhʊɐt",
+      "ru": "йокхуат",
+      "uk": "йокхуат"
+    },
+    "first-steps:food:17": {
+      "german": "Suppe",
+      "ipa": "zˈʊpə",
+      "ru": "зупэ",
+      "uk": "зупе"
+    },
+    "first-steps:food:18": {
+      "german": "Pizza",
+      "ipa": "pˈɪtsɑː",
+      "ru": "пица:",
+      "uk": "піца:"
+    },
+    "first-steps:food:19": {
+      "german": "Obst",
+      "ipa": "ˈoːpst",
+      "ru": "о:пст",
+      "uk": "о:пст"
+    },
+    "first-steps:food:20": {
+      "german": "Banane",
+      "ipa": "banˈɑːnə",
+      "ru": "бана:нэ",
+      "uk": "бана:не"
+    },
+    "first-steps:food:21": {
+      "german": "Apfel",
+      "ipa": "ˈapfəl",
+      "ru": "апфэл",
+      "uk": "апфел"
+    },
+    "first-steps:food:22": {
+      "german": "Zitrone",
+      "ipa": "tsɪtɾˈoːnə",
+      "ru": "цитро:нэ",
+      "uk": "цітро:не"
+    },
+    "first-steps:food:23": {
+      "german": "Orange",
+      "ipa": "ˈoːraŋə",
+      "ru": "о:рангэ",
+      "uk": "о:ранге"
+    },
+    "first-steps:food:24": {
+      "german": "Süßigkeiten",
+      "ipa": "zˈyːsɪçkˌaɪtən",
+      "ru": "зю:сихькайтэн",
+      "uk": "зю:сіхькайтен"
+    },
+    "first-steps:food:25": {
+      "german": "Knoblauch",
+      "ipa": "knˈɔblaʊx",
+      "ru": "кноблаух",
+      "uk": "кноблаух"
+    },
+    "first-steps:food:26": {
+      "german": "Salat",
+      "ipa": "zalˈɑːt",
+      "ru": "зала:т",
+      "uk": "зала:т"
+    },
+    "first-steps:food:27": {
+      "german": "Zucker",
+      "ipa": "tsˈʊkɜ",
+      "ru": "цукэ",
+      "uk": "цуке"
+    },
+    "first-steps:food:28": {
+      "german": "Salz",
+      "ipa": "zˈalts",
+      "ru": "залц",
+      "uk": "залц"
+    },
+    "first-steps:food:29": {
+      "german": "Pfeffer",
+      "ipa": "pfˈɛfɜ",
+      "ru": "пфэфэ",
+      "uk": "пфефе"
+    },
+    "first-steps:food:30": {
+      "german": "Wasser",
+      "ipa": "vˈasɜ",
+      "ru": "васэ",
+      "uk": "васе"
+    },
+    "first-steps:food:31": {
+      "german": "Kaffee",
+      "ipa": "kˈafeː",
+      "ru": "кафэ:",
+      "uk": "кафе:"
+    },
+    "first-steps:food:32": {
+      "german": "Milch",
+      "ipa": "mˈɪlç",
+      "ru": "милхь",
+      "uk": "мілхь"
+    },
+    "first-steps:food:33": {
+      "german": "Saft",
+      "ipa": "zˈaft",
+      "ru": "зафт",
+      "uk": "зафт"
+    },
+    "first-steps:food:34": {
+      "german": "Cola",
+      "ipa": "kˈoːlɑː",
+      "ru": "ко:ла:",
+      "uk": "ко:ла:"
+    },
+    "first-steps:food:35": {
+      "german": "Tee",
+      "ipa": "tˈeː",
+      "ru": "тэ:",
+      "uk": "те:"
+    },
+    "first-steps:food:36": {
+      "german": "Bier",
+      "ipa": "bˈiːɾ",
+      "ru": "би:р",
+      "uk": "бі:р"
+    },
+    "first-steps:food:37": {
+      "german": "Wein",
+      "ipa": "vˈaɪn",
+      "ru": "вайн",
+      "uk": "вайн"
+    },
+    "first-steps:help:1": {
+      "german": "Helfen Sie mir bitte!",
+      "ipa": "hˈɛlfən ziː miːɾ bˈɪtə",
+      "ru": "хэлфэн зи: ми:р битэ",
+      "uk": "хелфен зі: мі:р біте"
+    },
+    "first-steps:help:2": {
+      "german": "Erlauben Sie mir …",
+      "ipa": "ɛɾlˈaʊbən ziː mˈiːɾ …",
+      "ru": "эрлаубэн зи: ми:р …",
+      "uk": "ерлаубен зі: мі:р …"
+    },
+    "first-steps:help:3": {
+      "german": "Kann ich Ihnen helfen?",
+      "ipa": "kˌan ɪç ˌiːnən hˈɛlfən",
+      "ru": "кан ихь и:нэн хэлфэн",
+      "uk": "кан іхь і:нен хелфен"
+    },
+    "first-steps:help:4": {
+      "german": "Kann ich …?",
+      "ipa": "kˈan ɪç …",
+      "ru": "кан ихь …",
+      "uk": "кан іхь …"
+    },
+    "first-steps:help:5": {
+      "german": "Helfen Sie mir bitte, meinen Pass zu finden.",
+      "ipa": "hˈɛlfən ziː miːɾ bˈɪtə mˌaɪnən pˈas tsuː fˈɪndən",
+      "ru": "хэлфэн зи: ми:р битэ майнэн пас цу: финдэн",
+      "uk": "хелфен зі: мі:р біте майнен пас цу: фінден"
+    },
+    "first-steps:help:6": {
+      "german": "Helfen Sie mir, es zu übersetzen?",
+      "ipa": "hˈɛlfən ziː mˈiːɾ ɛs tsuː ˌyːbɜzˈɛtsən",
+      "ru": "хэлфэн зи: ми:р эс цу: ю:бэзэцэн",
+      "uk": "хелфен зі: мі:р ес цу: ю:безецен"
+    },
+    "first-steps:help:7": {
+      "german": "Ja.",
+      "ipa": "jˈɑː",
+      "ru": "йа:",
+      "uk": "йа:"
+    },
+    "first-steps:help:8": {
+      "german": "Okay.",
+      "ipa": "ˈoːkɛɪ",
+      "ru": "о:кэи",
+      "uk": "о:кеі"
+    },
+    "first-steps:help:9": {
+      "german": "Kein Problem.",
+      "ipa": "kˈaɪn pɾoːblˈeːm",
+      "ru": "кайн про:блэ:м",
+      "uk": "кайн про:бле:м"
+    },
+    "first-steps:help:10": {
+      "german": "Lassen Sie mich Ihnen helfen.",
+      "ipa": "lˈasən ziː mɪç ˌiːnən hˈɛlfən",
+      "ru": "ласэн зи: михь и:нэн хэлфэн",
+      "uk": "ласен зі: міхь і:нен хелфен"
+    },
+    "first-steps:help:11": {
+      "german": "Sehr gerne!",
+      "ipa": "zˈeːɾ ɡˈɛɾnə",
+      "ru": "зэ:р гэрнэ",
+      "uk": "зе:р ґерне"
+    },
+    "first-steps:politeness:1": {
+      "german": "Danke!",
+      "ipa": "dˈaŋkə",
+      "ru": "дангкэ",
+      "uk": "дангке"
+    },
+    "first-steps:politeness:2": {
+      "german": "Danke sehr!",
+      "ipa": "dˈaŋkə zˈeːɾ",
+      "ru": "дангкэ зэ:р",
+      "uk": "дангке зе:р"
+    },
+    "first-steps:politeness:3": {
+      "german": "Bitte!",
+      "ipa": "bˈɪtə",
+      "ru": "битэ",
+      "uk": "біте"
+    },
+    "first-steps:politeness:4": {
+      "german": "Freut mich!",
+      "ipa": "frˈɔʏt mɪç",
+      "ru": "фройт михь",
+      "uk": "фройт міхь"
+    },
+    "first-steps:politeness:5": {
+      "german": "Entschuldigung …",
+      "ipa": "ɛntʃˈʊldɪɡˌʊŋ …",
+      "ru": "энчулдигунг …",
+      "uk": "енчулдіґунг …"
+    },
+    "first-steps:politeness:6": {
+      "german": "Es tut mir leid.",
+      "ipa": "ɛs tˈuːt miːɾ lˈaɪt",
+      "ru": "эс ту:т ми:р лайт",
+      "uk": "ес ту:т мі:р лайт"
+    },
+    "first-steps:politeness:7": {
+      "german": "Ich verstehe …",
+      "ipa": "ɪç fɛɾʃtˈeːə …",
+      "ru": "ихь фэрштэ:э …",
+      "uk": "іхь ферште:е …"
+    },
+    "first-steps:politeness:8": {
+      "german": "Alles klar.",
+      "ipa": "ˈaləs klˈɑːɾ",
+      "ru": "алэс кла:р",
+      "uk": "алес кла:р"
+    },
+    "first-steps:politeness:9": {
+      "german": "Gut gemacht!",
+      "ipa": "ɡˈuːt ɡəmˈaxt",
+      "ru": "гу:т гэмахт",
+      "uk": "ґу:т ґемахт"
+    },
+    "first-steps:politeness:10": {
+      "german": "Herzlichen Glückwunsch!",
+      "ipa": "hˈɛɾtslɪçən ɡlˈʏkvʊnʃ",
+      "ru": "хэрцлихьэн глюквунш",
+      "uk": "херцліхьен ґлюквунш"
+    }
+  }
+}

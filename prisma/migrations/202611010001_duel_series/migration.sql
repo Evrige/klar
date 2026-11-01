@@ -1,0 +1,12 @@
+ALTER TABLE "QueueEntry" ADD COLUMN "scoring" TEXT NOT NULL DEFAULT 'FIRST_CORRECT', ADD COLUMN "questionCount" INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE "Match" ADD COLUMN "scoring" TEXT NOT NULL DEFAULT 'FIRST_CORRECT', ADD COLUMN "questionCount" INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE "Rating" ADD COLUMN "scoring" TEXT NOT NULL DEFAULT 'FIRST_CORRECT';
+ALTER TABLE "QueueEntry" ADD CONSTRAINT "QueueEntry_scoring_check" CHECK ("scoring" IN ('FIRST_CORRECT','SPEED','ACCURACY')), ADD CONSTRAINT "QueueEntry_question_count_check" CHECK ("questionCount" IN (1,5,10,15,20));
+ALTER TABLE "Match" ADD CONSTRAINT "Match_scoring_check" CHECK ("scoring" IN ('FIRST_CORRECT','SPEED','ACCURACY')), ADD CONSTRAINT "Match_question_count_check" CHECK ("questionCount" IN (1,5,10,15,20));
+ALTER TABLE "Rating" ADD CONSTRAINT "Rating_scoring_check" CHECK ("scoring" IN ('FIRST_CORRECT','SPEED','ACCURACY'));
+DROP INDEX "QueueEntry_seasonId_mode_level_ranked_status_createdAt_idx";
+CREATE INDEX "QueueEntry_matchmaking_idx" ON "QueueEntry" ("seasonId","mode","level","ranked","scoring","questionCount","status","createdAt");
+DROP INDEX "Rating_userId_seasonId_mode_level_key";
+CREATE UNIQUE INDEX "Rating_userId_seasonId_mode_level_scoring_key" ON "Rating" ("userId","seasonId","mode","level","scoring");
+DROP INDEX "Rating_seasonId_mode_level_value_games_userId_idx";
+CREATE INDEX "Rating_leaderboard_idx" ON "Rating" ("seasonId","mode","level","scoring","value","games","userId");
