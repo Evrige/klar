@@ -4,9 +4,9 @@ import { vocabulary, categories, isVocabularyProgress, markWord } from '../src/d
 import { makeWordSession } from '../src/data/vocabularyPractice.ts';
 import { ruleTopics } from '../src/data/rules.ts';
 
-test('The starter dictionary contains exactly 2000 distinct complete cards',()=>{
- assert.equal(vocabulary.length,2000);
- assert.equal(new Set(vocabulary.map(w=>w.id)).size,2000);
+test('The starter dictionary contains exactly 5113 distinct complete cards',()=>{
+ assert.equal(vocabulary.length,5113);
+ assert.equal(new Set(vocabulary.map(w=>w.id)).size,5113);
  for(const word of vocabulary){
   for(const key of ['id','word','translation','reading','category'])assert.ok(typeof word[key]==='string'&&word[key].trim(),`${word.id}: ${key}`);
   assert.match(word.translation,/[а-яё]/i);

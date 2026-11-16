@@ -1,5 +1,7 @@
 import {extraVocabulary} from './extraVocabulary.ts';
-export type Word = { id: string; word: string; translation: string; reading: string; category: string };
+import {expandedVocabulary} from './expandedVocabulary.ts';
+import examples from './vocabularyExamples.json' with {type:'json'};
+export type Word = { id: string; word: string; translation: string; reading: string; category: string; level?: 'A1' | 'A2' | 'B1'; pos?: string; plural?: string; past?: string; perfect?: string; participle?: string; separable?: boolean; example?: string; exampleTranslation?: string; exampleIds?: number[] };
 // An editorial starter vocabulary, not a frequency ranking or an official CEFR list.
 // Cyrillic readings are learning aids, not a substitute for German phonetics or audio.
 const source = `
@@ -54,7 +56,10 @@ export const baseVocabulary: Word[] = source.trim().split('\n').flatMap(line => 
     return {id:word,word,translation,reading,category};
   });
 });
-export const vocabulary:Word[]=[...baseVocabulary,...extraVocabulary];
+type UsageExample = Pick<Word, 'example' | 'exampleTranslation' | 'exampleIds'>;
+const usageExamples: Record<string, UsageExample> = examples;
+export const vocabulary: Word[] = [...baseVocabulary, ...extraVocabulary, ...expandedVocabulary]
+    .map(entry => usageExamples[entry.id] ? {...entry, ...usageExamples[entry.id]} : entry);
 export const categories = [...new Set(vocabulary.map(w=>w.category))];
 export type WordStatus = 'learning' | 'known';
 export type VocabularyProgress = Record<string, WordStatus>;

@@ -8,7 +8,7 @@ import {sentences} from '../src/data/sentences.ts';
 import {sentenceGlosses} from '../src/data/sentenceGlossary.ts';
 test('Word level selection partitions every existing card and preserves its saved ID',()=>{
  const groups=wordLevels.map(level=>vocabulary.filter(w=>wordLevel(w.id)===level));
- assert.equal(groups.flat().length,2000);assert.equal(new Set(groups.flat().map(w=>w.id)).size,2000);
+ assert.equal(groups.flat().length,5113);assert.equal(new Set(groups.flat().map(w=>w.id)).size,5113);
  for(const group of groups)assert.ok(group.length>0);
  assert.equal(wordLevel('du'),'A1');assert.equal(wordLevel('guten Morgen'),'A1');
  assert.ok(validSelectedLevels(['A1','B1']));assert.ok(validSelectedLevels([]));assert.equal(validSelectedLevels(['A1','A1']),false);assert.equal(validSelectedLevels(['C2']),false);

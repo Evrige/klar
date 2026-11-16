@@ -35,18 +35,18 @@ before(async () => { seedCounts = await seed(); for (const id of [userA, userB, 
 after(async () => { await db.$disconnect(); });
 test('large real import preserves 8000 skill rows without row-by-row request loops',{timeout:120000},async()=>{
     const id=`bulk-${run}`;await db.user.create({data:{id,name:'bulk',email:`${id}@example.invalid`}});
-    const learning=emptyLearning();for(const w of vocabulary)for(const mode of ['recognition','recall','spelling','listening'])learning.skills[`${mode}:${w.id}`]={attempts:2,correct:1,stage:1,due:Date.now(),last:Date.now()-1000};
-    const snapshot={'klar:learning:v1':learning,'klar:vocabulary:v1':Object.fromEntries(vocabulary.map(w=>[w.id,'learning']))};
+    const learning=emptyLearning();for(const w of vocabulary.slice(0,2000))for(const mode of ['recognition','recall','spelling','listening'])learning.skills[`${mode}:${w.id}`]={attempts:2,correct:1,stage:1,due:Date.now(),last:Date.now()-1000};
+    const snapshot={'klar:learning:v1':learning,'klar:vocabulary:v1':Object.fromEntries(vocabulary.slice(0,2000).map(w=>[w.id,'learning']))};
     await importSnapshot(id,{schemaVersion:1,deviceId:deviceA,snapshot});await importSnapshot(id,{schemaVersion:1,deviceId:deviceB,snapshot});
     assert.equal(await db.userWordSkill.count({where:{userId:id}}),8000);assert.equal(await db.userWordStatus.count({where:{userId:id}}),2000);
 });
 const input = (snapshot: unknown, deviceId = deviceA) => ({ schemaVersion: 1, deviceId, snapshot });
 test('real catalog seed twice is idempotent and keeps alternative answers', { timeout: 300000 }, async () => {
     const before = { words: await db.word.count(), verbs: await db.verb.count(), nouns: await db.nounForm.count(), videos: await db.lesson.count({ where: { kind: 'video' } }), mini: await db.lesson.count({ where: { kind: 'mini' } }), versions: await db.exerciseVersion.count(), answers: await db.answerVariant.count() };
-    assert.deepEqual(seedCounts, { words: 2000, verbs: 71, nouns: 81, sentences: 1588, videos: 228, miniLessons: 8 });
+    assert.deepEqual(seedCounts, { words: 5113, verbs: 71, nouns: 81, sentences: 1588, videos: 228, miniLessons: 8 });
     await seed();
     assert.deepEqual({ ...before, versions: await db.exerciseVersion.count(), answers: await db.answerVariant.count() }, before);
-    assert.equal(await db.word.count(), 2000);
+    assert.equal(await db.word.count(), 5113);
     assert.equal(await db.verb.count(), 71);
     assert.equal(await db.nounForm.count(), 81);
     assert.equal(before.videos, 228);

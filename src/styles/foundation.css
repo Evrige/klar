@@ -4585,3 +4585,9 @@
   }
 
 }
+
+.vocab-word-details { width:100%; margin:12px 0; padding:14px 18px; border:1px solid var(--border); border-radius:12px; text-align:left; }
+.vocab-word-details small,.vocab-word-example p + p { color:var(--muted); }
+.vocab-word-details p { margin:6px 0; overflow-wrap:anywhere; }
+.vocab-word-details strong { margin-right:8px; font-size:.85em; }
+.vocab-word-example { margin-top:10px; padding-top:8px; border-top:1px solid var(--border); }
