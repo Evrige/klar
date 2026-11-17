@@ -11,15 +11,18 @@ import Mistakes from './Mistakes';
 import { useNow } from '../hooks/useNow';
 import { useLocale } from '../i18n/Locale';
 import WeeklyReport from './WeeklyReport';
-export type LearningTab = 'plan' | 'lessons' | 'review' | 'mistakes' | 'skills' | 'week';
-export default function LearningCenter({ initialTab = 'plan', known=0,activityDays }: {
+import type { LearningTab } from '../navigation';
+export default function LearningCenter({ initialTab = 'plan', onTabChange, known=0,activityDays }: {
     initialTab?: LearningTab;
+    onTabChange?: (tab: LearningTab) => void;
     known?:number;
     activityDays?:string[];
 }) {
     const { state, restore, storageError } = useLearning();
     const { t } = useLocale();
-    const [tab, setTab] = useState<LearningTab>(initialTab), [lesson, setLesson] = useState<string | undefined>();
+    const [localTab, setLocalTab] = useState<LearningTab>(initialTab), [lesson, setLesson] = useState<string | undefined>();
+    const tab = onTabChange ? initialTab : localTab;
+    const setTab = onTabChange ?? setLocalTab;
     const [recommendedMode, setRecommendedMode] = useState<SkillMode | undefined>();
     const [pending, setPending] = useState<LearningState | null>(null), [previous, setPrevious] = useState<LearningState | null>(null), [message, setMessage] = useState('');
     const file = useRef<HTMLInputElement>(null);

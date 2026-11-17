@@ -1,11 +1,12 @@
 import Loading from './components/Loading';
 import {RuleNavigationProvider} from './learning/RuleNavigation';
 import WeeklyReport from './learning/WeeklyReport';
-import type {LearningTab} from './learning/LearningCenter';
+import {readRoute, routeHref, type AppRoute, type LearningTab, type Page} from './navigation';
+export type {Page} from './navigation';
 import {Button, Card, PageIntro, ProgressBar} from './components/ui';
 import { APP_VERSION } from "./version";
 import Select from './components/Select';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { ArrowRight, Award, BookOpen, Flame, GraduationCap, LayoutDashboard, LibraryBig, Menu, Moon, Puzzle, Settings2, SpellCheck, Sun, Table2, Timer, TrendingUp, Trophy, X, Target, ChevronDown, Swords } from 'lucide-react';
 import { useStoredState } from './hooks/useStoredState';
 import { verbs } from './data/verbs';
@@ -13,7 +14,7 @@ import { nouns, validNounProgress } from './data/nouns';
 import { sentences, validSentenceProgress } from './data/sentences';
 import { berlinDate, emptyDay, validDailyProgress, type DailyProgress } from './data/dailyPlan';
 import { isVocabularyProgress, markWord, vocabulary, type VocabularyProgress } from './data/vocabulary';
-import { courseLessons, lessonComplete, validCourseProgress, type CourseProgress, type CourseLevel } from './data/course';
+import { courseLessons, lessonComplete, validCourseProgress, type CourseProgress } from './data/course';
 import { currentStreak, longestStreak, eligibleAchievements, validActivity, validEarned, type EarnedAchievements, type LearningActivity } from './data/achievements';
 import { useLocale } from './i18n/Locale';
 import InstallApp from './components/InstallApp';
@@ -35,16 +36,16 @@ const DailyPlan = lazy(() => import('./components/DailyPlan'));
 const Course = lazy(() => import('./components/Course'));
 const LearningCenter = lazy(() => import('./learning/LearningCenter'));
 const Achievements = lazy(() => import('./components/Achievements'));
-export type Page = 'home' | 'course' | 'rules' | 'vocabulary' | 'verbs' | 'articles' | 'sentences' | 'daily' | 'progress' | 'achievements' | 'learning' | 'profile' | 'settings' | 'online' | 'first-steps';
 function validKeys(v: unknown): v is string[] { return Array.isArray(v) && v.every(k => typeof k === 'string' && verbs.some(verb => Array.from({ length: 6 }, (_, i) => `${verb.id}:${i}`).includes(k))) && new Set(v).size === v.length; }
 export default function App() {
     const { t, locale, setLocale } = useLocale();
     const { state: learning, storageError: learningStorageError } = useLearning();
-    const [page, setPage] = useState<Page>('home'), [mobile, setMobile] = useState(false);
+    const [route, setRoute] = useState(() => readRoute(window.location.pathname, window.location.search));
+    const {page, topic: requestedRule, level: requestedLevel, tab: requestedLearningTab = 'plan'} = route;
+    const [mobile, setMobile] = useState(false);
     const [trainersOpen, setTrainersOpen] = useState(false);
     const [dark, setDark] = useStoredState('klar:dark', false, (v): v is boolean => typeof v === 'boolean');
     useEffect(()=>{document.documentElement.dataset.theme=dark?'dark':'light';localStorage.setItem('klar:appearance:v1',dark?'dark':'light');},[dark]);
-    useEffect(()=>{const handler=(event:Event)=>{const next=(event as CustomEvent).detail;if(['profile','settings','progress','online'].includes(next)){setPage(next);setMobile(false);window.scrollTo({top:0});}};window.addEventListener('klar:navigate',handler);return ()=>window.removeEventListener('klar:navigate',handler);},[]);
     const [mastered, setMastered] = useStoredState<string[]>('klar:mastered:v1', [], validKeys);
     const [wordProgress, setWordProgress] = useStoredState<VocabularyProgress>('klar:vocabulary:v1', {}, isVocabularyProgress);
     const [nounProgress, setNounProgress] = useStoredState<string[]>('klar:nouns:v1', [], validNounProgress);
@@ -53,9 +54,6 @@ export default function App() {
     const [courseProgress, setCourseProgress] = useStoredState<CourseProgress>('klar:course:v1', {}, validCourseProgress);
     const [activity, setActivity] = useStoredState<LearningActivity>('klar:activity:v1', { days: [], words: [] }, validActivity);
     const [earned, setEarned] = useStoredState<EarnedAchievements>('klar:achievements:v1', {}, validEarned);
-    const [requestedRule,setRequestedRule]=useState('verbs');
-    const [requestedLearningTab,setRequestedLearningTab]=useState<LearningTab>('plan');
-    const [requestedLevel, setRequestedLevel] = useState<CourseLevel | undefined>();
     useEffect(() => { if (!mobile)
         return; const previous = document.activeElement as HTMLElement | null; const panel = document.getElementById('learning-navigation'); const overflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; panel?.querySelector<HTMLButtonElement>('.mobile-close')?.focus(); const resize = () => { if (window.innerWidth > 680)
         setMobile(false); }; const keydown = (event: KeyboardEvent) => { if (event.key === 'Escape') {
@@ -97,22 +95,52 @@ export default function App() {
         setNounProgress(old => old.includes(id) ? old : [...old, id]); }
     function sentenceAnswer(id: string, correct: boolean) { study(); if (correct)
         setSentenceProgress(old => old.includes(id) ? old : [...old, id]); }
-    function navigate(next: Page, learningTab:LearningTab='plan') { if(next==='learning')setRequestedLearningTab(learningTab); if (next !== 'course')
-        setRequestedLevel(undefined); setPage(next); setMobile(false); setTrainersOpen(false); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }); }
+    function navigate(next: Page, learningTab: LearningTab = 'plan') {
+        openRoute({ page: next, tab: learningTab });
+    }
+    const openRoute = useCallback((next: AppRoute, scroll = true) => {
+        const href = routeHref(next);
+        if (href !== window.location.pathname + window.location.search) {
+            window.history.pushState(null, '', href);
+        }
+        setRoute(next);
+        setMobile(false);
+        setTrainersOpen(false);
+        if (scroll) window.scrollTo({ top: 0 });
+    }, []);
+    useEffect(() => {
+        function restoreRoute() {
+            setRoute(readRoute(window.location.pathname, window.location.search));
+            setMobile(false);
+            setTrainersOpen(false);
+        }
+        function handleAccountNavigation(event: Event) {
+            const page = (event as CustomEvent<unknown>).detail;
+            if (page === 'profile' || page === 'settings' || page === 'progress' || page === 'online') {
+                openRoute({ page });
+            }
+        }
+        window.addEventListener('popstate', restoreRoute);
+        window.addEventListener('klar:navigate', handleAccountNavigation);
+        return () => {
+            window.removeEventListener('popstate', restoreRoute);
+            window.removeEventListener('klar:navigate', handleAccountNavigation);
+        };
+    }, [openRoute]);
     const nav = [{ id: 'home', ru: 'Обзор', uk: 'Огляд', icon: LayoutDashboard }, { id: 'learning', ru: 'Учебный центр', uk: 'Навчальний центр', icon: Target }, {id:'first-steps',ru:'Первые шаги',uk:'Перші кроки',icon:BookOpen}, { id: 'course', ru: 'Мой курс', uk: 'Мій курс', icon: GraduationCap }, { id: 'daily', ru: 'План на 10 минут', uk: 'План на 10 хвилин', icon: Timer }, { id: 'rules', ru: 'Общие правила', uk: 'Загальні правила', icon: Table2 }, { id: 'vocabulary', ru: 'Словарь', uk: 'Словник', icon: LibraryBig }, { id: 'verbs', ru: 'Спряжение глаголов', uk: 'Дієвідмінювання', icon: BookOpen }, { id: 'articles', ru: 'Артикли и мн. число', uk: 'Артиклі та множина', icon: SpellCheck }, { id: 'sentences', ru: 'Сборка предложений', uk: 'Складання речень', icon: Puzzle }, {id:'online',ru:'Онлайн-дуэли',uk:'Онлайн-дуелі',icon:Swords}, { id: 'achievements', ru: 'Достижения', uk: 'Досягнення', icon: Trophy }, { id: 'progress', ru: 'Мой прогресс', uk: 'Мій прогрес', icon: TrendingUp }] as const;
     const secondary = ['rules', 'verbs', 'articles', 'sentences', 'daily'];
     const renderNav = (n: typeof nav[number]) => <button key={n.id} onClick={() => navigate(n.id)} className={page === n.id ? 'nav-item active' : 'nav-item'} aria-current={page === n.id ? 'page' : undefined}><n.icon size={18}/><span>{t(n.ru, n.uk)}</span>{n.id === 'vocabulary' && <small>{vocabulary.length % 1000 === 0 ? `${vocabulary.length / 1000}k` : vocabulary.length}</small>}</button>;
     const title = nav.find(n => n.id === page)??(page==='profile'?{ru:'Мой профиль',uk:'Мій профіль'}:{ru:'Настройки',uk:'Налаштування'});
-    return <RuleNavigationProvider onOpenRule={topic=>{setRequestedRule(topic);navigate('rules');}}><div className={dark ? 'app dark' : 'app'}><aside role={mobile ? 'dialog' : undefined} aria-modal={mobile ? true : undefined} aria-label={t('Разделы обучения', 'Розділи навчання')} id="learning-navigation" className={`sidebar ${mobile ? 'open' : ''}`}><a className="brand" href="#home" onClick={e => { e.preventDefault(); navigate('home'); }}><span className="brand-mark">k.</span>klar<span className="brand-dot">.</span></a><Button aria-label={t('Закрыть меню', 'Закрити меню')} onClick={() => setMobile(false)} className="mobile-close" variant="icon"><X /></Button><div className="sidebar-subtitle">{t('ВАШ НЕМЕЦКИЙ. ВАШ РИТМ.', 'ВАША НІМЕЦЬКА. ВАШ РИТМ.')}</div><div className="workspace-label">{t('ПРОСТРАНСТВО ОБУЧЕНИЯ', 'ПРОСТІР НАВЧАННЯ')}</div><nav>{nav.filter(n => !secondary.includes(n.id)).map(renderNav)}<details className="nav-trainers" open={trainersOpen} onToggle={e => setTrainersOpen(e.currentTarget.open)}><summary className={secondary.includes(page) ? 'active' : ''}><BookOpen size={18}/><span>{t('Тренажёры и справочник', 'Тренажери й довідник')}</span><ChevronDown size={15}/></summary>{nav.filter(n => secondary.includes(n.id)).map(renderNav)}</details></nav><div className="sidebar-course"><span className="mini-icon"><Flame size={23}/></span><b>{t('У каждого шага есть смысл.', 'Кожен крок має значення.')}</b><p>{t('Немного каждый день — уже привычка.', 'Трохи щодня — уже звичка.')}</p><button onClick={() => navigate('daily')}>{t('Мои 10 минут', 'Мої 10 хвилин')}<ArrowRight size={16}/></button></div><div className="sidebar-xp"><b>{t('Учебный уровень', 'Навчальний рівень')} {xp.level}</b><small>{xp.xp} / {xp.next} XP</small><ProgressBar className="progress-track" fillStyle={{ width: xp.percent + '%' }}/></div><div className="sidebar-bottom"><span className="flag">🇩🇪</span><div><b>{t('Немецкий язык', 'Німецька мова')}</b><small>A0 → C2 · {t('шаг за шагом', 'крок за кроком')}</small></div></div></aside>{mobile && <button className="overlay" aria-label={t('Закрыть навигацию', 'Закрити навігацію')} onClick={() => setMobile(false)}/>}
+    return <RuleNavigationProvider onOpenRule={topic => openRoute({page: 'rules', topic})}><div className={dark ? 'app dark' : 'app'}><aside role={mobile ? 'dialog' : undefined} aria-modal={mobile ? true : undefined} aria-label={t('Разделы обучения', 'Розділи навчання')} id="learning-navigation" className={`sidebar ${mobile ? 'open' : ''}`}><a className="brand" href="/" onClick={e => { e.preventDefault(); navigate('home'); }}><span className="brand-mark">k.</span>klar<span className="brand-dot">.</span></a><Button aria-label={t('Закрыть меню', 'Закрити меню')} onClick={() => setMobile(false)} className="mobile-close" variant="icon"><X /></Button><div className="sidebar-subtitle">{t('ВАШ НЕМЕЦКИЙ. ВАШ РИТМ.', 'ВАША НІМЕЦЬКА. ВАШ РИТМ.')}</div><div className="workspace-label">{t('ПРОСТРАНСТВО ОБУЧЕНИЯ', 'ПРОСТІР НАВЧАННЯ')}</div><nav>{nav.filter(n => !secondary.includes(n.id)).map(renderNav)}<details className="nav-trainers" open={trainersOpen} onToggle={e => setTrainersOpen(e.currentTarget.open)}><summary className={secondary.includes(page) ? 'active' : ''}><BookOpen size={18}/><span>{t('Тренажёры и справочник', 'Тренажери й довідник')}</span><ChevronDown size={15}/></summary>{nav.filter(n => secondary.includes(n.id)).map(renderNav)}</details></nav><div className="sidebar-course"><span className="mini-icon"><Flame size={23}/></span><b>{t('У каждого шага есть смысл.', 'Кожен крок має значення.')}</b><p>{t('Немного каждый день — уже привычка.', 'Трохи щодня — уже звичка.')}</p><button onClick={() => navigate('daily')}>{t('Мои 10 минут', 'Мої 10 хвилин')}<ArrowRight size={16}/></button></div><div className="sidebar-xp"><b>{t('Учебный уровень', 'Навчальний рівень')} {xp.level}</b><small>{xp.xp} / {xp.next} XP</small><ProgressBar className="progress-track" fillStyle={{ width: xp.percent + '%' }}/></div><div className="sidebar-bottom"><span className="flag">🇩🇪</span><div><b>{t('Немецкий язык', 'Німецька мова')}</b><small>A0 → C2 · {t('шаг за шагом', 'крок за кроком')}</small></div></div></aside>{mobile && <button className="overlay" aria-label={t('Закрыть навигацию', 'Закрити навігацію')} onClick={() => setMobile(false)}/>}
  <div className="main-shell"><header><div className="breadcrumb"><Button aria-label={t('Открыть меню', 'Відкрити меню')} onClick={() => setMobile(true)} className="mobile-menu" variant="icon"><Menu /></Button><span>Klar</span><span className="slash">/</span><b>{t(title.ru, title.uk)}</b></div><div className="header-actions"><label className="language-select"><span className="sr-only">{t('Язык интерфейса', 'Мова інтерфейсу')}</span><Select value={locale} onChange={e => setLocale(e.target.value as 'ru' | 'uk')}><option value="ru">Русский</option><option value="uk">Українська</option></Select></label><span className="streak-pill" title={t('Учебных дней подряд', 'Навчальних днів поспіль')}><Flame size={17}/>{streak}</span><button className="theme-button" onClick={() => setDark(!dark)} aria-label={t(dark ? 'Включить светлую тему' : 'Включить тёмную тему', dark ? 'Увімкнути світлу тему' : 'Увімкнути темну тему')}>{dark ? <Sun size={19}/> : <Moon size={19}/>}</button></div></header><main>{learningStorageError && page !== 'learning' && <div className="learning-note" role="alert"><p>{t(learningStorageError, 'Не вдалося зберегти навчальні дані. Завантажте копію перед виходом.')}</p><Button onClick={() => navigate('learning')} variant="text">{t('Открыть сохранение прогресса', 'Відкрити збереження прогресу')}</Button></div>}
  {locale === 'uk' && <p className="locale-material-note"><Settings2 size={15}/>Інтерфейс — українською. Оригінальні відео й частина навчальних пояснень та перекладів словника поки російською.</p>}
  <Suspense fallback={<Loading label={t('Открываем раздел…', 'Відкриваємо розділ…')}/>}>
- {page === 'first-steps' ? <FirstSteps/> : page === 'online' ? <OnlineActivities/> : page === 'profile'||page === 'settings' ? <ProfilePage key={page} settings={page==='settings'} dark={dark} setDark={setDark} locale={locale} setLocale={setLocale} xp={xp} known={known} lessons={completedLessons+completedMini} streak={streak} onProgress={()=>navigate('progress')}/> : page === 'home' ? <Dashboard navigate={navigate} onLevel={level => { setRequestedLevel(level); navigate('course'); }} courseProgress={courseProgress} known={known} answers={mastered.length + nounProgress.length + sentenceProgress.length} achievements={achievementCards(stats, earned).filter(c => c.rank > 0).length}/> :
-            page === 'learning' ? <LearningCenter key={requestedLearningTab} initialTab={requestedLearningTab} activityDays={learningDays} known={known}/> :
-                page === 'course' ? <Course initialLevel={requestedLevel} progress={courseProgress} onChange={(id, record) => setCourseProgress(old => ({ ...old, [id]: record }))} onImport={setCourseProgress} onPractice={navigate} onActivity={() => study()}/> :
+ {page === 'first-steps' ? <FirstSteps/> : page === 'online' ? <OnlineActivities/> : page === 'profile'||page === 'settings' ? <ProfilePage key={page} settings={page==='settings'} dark={dark} setDark={setDark} locale={locale} setLocale={setLocale} xp={xp} known={known} lessons={completedLessons+completedMini} streak={streak} onProgress={()=>navigate('progress')}/> : page === 'home' ? <Dashboard navigate={navigate} onLevel={level => openRoute({page: 'course', level})} courseProgress={courseProgress} known={known} answers={mastered.length + nounProgress.length + sentenceProgress.length} achievements={achievementCards(stats, earned).filter(c => c.rank > 0).length}/> :
+            page === 'learning' ? <LearningCenter initialTab={requestedLearningTab} onTabChange={tab => openRoute({page: 'learning', tab}, false)} activityDays={learningDays} known={known}/> :
+                page === 'course' ? <Course level={requestedLevel} lessonId={route.lesson} view={route.courseView ?? 'lessons'} onNavigate={(level, lesson, courseView) => openRoute({page: 'course', level, lesson, courseView}, false)} progress={courseProgress} onChange={(id, record) => setCourseProgress(old => ({ ...old, [id]: record }))} onImport={setCourseProgress} onPractice={navigate} onActivity={() => study()}/> :
                     page === 'achievements' ? <Achievements stats={stats} earned={earned} streak={streak}/> :
-                        page === 'rules' ? <Rules key={requestedRule} initialTopic={requestedRule} onPractice={() => navigate('verbs')}/> :
-                            page === 'vocabulary' ? <Vocabulary progress={wordProgress} onMark={(id, status) => setWordProgress(old => markWord(old, id, status))} onPracticeCorrect={id => study(id)}/> :
+                        page === 'rules' ? <Rules initialTopic={requestedRule} onTopicChange={topic => openRoute({page: 'rules', topic}, false)} onPractice={() => navigate('verbs')}/> :
+                            page === 'vocabulary' ? <Vocabulary progress={wordProgress} onMark={(id, status) => setWordProgress(old => markWord(old, id, status))}/> :
                                 page === 'articles' ? <NounTrainer mastered={nounProgress} onAnswer={nounAnswer} onRules={() => navigate('rules')}/> :
                                     page === 'sentences' ? <SentenceTrainer mastered={sentenceProgress} onAnswer={sentenceAnswer}/> :
                                         page === 'daily' ? <><LearningCenter activityDays={learningDays} known={known}/><details className="learning-backup"><summary>{t('Свободная разминка по старому плану', 'Вільна розминка за попереднім планом')}</summary><DailyPlan date={today} record={dailyProgress[today] ?? emptyDay()} onUpdate={update => { study(); setDailyProgress(old => ({ ...old, [today]: update(old[today] ?? emptyDay()) })); }} onWord={(id, status) => setWordProgress(old => markWord(old, id, status))} onNoun={nounAnswer} onSentence={sentenceAnswer} onRules={() => navigate('rules')}/></details></> :

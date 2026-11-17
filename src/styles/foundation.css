@@ -2253,10 +2253,43 @@
   }
 
   .word-session {
+    @apply max-w-175 mx-auto;
+  }
+
+  .word-session-header, .word-session .session-result {
     @apply bg-panel;
     @apply [border:1px_solid_var(--border)];
     @apply rounded-[15px];
-    @apply p-7;
+    @apply p-5;
+  }
+
+  .word-session-header {
+    @apply mb-4;
+  }
+
+  .word-session-heading, .word-session-progress {
+    @apply flex items-center justify-between gap-3;
+  }
+
+  .word-session-heading h2 {
+    @apply text-lg font-semibold;
+  }
+
+  .word-session-heading .secondary {
+    @apply inline-flex items-center gap-2 px-3 py-2;
+  }
+
+  .word-session-progress {
+    @apply mt-3 mb-2 text-sm text-muted;
+  }
+
+  .word-session-progress strong {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .word-session-header .progress-track {
+    @apply m-0;
   }
 
   .quiz-word {
@@ -2620,24 +2653,8 @@
       @apply text-[15px];
     }
 
-    .word-session {
-      @apply p-[20px_15px];
-    }
-
-    .word-session .section-heading {
-      @apply items-start;
-      @apply gap-[7px];
-    }
-
-    .word-session .section-heading .eyebrow {
-      @apply text-[8px];
-      @apply leading-[1.9];
-    }
-
-    .word-session .secondary {
-      @apply text-[9px];
-      @apply p-2;
-      @apply gap-[5px];
+    .word-session-header {
+      @apply p-4;
     }
 
     .quiz-word h2 {
